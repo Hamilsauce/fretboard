@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+   <svg class="card-symbol" _style="border:1px solid white;" data-card-symbol="heart" width="60" height="60" _preserveAspectRatio="none" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+
+     <g transform="rotate(45,30,30)" fill="red">
+       <rect x="15" y="15" height="35" width="35" />
+       <circle cx="15" cy="32.5" r="17.5" />
+       <circle cx="32.5" cy="15" r="17.5" />
+     </g>
+
+   </svg>

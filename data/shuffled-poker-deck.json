@@ -1,0 +1,470 @@
+[
+  {
+    "rank": 12,
+    "type": "pip",
+    "value": "ace",
+    "suit": "club",
+    "suitId": 2,
+    "modelId": "c11avu68vljaeywot5l6",
+    "name": "ace of clubs"
+  },
+  {
+    "rank": 9,
+    "type": "face",
+    "value": "jack",
+    "suit": "club",
+    "suitId": 2,
+    "modelId": "ctqvo8tv1wlxrf9erqar",
+    "name": "jack of clubs"
+  },
+  {
+    "rank": 2,
+    "type": "pip",
+    "value": "4",
+    "suit": "heart",
+    "suitId": 1,
+    "modelId": "ceavw0ejvnwtjsql1kot",
+    "name": "4 of hearts"
+  },
+  {
+    "rank": 2,
+    "type": "pip",
+    "value": "4",
+    "suit": "diamond",
+    "suitId": 0,
+    "modelId": "cspija1lv1e5nwwdvaeh",
+    "name": "4 of diamonds"
+  },
+  {
+    "rank": 5,
+    "type": "pip",
+    "value": "7",
+    "suit": "heart",
+    "suitId": 1,
+    "modelId": "cwjavve1ferijwlvea3s",
+    "name": "7 of hearts"
+  },
+  {
+    "rank": 7,
+    "type": "pip",
+    "value": "9",
+    "suit": "heart",
+    "suitId": 1,
+    "modelId": "caeuspv31nzs3vpq2wl9",
+    "name": "9 of hearts"
+  },
+  {
+    "rank": 7,
+    "type": "pip",
+    "value": "9",
+    "suit": "spade",
+    "suitId": 3,
+    "modelId": "ctb79gseaw1tvrcvlalp",
+    "name": "9 of spades"
+  },
+  {
+    "rank": 10,
+    "type": "face",
+    "value": "queen",
+    "suit": "diamond",
+    "suitId": 0,
+    "modelId": "cc8st5lvs9ve91p1emwa",
+    "name": "queen of diamonds"
+  },
+  {
+    "rank": 1,
+    "type": "pip",
+    "value": "3",
+    "suit": "spade",
+    "suitId": 3,
+    "modelId": "cgvm1hvkle6vcgtrwyal",
+    "name": "3 of spades"
+  },
+  {
+    "rank": 0,
+    "type": "pip",
+    "value": "2",
+    "suit": "club",
+    "suitId": 2,
+    "modelId": "c1d4ielve7svrvweambp",
+    "name": "2 of clubs"
+  },
+  {
+    "rank": 11,
+    "type": "face",
+    "value": "king",
+    "suit": "diamond",
+    "suitId": 0,
+    "modelId": "cpt7we810avwlaexrven",
+    "name": "king of diamonds"
+  },
+  {
+    "rank": 9,
+    "type": "face",
+    "value": "jack",
+    "suit": "heart",
+    "suitId": 1,
+    "modelId": "ca1jwetpqfvjnwlvutys",
+    "name": "jack of hearts"
+  },
+  {
+    "rank": 4,
+    "type": "pip",
+    "value": "6",
+    "suit": "club",
+    "suitId": 2,
+    "modelId": "c1mmaw1skz0lavevrgxr",
+    "name": "6 of clubs"
+  },
+  {
+    "rank": 5,
+    "type": "pip",
+    "value": "7",
+    "suit": "diamond",
+    "suitId": 0,
+    "modelId": "c6lek7esdwk16ovvk3a",
+    "name": "7 of diamonds"
+  },
+  {
+    "rank": 9,
+    "type": "face",
+    "value": "jack",
+    "suit": "spade",
+    "suitId": 3,
+    "modelId": "cffkd61v5ewll6ba6vt",
+    "name": "jack of spades"
+  },
+  {
+    "rank": 3,
+    "type": "pip",
+    "value": "5",
+    "suit": "diamond",
+    "suitId": 0,
+    "modelId": "ck4v12sl0pavw1wptebla",
+    "name": "5 of diamonds"
+  },
+  {
+    "rank": 8,
+    "type": "pip",
+    "value": "10",
+    "suit": "diamond",
+    "suitId": 0,
+    "modelId": "c141vo9a4cejwllt46bv",
+    "name": "10 of diamonds"
+  },
+  {
+    "rank": 6,
+    "type": "pip",
+    "value": "8",
+    "suit": "heart",
+    "suitId": 1,
+    "modelId": "cesv92wiuvvceald1kn",
+    "name": "8 of hearts"
+  },
+  {
+    "rank": 4,
+    "type": "pip",
+    "value": "6",
+    "suit": "heart",
+    "suitId": 1,
+    "modelId": "ccaslfl5l1vfi8ewoovk",
+    "name": "6 of hearts"
+  },
+  {
+    "rank": 7,
+    "type": "pip",
+    "value": "9",
+    "suit": "diamond",
+    "suitId": 0,
+    "modelId": "cavleaswmv7jomzsezx1",
+    "name": "9 of diamonds"
+  },
+  {
+    "rank": 1,
+    "type": "pip",
+    "value": "3",
+    "suit": "club",
+    "suitId": 2,
+    "modelId": "cv83ecvfbar5e1kw29l",
+    "name": "3 of clubs"
+  },
+  {
+    "rank": 6,
+    "type": "pip",
+    "value": "8",
+    "suit": "spade",
+    "suitId": 3,
+    "modelId": "c1lsyizhxnaeqw1ijevv",
+    "name": "8 of spades"
+  },
+  {
+    "rank": 1,
+    "type": "pip",
+    "value": "3",
+    "suit": "heart",
+    "suitId": 1,
+    "modelId": "ckve2ja1vh6rvoywwl",
+    "name": "3 of hearts"
+  },
+  {
+    "rank": 6,
+    "type": "pip",
+    "value": "8",
+    "suit": "club",
+    "suitId": 2,
+    "modelId": "c2va5kgmlvsb18wwv06e",
+    "name": "8 of clubs"
+  },
+  {
+    "rank": 8,
+    "type": "pip",
+    "value": "10",
+    "suit": "club",
+    "suitId": 2,
+    "modelId": "ceekppqa1uy4yltwvvi",
+    "name": "10 of clubs"
+  },
+  {
+    "rank": 4,
+    "type": "pip",
+    "value": "6",
+    "suit": "diamond",
+    "suitId": 0,
+    "modelId": "cxvlzaiedsvw5v21nzt",
+    "name": "6 of diamonds"
+  },
+  {
+    "rank": 10,
+    "type": "face",
+    "value": "queen",
+    "suit": "club",
+    "suitId": 2,
+    "modelId": "cvauul1nw0431tnvewmx",
+    "name": "queen of clubs"
+  },
+  {
+    "rank": 0,
+    "type": "pip",
+    "value": "2",
+    "suit": "heart",
+    "suitId": 1,
+    "modelId": "crlwegvvojapmfj1if6",
+    "name": "2 of hearts"
+  },
+  {
+    "rank": 3,
+    "type": "pip",
+    "value": "5",
+    "suit": "spade",
+    "suitId": 3,
+    "modelId": "crscfa1hjfkevelwsiv",
+    "name": "5 of spades"
+  },
+  {
+    "rank": 11,
+    "type": "face",
+    "value": "king",
+    "suit": "club",
+    "suitId": 2,
+    "modelId": "cyxtaawgfa1xvvlezti5",
+    "name": "king of clubs"
+  },
+  {
+    "rank": 7,
+    "type": "pip",
+    "value": "9",
+    "suit": "club",
+    "suitId": 2,
+    "modelId": "cwliu4v1ada1tdvo1ute",
+    "name": "9 of clubs"
+  },
+  {
+    "rank": 10,
+    "type": "face",
+    "value": "queen",
+    "suit": "spade",
+    "suitId": 3,
+    "modelId": "cbxg74v01tlwgaeyvxg",
+    "name": "queen of spades"
+  },
+  {
+    "rank": 12,
+    "type": "pip",
+    "value": "ace",
+    "suit": "diamond",
+    "suitId": 0,
+    "modelId": "cqld16bhu2fvotuaewwv",
+    "name": "ace of diamonds"
+  },
+  {
+    "rank": 2,
+    "type": "pip",
+    "value": "4",
+    "suit": "club",
+    "suitId": 2,
+    "modelId": "c4clvas414owtlu1aepv",
+    "name": "4 of clubs"
+  },
+  {
+    "rank": 4,
+    "type": "pip",
+    "value": "6",
+    "suit": "spade",
+    "suitId": 3,
+    "modelId": "cjwii8hesvaxvl211ora",
+    "name": "6 of spades"
+  },
+  {
+    "rank": 10,
+    "type": "face",
+    "value": "queen",
+    "suit": "heart",
+    "suitId": 1,
+    "modelId": "cvll51ppvzt5ebawen52",
+    "name": "queen of hearts"
+  },
+  {
+    "rank": 5,
+    "type": "pip",
+    "value": "7",
+    "suit": "spade",
+    "suitId": 3,
+    "modelId": "ctvkplwv64eaxb1sw6kq",
+    "name": "7 of spades"
+  },
+  {
+    "rank": 12,
+    "type": "pip",
+    "value": "ace",
+    "suit": "spade",
+    "suitId": 3,
+    "modelId": "cretlwevvsr1tajoala",
+    "name": "ace of spades"
+  },
+  {
+    "rank": 0,
+    "type": "pip",
+    "value": "2",
+    "suit": "diamond",
+    "suitId": 0,
+    "modelId": "clreb4vwmabr217wve",
+    "name": "2 of diamonds"
+  },
+  {
+    "rank": 2,
+    "type": "pip",
+    "value": "4",
+    "suit": "spade",
+    "suitId": 3,
+    "modelId": "c4aae16wvseqwsnqlmv",
+    "name": "4 of spades"
+  },
+  {
+    "rank": 11,
+    "type": "face",
+    "value": "king",
+    "suit": "spade",
+    "suitId": 3,
+    "modelId": "car1wpl27vl2tfavoea",
+    "name": "king of spades"
+  },
+  {
+    "rank": 12,
+    "type": "pip",
+    "value": "ace",
+    "suit": "heart",
+    "suitId": 1,
+    "modelId": "cgu35ovvekbtlawshlm1",
+    "name": "ace of hearts"
+  },
+  {
+    "rank": 9,
+    "type": "face",
+    "value": "jack",
+    "suit": "diamond",
+    "suitId": 0,
+    "modelId": "c8ztncewrlemw1vaxtyv",
+    "name": "jack of diamonds"
+  },
+  {
+    "rank": 3,
+    "type": "pip",
+    "value": "5",
+    "suit": "club",
+    "suitId": 2,
+    "modelId": "cwawuloiivdp1vesad86",
+    "name": "5 of clubs"
+  },
+  {
+    "rank": 11,
+    "type": "face",
+    "value": "king",
+    "suit": "heart",
+    "suitId": 1,
+    "modelId": "ctw1oevwv7f9fa6l0p44",
+    "name": "king of hearts"
+  },
+  {
+    "rank": 6,
+    "type": "pip",
+    "value": "8",
+    "suit": "diamond",
+    "suitId": 0,
+    "modelId": "cebisv0kv1aenl5re93w",
+    "name": "8 of diamonds"
+  },
+  {
+    "rank": 5,
+    "type": "pip",
+    "value": "7",
+    "suit": "club",
+    "suitId": 2,
+    "modelId": "cpzavaolhvs6gadlec1w",
+    "name": "7 of clubs"
+  },
+  {
+    "rank": 8,
+    "type": "pip",
+    "value": "10",
+    "suit": "spade",
+    "suitId": 3,
+    "modelId": "cdr1arztwefjvlj5vht",
+    "name": "10 of spades"
+  },
+  {
+    "rank": 3,
+    "type": "pip",
+    "value": "5",
+    "suit": "heart",
+    "suitId": 1,
+    "modelId": "cf1wv56a05vdlvcqesto",
+    "name": "5 of hearts"
+  },
+  {
+    "rank": 8,
+    "type": "pip",
+    "value": "10",
+    "suit": "heart",
+    "suitId": 1,
+    "modelId": "c1e6a3wvvesskv10j7tli",
+    "name": "10 of hearts"
+  },
+  {
+    "rank": 1,
+    "type": "pip",
+    "value": "3",
+    "suit": "diamond",
+    "suitId": 0,
+    "modelId": "clc0lc4wl1a53vre70b4v",
+    "name": "3 of diamonds"
+  },
+  {
+    "rank": 0,
+    "type": "pip",
+    "value": "2",
+    "suit": "spade",
+    "suitId": 3,
+    "modelId": "cvxvhy1jl6r4f6a9w1el",
+    "name": "2 of spades"
+  }
+]
