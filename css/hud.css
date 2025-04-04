@@ -1,0 +1,71 @@
+:root {
+  --dark-bg1: #1A1B22;
+  --dark-bg2: #26282B;
+  --gridline: #5F6671;
+  --transparentlight: #BBBDC965;
+}
+
+
+.hud-face {
+  /* filter: contrast(100%); */
+  fill: transparent;
+  stroke: transparent;
+  /* stroke: #0D4862D6; */
+}
+
+.hud-face.button-container {
+  /* fill: #5959E199; */
+  stroke: #212F3BCF;
+  /* fill: #3519C157; */
+}
+
+.hud-button .hud-face {
+  fill: #DADCE3E8;
+  stroke: #2829296B;
+}
+
+.hud-button .hud-face:active {
+  fill: #8A919D;
+  stroke: #28292999;
+}
+
+
+
+
+.hud-button-icon {
+  fill: #FFFFFF75;
+  stroke: #F7F7F7;
+}
+
+
+.hud-button .button-face {
+  fill: #382B2B00;
+  stroke: #2829296B;
+}
+
+.hud-button .button-face:active {
+  fill: #1B5DCF00;
+  stroke: #28292999;
+}
+
+.hud-button[data-active=true] .hud-button-icon {
+  fill: #FCFCFC;
+  stroke: #1CAEAE99;
+  /* filter: invert(100%); */
+
+}
+
+.station {
+  /* fill: #444FBE; */
+  stroke: #BFBFBF;
+  stroke-width: 0.0005;
+}
+.station[data-selected=true]  {
+  /* fill: #444FBE; */
+  stroke: #FFFFFF;
+  stroke-width: 0.0008;
+}
+
+#blueline-path {
+  z-index: 100;
+}
