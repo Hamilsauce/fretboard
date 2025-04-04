@@ -1,76 +1,33 @@
-import { newDeck } from './model/deck.model.js';
-
-const app = document.querySelector('#app');
-const appBody = document.querySelector('#app-body')
-const containers = document.querySelectorAll('.container')
-const cards = document.querySelectorAll('.card')
-
-export class DeckView {
-  constructor() {
-    this.self = document.createElement('div');
-    this.self.classList.add('deck');
-
-  }
+import { run } from './ScaleGeneraror.js';
+import { PitchClassSets, NoteData } from './data/index.js';
 
 
+const autoClicker = (el, interval = 750) => {
+  const clearIntervalId = setInterval(() => {
+    el.dispatchEvent(new Event('click'))
+  }, interval)
+  
+  return clearIntervalId
+};
 
-  render(cards) {
-    this.self.innerHTML = ''
+const updateAppContent = (content) => {
+  const container = document.querySelector('#app .container')
+  container.textContent = content;
+};
 
-    cards.forEach((x, i) => {
-      this.self.append(this.createCard(x))
-    });
-    return this.self
-  }
-  createCard(model) {
-    const card = document.createElement('div');
-    card.classList.add('card');
-    card.textContent = `${model.name}`
-    // const card = document.createElement('div');
-    return card;
-  }
+let noteGen = await run('E', 'major')
+let val = noteGen.next()
+let stopClickId = null;
+const app = document.querySelector('#app')
 
+app.addEventListener('click', e => {
+  val = noteGen.next()
+  updateAppContent(val.value)
+  
+  if (!stopClickId) stopClickId = autoClicker(app)
+});
 
-
-  get cards() { return this.self.querySelectorAll('.card') };
-  set prop(newValue) { this._prop = newValue };
-}
-
-// const box1 = document.querySelector('#b1')
-// const box2 = document.querySelector('#b2')
-
-// const d1 = utils.shuffle(newDeck());
-const deck = newDeck();
-const deckView = new DeckView();
-appBody.innerHTML = '';
-appBody.append(deckView.render(deck))
-// console.log('d1', d1)
-
-
-const state = {
-  removedElement: null,
-}
-
-// boxes.forEach((b, i) => {
-//   b.addEventListener('click', e => {
-//     e.stopPropagation()
-//     if (state.removedElement !== null) return;
-//     state.removedElement = b.parentElement.removeChild(b)
-//   });
-// });
-
-;[...app.children].forEach((c, i) => {
-  c.addEventListener('click', e => {
-    e.stopPropagation()
-    if (+c.style.opacity == 1) {
-      c.style.opacity = 0
-
-    } else {
-      c.style.opacity = 1
-
-    }
-    if (state.removedElement === null) return;
-    c.appendChild(state.removedElement)
-    state.removedElement = null
-  });
+app.addEventListener('dblclick', e => {
+  clearInterval(stopClickId)
+  stopClickId = null;
 });

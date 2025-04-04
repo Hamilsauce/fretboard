@@ -8,68 +8,34 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
-  <title>OVERLAY</title>
+  <title>app</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/7.3.0/rxjs.umd.min.js" integrity="sha512-y3JTS47nnpKORJX8Jn1Rlm+QgRIIZHtu3hWxal0e81avPrqUH48yk+aCi+gprT0RMAcpYa0WCkapxe+bpBHD6g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <link rel="stylesheet" href="./style.css" />
 </head>
 
 <body>
-
-  <div class="gradient" id="app-shell">
+  <div id="app">
     <header id="app-header">
-      <div id="app-header-left"></div>
+      <div id="app-header-left">L</div>
       <div id="app-header-center">
-        <h1>POKER</h1>
+        <h1>Title</h1>
       </div>
-      <div id="app-header-right"></div>
+      <div id="app-header-right">R</div>
     </header>
-    <div class="gradient" id="app">
-      <section id="app-body">
-        <div data-component="table"></div>
-        <div id="stats"></div>
-        <div id="drawn-card"></div>
-      </section>
-    </div>
+    <section id="app-body">
+      <div class="container">
+        Body
+      </div>
+    </section>
     <footer id="app-footer">
-      <div id="controls" class="container">
-        <button id="draw-button" class="app-button">Draw 5</button>
+      <div class="container">
+        footer
       </div>
     </footer>
   </div>
-  <script src="./poker-gen-test.js" type="module"></script>
-  <!-- <script src="./poker.js" type="module"></script> -->
-  <!-- <script src="./array-manip.js" type="module"></script> -->
-  <!-- <script src="./grid2.js" type="module"></script> -->
-  <!-- <script src="./maze-scratch.js" type="module"></script> -->
-  <!-- <script src="./bfs-grid-ex1.js" type="module"></script> -->
-  <template id="table-template">
-    <div id="table" data-is-component-template="true"></div>
-  </template>
-.card-left.left 
-.card-column.center 
-.card-center-content 
-.card-column.right 
-  <template id="card-template">
-    <div class="card" data-suit="" data-value="">
-      <div class="card-column left">
-        <div class="card-left-top"></div>
-        <div class="card-left-bottom"></div>
-      </div>
-      <div class="card-column center">
-        <div class="card-center-content"></div>
-      </div>
-      <div class="card-column right">
-        <div class="card-right-top"></div>
-        <div class="card-right-bottom"></div>
-      </div>
-    </div>
-  </template>
-
-  <template id="maze-template">
-    <div class="maze">
-      <div class="cells"></div>
-    </div>
-  </template>
+  <!-- <script src="./ScaleGeneraror.js" type="module"></script> -->
+  <script src="./script.js" type="module"></script>
+  <!-- <script src="./utils.js" type="module"></script> -->
 </body>
 
 </html>
