@@ -15,6 +15,7 @@ export const PitchClassSets = {
   bebopMinor: [0, 2, 3, 4, 5, 7, 9, 10],
   bebopDiminished: [0, 2, 4, 5, 7, 9, 10, 11],
   diminished: [0, 2, 3, 5, 6, 8, 9, 11],
+  augmented: [0, 3, 4, 7, 8, 11],
   diminishedSeventh: [0, 3, 6, 9],
   blues: [0, 3, 5, 6, 7, 10],
   wholeTone: [0, 2, 4, 6, 8, 10],

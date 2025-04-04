@@ -1,68 +1,73 @@
-// import { noteData } from './data/note-data-fetch.js';
-// window.location = 'https://github.com/Hamilsauce/guitar-tab/raw/refs/heads/main/data/note-data.json'
-const noteDataURL = 'https://raw.githubusercontent.com/Hamilsauce/guitar-tab/refs/heads/main/data/note-data.json'
+import { PitchClassSets, NoteData } from './data/index.js';
 
-const getNotes = async() => {
-  const { notes } = await (await fetch(noteDataURL)).json();
-  return notes
-    .filter((x, i) => i <= 11)
-    .map(({ note }, i) => note);
-}
+const toPitchClassNames = (notesArray = []) => notesArray
+  .filter((x, i) => i <= 11)
+  .map(({ note }, i) => note);
 
-const toPitchClassNames =  (notesArray = []) => {
-  return notesArray
-    .filter((x, i) => i <= 11)
-    .map(({ note }, i) => note);
-}
-
-
-const getIndexOfNote = (notes, note = 'C') => {
-  return notes.indexOf(note)
+const moduleState = {
+  scaleMap: new Map(Object.entries(PitchClassSets)),
+  noteMap: new Map(
+    NoteData.map(({ name, ...note }) => [name, note])
+  ),
+  
+  pitchClassNames: toPitchClassNames(NoteData),
+  
+  orderPitchesFromNote(name) {
+    const index = this.pitchClassNames.indexOf(name)
+    
+    const reorder1 = this.pitchClassNames
+      .slice(index)
+      .concat(this.pitchClassNames.slice(0, index))
+    
+    return reorder1
+  },
+  
+  getScale(name) {
+    return this.scaleMap.get(name)
+  },
+  
+  getNote(name) {
+    return this.noteMap.get(name)
+  },
 };
 
-function* generator(notes, initialNote = 'C', octave = 0) {
-  let getNoteIndex = (note = 'C') => getIndexOfNote(notes, note)
-  let note = initialNote
-  let steps = 1
+const setUpScaleWalker = (orderedPitches) => {
+  return (degreeInteger = 0) => orderedPitches[degreeInteger]
+}
+
+function* generator(scale = [], orderedPitches = [], octave = 0) {
+  const getScaleDegree = setUpScaleWalker(orderedPitches)
   
-  let currentIndex = getNoteIndex(note)
+  let index = -1;
+  let currentDegree = scale[index]
+  let yieldReturn
   let currentOctave = octave;
-  let msg = `${note}${octave}`
   
-  while (currentIndex > -1) {
-    steps = +(yield msg) && +(yield msg) < 12 ? +(yield msg) : 1
-    currentIndex = getNoteIndex(note) + steps
+  let note = getScaleDegree(currentDegree);
+  let msg = `${note}${octave}`;
+  
+  while (true) {
+    yieldReturn = +(yield msg) && +(yield msg) < scale.length ? +(yield msg) : 1;
     
-    if (currentIndex >= 12) {
-      currentOctave++
-      currentIndex = currentIndex - 12
+    if (index >= scale.length) {
+      currentOctave++;
+      index = 0
     }
-    console.warn('note', note)
     
-    note = notes[currentIndex]
-    
-    msg = `${note}${currentOctave}`
+    currentDegree = scale[index]
+    index++;
+    note = getScaleDegree(currentDegree);
+    msg = `${note}${currentOctave}`;
   }
 }
 
-
-
-
-const startGenerator = (notes, note = 'C') => {
-  return generator(notes, note);
+export const run = (rootName = 'C', scaleName = 'major') => {
+  const scale = moduleState.getScale(scaleName);
+  const orderedPitches = moduleState.orderPitchesFromNote(rootName)
+  
+  return generator(scale, orderedPitches);
 };
 
-export const run = (notes) => {
-  return startGenerator(toPitchClassNames(notes));
+export const setScale = (name = 'major') => {
+  moduleState.scaleName = name;
 };
-
-// run()
-
-
-// const gen = generator();
-
-// console.log(gen.next().value);
-// Expected output: 10
-
-// console.log(gen.next().value);
-// console.log(gen.next().value);

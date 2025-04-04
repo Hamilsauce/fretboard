@@ -1,15 +1,8 @@
-import noteResponse from './data/note-data-fetch.js';
 import { run } from './ScaleGeneraror.js';
+import { PitchClassSets, NoteData } from './data/index.js';
 
-let noteGen = await run(noteResponse.notes)
-let val = noteGen.next()
-const app = document.querySelector('#app')
-// const app = document.querySelector('#app')
 
-const autoClicker = (
-  el = document.querySelector('#app'),
-  interval = 750
-) => {
+const autoClicker = (el, interval = 750) => {
   const clearIntervalId = setInterval(() => {
     el.dispatchEvent(new Event('click'))
   }, interval)
@@ -17,25 +10,24 @@ const autoClicker = (
   return clearIntervalId
 };
 
-
 const updateAppContent = (content) => {
   const container = document.querySelector('#app .container')
   container.textContent = content;
 };
 
+let noteGen = await run('E', 'major')
+let val = noteGen.next()
 let stopClickId = null;
+const app = document.querySelector('#app')
 
 app.addEventListener('click', e => {
   val = noteGen.next()
   updateAppContent(val.value)
   
-  if (!stopClickId) {
-    stopClickId = autoClicker(app)
-  }
+  if (!stopClickId) stopClickId = autoClicker(app)
 });
 
 app.addEventListener('dblclick', e => {
   clearInterval(stopClickId)
   stopClickId = null;
-  
 });
