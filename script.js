@@ -1,4 +1,4 @@
-import { run } from './ScaleGeneraror.js';
+import { run } from './ScaleGenerator.js';
 import { PitchClassSets, NoteData } from './data/index.js';
 
 

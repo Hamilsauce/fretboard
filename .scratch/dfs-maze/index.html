@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700;900&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <title>Shortest Path</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/7.3.0/rxjs.umd.min.js" integrity="sha512-y3JTS47nnpKORJX8Jn1Rlm+QgRIIZHtu3hWxal0e81avPrqUH48yk+aCi+gprT0RMAcpYa0WCkapxe+bpBHD6g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <link rel="stylesheet" href="./css/main.css" />
+  <link rel="stylesheet" href="./css/app.css" />
+  <link rel="stylesheet" href="./css/tile.css" />
+  <link rel="stylesheet" href="./css/actor.css" />
+</head>
+
+<body>
+  <div id="app">
+    <header id="app-header">
+      <div id="app-header-left"></div>
+      <div id="app-header-center">
+        <h1>Shortest Path</h1>
+      </div>
+      <div id="app-header-right"></div>
+    </header>
+    <section id="app-body">
+      <svg id="canvas" style="background:#2B35A5;" width="412" height="681" viewBox="-0 -0 9 15" preserveAspectRatio="xMidYMin meet" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <g data-template="actor" id="" class="actor" transform="translate(1,1) rotate(0) scale(1)">
+            <circle cx="0" cy="0" r="0.4" transform="translate(0,0) rotate(0) scale(1)" />
+          </g>
+        </defs>
+        <g id="scene" transform="translate(0,0) rotate(0) scale(1)">
+          <g id="surface-layer" transform="translate(-0,-0) rotate(0) scale(1)">
+            <rect id="surface" x="0" y="0" rx="0" ry="0" width="10" height="15" fill="pink"></rect>
+          </g>
+
+          <g id="tile-layer" transform="translate(-0,-0) rotate(0) scale(1)"></g>
+
+          <g id="object-layer" transform="translate(0.5,0.5) rotate(0) scale(1)"></g>
+        </g>
+      </svg>
+    </section>
+
+    <footer id="app-footer">
+      <div class="container">
+        <label for="map-input">Pick Map</label>
+        <select name="map-input" id="map-input">
+          <option value="MAP_9X15_1">MAP_9X15_1</option>
+          <option value="BLANK_MAP_9X15_1">BLANK_MAP_9X15_1</option>
+        </select>
+      </div>
+    </footer>
+  </div>
+  <script type="text/javascript" charset="utf-8">
+    const SVG_NS = 'http://www.w3.org/2000/svg';
+  </script>
+  <script src="./script.js" type="module"></script>
+</body>
+
+</html>
