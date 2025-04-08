@@ -11,6 +11,7 @@
   <title>app</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/7.3.0/rxjs.umd.min.js" integrity="sha512-y3JTS47nnpKORJX8Jn1Rlm+QgRIIZHtu3hWxal0e81avPrqUH48yk+aCi+gprT0RMAcpYa0WCkapxe+bpBHD6g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <link rel="stylesheet" href="./style.css" />
+  <script async type="text/javascript" src="https://www.scales-chords.com/api/scales-chords-api.js"></script>
 </head>
 
 <body>
@@ -19,13 +20,14 @@
       <div id="app-header-left">L</div>
       <div id="app-header-center">
         <h1>Title</h1>
+        <ins class="scales_chords_api" chord="D#m(maj9)" instrument="piano" output="sound"></ins>
       </div>
       <div id="app-header-right">R</div>
     </header>
     <section id="app-body">
-      <div class="container">
+      <pre class="container">
         Body
-      </div>
+      </pre>
     </section>
     <footer id="app-footer">
       <div class="container">

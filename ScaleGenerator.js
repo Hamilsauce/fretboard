@@ -12,8 +12,8 @@ const moduleState = {
   
   pitchClassNames: toPitchClassNames(NoteData),
   
-  orderPitchesFromNote(name) {
-    const index = this.pitchClassNames.indexOf(name)
+  orderPitchesFromNote(pitch) {
+    const index = this.pitchClassNames.indexOf(pitch)
     
     const reorder1 = this.pitchClassNames
       .slice(index)
@@ -26,48 +26,37 @@ const moduleState = {
     return this.scaleMap.get(name)
   },
   
-  getNote(name) {
-    return this.noteMap.get(name)
+  getNote(pitch) {
+    return this.noteMap.get(pitch)
   },
 };
 
-const setUpScaleWalker = (orderedPitches) => {
-  return (degreeInteger = 0) => orderedPitches[degreeInteger]
-}
+const badChars = '",{,} ';
 
-function* generator(scale = [], orderedPitches = [], octave = 0) {
-  const getScaleDegree = setUpScaleWalker(orderedPitches)
+function* generator(rootName, scaleName = 'major', orderedPitches = [], octave = 0) {
+  const baseNote = moduleState.noteMap.get(rootName);
+  const scale = moduleState.getScale(scaleName);
+  const baseIndex = baseNote.id;
   
-  let index = -1;
+  let yieldReturn;
+  let index = baseIndex;
   let currentDegree = scale[index]
-  let yieldReturn
-  let currentOctave = octave;
+  let note = baseNote;
   
-  let note = getScaleDegree(currentDegree);
-  let msg = `${note}${octave}`;
+  let msg = [...JSON.stringify(note, null, 2)].reduce((acc, curr, i) => badChars.includes(curr) ? acc : acc.concat(curr), '')
   
   while (true) {
-    yieldReturn = +(yield msg) && +(yield msg) < scale.length ? +(yield msg) : 1;
+    yieldReturn = yield msg
     
-    if (index >= scale.length) {
-      currentOctave++;
-      index = 0
-    }
-    
+    index = index >= scale.length ? 0 : index + 1
     currentDegree = scale[index]
-    index++;
-    note = getScaleDegree(currentDegree);
-    msg = `${note}${currentOctave}`;
+    
+    note = NoteData[baseIndex + currentDegree]
+    
+    msg = [...JSON.stringify(note, null, 2)].reduce((acc, curr, i) => badChars.includes(curr) ? acc : acc.concat(curr), '')
   }
 }
 
-export const run = (rootName = 'C', scaleName = 'major') => {
-  const scale = moduleState.getScale(scaleName);
-  const orderedPitches = moduleState.orderPitchesFromNote(rootName)
-  
-  return generator(scale, orderedPitches);
-};
-
-export const setScale = (name = 'major') => {
-  moduleState.scaleName = name;
+export const run = (rootName = 'E2', scaleName = 'chromatic') => {
+  return generator(rootName, scaleName) //, orderedPitches);
 };
