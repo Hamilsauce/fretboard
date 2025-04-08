@@ -33,30 +33,31 @@ const moduleState = {
 
 const badChars = '",{,} ';
 
-function* generator(rootName, scaleName = 'major', orderedPitches = [], octave = 0) {
+async function* generator(rootName, scaleName = 'major', orderedPitches = [], octave = 0) {
   const baseNote = moduleState.noteMap.get(rootName);
   const scale = moduleState.getScale(scaleName);
   const baseIndex = baseNote.id;
   
-  let yieldReturn;
+  let shouldStringify = false;
   let index = baseIndex;
   let currentDegree = scale[index]
   let note = baseNote;
   
-  let msg = [...JSON.stringify(note, null, 2)].reduce((acc, curr, i) => badChars.includes(curr) ? acc : acc.concat(curr), '')
+  let msg = shouldStringify ? [...JSON.stringify(note, null, 2)].reduce((acc, curr, i) => badChars.includes(curr) ? acc : acc.concat(curr), '') : note
   
   while (true) {
-    yieldReturn = yield msg
     
+    shouldStringify = !!(yield msg)
     index = index >= scale.length ? 0 : index + 1
-    currentDegree = scale[index]
+    
+    currentDegree = scale[index] ?? 12
     
     note = NoteData[baseIndex + currentDegree]
     
-    msg = [...JSON.stringify(note, null, 2)].reduce((acc, curr, i) => badChars.includes(curr) ? acc : acc.concat(curr), '')
+    msg = shouldStringify ? [...JSON.stringify(note, null, 2)].reduce((acc, curr, i) => badChars.includes(curr) ? acc : acc.concat(curr), '') : note
   }
 }
 
 export const run = (rootName = 'E2', scaleName = 'chromatic') => {
-  return generator(rootName, scaleName) //, orderedPitches);
+  return generator(rootName, scaleName)
 };
