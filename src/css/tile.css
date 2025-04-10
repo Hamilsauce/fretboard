@@ -5,6 +5,22 @@
   /* filter: invert(1); */
   }
 
+.tile circle {
+  fill: #E6A622E0;
+  stroke: #EAEAEA;
+  stroke-width: 0.025px;
+  /* filter: invert(1); */
+  display: none;
+  }
+
+.tile[data-active=true] circle {
+  /* fill: #D07728; */
+  display: initial;
+}
+
+
+
+
 
 .tile text {
   fill: var(--tiletext-dark);

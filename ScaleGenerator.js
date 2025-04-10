@@ -1,13 +1,15 @@
 import { PitchClassSets, NoteData } from './data/index.js';
 
+console.log('NoteData', JSON.stringify(NoteData[0], null, 2))
+
 const toPitchClassNames = (notesArray = []) => notesArray
   .filter((x, i) => i <= 11)
-  .map(({ note }, i) => note);
+  .map(({ pitchClass }, i) => pitchClass);
 
 const moduleState = {
   scaleMap: new Map(Object.entries(PitchClassSets)),
   noteMap: new Map(
-    NoteData.map(({ name, ...note }) => [name, note])
+    NoteData.map((note) => [note.pitch, note])
   ),
   
   pitchClassNames: toPitchClassNames(NoteData),
@@ -31,9 +33,10 @@ const moduleState = {
   },
 };
 
+
 const badChars = '",{,} ';
 
-async function* generator(rootName, scaleName = 'major', orderedPitches = [], octave = 0) {
+function* generator(rootName, scaleName = 'major', orderedPitches = [], octave = 0) {
   const baseNote = moduleState.noteMap.get(rootName);
   const scale = moduleState.getScale(scaleName);
   const baseIndex = baseNote.id;
@@ -41,12 +44,12 @@ async function* generator(rootName, scaleName = 'major', orderedPitches = [], oc
   let shouldStringify = false;
   let index = baseIndex;
   let currentDegree = scale[index]
-  let note = baseNote;
+  let note = baseNote //  NoteData[baseIndex + currentDegree];
   
   let msg = shouldStringify ? [...JSON.stringify(note, null, 2)].reduce((acc, curr, i) => badChars.includes(curr) ? acc : acc.concat(curr), '') : note
   
   while (true) {
-    
+  // console.log('Scale Note: ', note.json())  
     shouldStringify = !!(yield msg)
     index = index >= scale.length ? 0 : index + 1
     

@@ -4,11 +4,63 @@ import { setupStrings } from '/string-view.js'
 
 const standardTuning = ['E2', 'A2', 'D3', 'G3', 'B3', 'E4']
 
-const stringsNoteGenerators = standardTuning
-  .map((baseNote, i) => run(baseNote, 'chromatic'));
+const stuningMap = new Map(
+  standardTuning.map((note, i) => [note, note])
+);
+
+const stringsNoteGenerators = standardTuning.map((baseNote, i) => run(baseNote, 'chromatic'));
+// console.warn('stringsNoteGenerators', stringsNoteGenerators)
+
+const emptyMatrix = new Array(6).fill([])
+  .map(
+    (noteArray, i) => new Array(13)
+    .fill(null)
+    .map(() => stringsNoteGenerators[i].next().value))
+
+console.log('emptyMatrix[5][0]', emptyMatrix[5][0])
+// const printedMatrix = emptyMatrix.reduceRight((acc, stringArr, i) => {
+//     const stringString = stringArr
+//       .reduce((acc, note, k) => acc.concat(`\n${i} ${k}`), '')
+//     return [...acc, stringString] //.concat(stringString)
+//   }, []);
+
+// console.warn('printedMatrix', printedMatrix)
+
+
+
+// emptyMatrix.forEach(async (currString, i) => {
+//   const generator = stringsNoteGenerators[i]
+
+//   for (let k = 0; k < currString.length; k++) {
+//     // let currNote = currString[k];
+//     let { value, done } = await generator.next()
+//     currString[k] = value
+//   }
+
+// });
+
+setTimeout(() => {
+  // console.warn('fart', emptyMatrix)
+  
+  console.log(' ', );
+}, 1000)
+
+
 
 const autoClicker = (el, interval = 500) => {
+  const mapIterator = stuningMap.entries()
+  let itValue
+  
   const clearIntervalId = setInterval(() => {
+    const { value, done } = mapIterator.next()
+    
+    
+    if (!done) {
+      const [key, val] = value;
+      
+      // console.warn('itValue', key, val)
+    }
+    
     el.dispatchEvent(new Event('click'))
   }, interval)
   

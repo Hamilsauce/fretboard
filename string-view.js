@@ -15,19 +15,22 @@ export const setupStrings = (tuning = standardTuning) => {
       let result
       const { value, done } = await generator.next()
       
-      if (value && value.name === baseNote) {
+      if (value && value.pitch === baseNote) {
         el.classList.add('base-note')
       } else if (
         value &&
-        value.name !== baseNote &&
+        value.pitch !== baseNote &&
         el.classList.contains('base-note')
       ) {
         el.classList.remove('base-note')
       }
       
-      el.textContent = (value.name || '').split('/')[0]
+      el.textContent = (value.pitch || '').split('/')[0]
     }
   });
   
   return stringsNoteGenerators
 }
+
+
+  

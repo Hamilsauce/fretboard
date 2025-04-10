@@ -121,7 +121,7 @@ console.warn({
 });
 
 const mapInput$ = fromEvent(mapInput, 'change')
-const pointerDown$ = fromEvent(canvas, 'click')
+// const pointerDown$ = fromEvent(canvas, 'click')
 
 let mapChangeCnt = 0
 
@@ -194,11 +194,16 @@ let isMoving = false;
 const goalTile = tileLayer.querySelector('[data-tile-type="goal"]');
 
 
+
+
+
+
 canvas.addEventListener('click', ({ detail }) => {
   if (isMoving) return;
   
   const tile = detail.target.closest('.tile');
-  
+  targetNodeEl.dataset.active = false;
+
   const pathNodes = canvas.querySelectorAll('.tile[data-is-path-node="true"]');
   
   pathNodes.forEach((el, i) => { el.dataset.isPathNode = false });
@@ -297,3 +302,16 @@ canvas.addEventListener('click', ({ detail }) => {
     targetNodeEl.dataset.current = true;
   }
 });
+
+
+
+
+canvasEl.addEventListener('click', (e) => {
+  // if (isMoving) return;
+  
+  const tile = e.target.closest('.tile');
+  
+  
+  const isActive = tile.dataset.active === 'true' ? true : false;
+  targetNodeEl.dataset.active = !isActive;
+})

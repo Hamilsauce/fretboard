@@ -14,15 +14,18 @@ const noteSteps = { "C": 0, "C#": 1, "D": 2, "D#": 3, "E": 4, "F": 5, "F#": 6, "
 const noteStepMap = new Map(Object.entries(noteSteps))
 console.log('note step map', noteStepMap.get('C#'));
 // keys = steps, vals = names  
-const stepNoteMap = new Map(Object
-  .entries(noteSteps)
-  .reduce((acc, [key, value]) => {
-    return [...acc, [value, key]];
-  }, []));
+
+const stepNoteMap = new Map(
+  Object.entries(noteSteps).reduce(
+    (acc, [key, value]) => {
+      return [...acc, [value, key]];
+    }, [])
+);
 
 const GetNote = (stringNote, fretNum) => {
   let baseNote = noteStepMap.get(stringNote);
   let fretNoteNum = (baseNote + fretNum) % 12;
+  
   return stepNoteMap.get(fretNoteNum) // >>> GetNote("E", 0)
 }
 

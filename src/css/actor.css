@@ -6,8 +6,6 @@
   fill: #3BAFC1;
   stroke: #000000;
   stroke-width: 0.05px;
-  
-  
 }
 
 .actor[data-moving=true]>* {
