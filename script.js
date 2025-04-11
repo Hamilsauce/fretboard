@@ -11,13 +11,13 @@ const stuningMap = new Map(
 const stringsNoteGenerators = standardTuning.map((baseNote, i) => run(baseNote, 'chromatic'));
 // console.warn('stringsNoteGenerators', stringsNoteGenerators)
 
-const emptyMatrix = new Array(6).fill([])
-  .map(
-    (noteArray, i) => new Array(13)
+const emptyMatrix = new Array(6)
+  .fill([])
+  .map((noteArray, i) => new Array(13)
     .fill(null)
-    .map(() => stringsNoteGenerators[i].next().value))
+    .map(() => stringsNoteGenerators[i].next().value)
+  );
 
-console.log('emptyMatrix[5][0]', emptyMatrix[5][0])
 // const printedMatrix = emptyMatrix.reduceRight((acc, stringArr, i) => {
 //     const stringString = stringArr
 //       .reduce((acc, note, k) => acc.concat(`\n${i} ${k}`), '')
@@ -28,19 +28,7 @@ console.log('emptyMatrix[5][0]', emptyMatrix[5][0])
 
 
 
-// emptyMatrix.forEach(async (currString, i) => {
-//   const generator = stringsNoteGenerators[i]
-
-//   for (let k = 0; k < currString.length; k++) {
-//     // let currNote = currString[k];
-//     let { value, done } = await generator.next()
-//     currString[k] = value
-//   }
-
-// });
-
 setTimeout(() => {
-  // console.warn('fart', emptyMatrix)
   
   console.log(' ', );
 }, 1000)
@@ -54,11 +42,8 @@ const autoClicker = (el, interval = 500) => {
   const clearIntervalId = setInterval(() => {
     const { value, done } = mapIterator.next()
     
-    
     if (!done) {
       const [key, val] = value;
-      
-      // console.warn('itValue', key, val)
     }
     
     el.dispatchEvent(new Event('click'))
@@ -73,6 +58,7 @@ const updateAppContent = (content) => {
 };
 
 let stopClickId = null;
+
 const app = document.querySelector('#app')
 const stringGens = setupStrings()
 

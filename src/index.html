@@ -32,7 +32,7 @@
           <pattern id="smallGrid" width="1" height="1" patternUnits="userSpaceOnUse">
             <rect class="draggabl" id="largeGridRect" width="25" height="25" fill="#61492D" />
             <path id="smallGridPath" d="M 1 0 H 0 V 0" fill="#none" stroke="#2F1B03" stroke-width="0.15" />
-            <path id="smallGridPath" d="M 0 0 H 0 V 1" fill="#none" stroke="#E7E7E7" stroke-width="0.15" />
+            <path id="smallGridPath" d="M 0 0 H 0 V 1" fill="#none" transform="translate(0.5,0)" stroke="#E7E7E7" stroke-width="0.08" />
           </pattern>
           <pattern id="largeGrid" width="25" height="25" patternUnits="userSpaceOnUse">
             <rect class="draggabl" id="largeGridRect" width="25" height="25" fill="url(#smallGrid)" />
@@ -47,7 +47,7 @@
             <circle cx="0" cy="0" r="0.4" transform="translate(0,0) rotate(0) scale(1)" />
           </g>
           
-          <g data-template="tile" data-fret="0" id="" class="tile" transform="translate(0,0) rotate(0) scale(1)">
+          <g data-template="tile" data-fret="0" id="" class="tile" transform="translate(0.5,0.5) rotate(0) scale(1)">
             <rect x="0" y="0" width="1" height="1" transform="translate(0,0) rotate(0) scale(1)" />
           </g>
           
@@ -62,17 +62,28 @@
             <rect id="surface" x="0" y="0" rx="0" ry="0" width="6" height="13" fill="url(#smallGrid)"></rect>
           </g>
           
-          <g id="string-layer" transform="translate(-0,-0) rotate(0) scale(1)">
-            <g id="string-6" class="string-container" data-base-note="E2" transform="translate(0.0,0.0) rotate(0) scale(1)">
+          <g id="string-layer" transform="translate(0,1) rotate(0) scale(1)">
             
-              <g data-template="tile" id="" class="tile" transform="translate(0,1) rotate(0) scale(1)">
+            <g id="string-6" class="string-container" data-base-note="E2" transform="translate(0.0,0.0) rotate(0) scale(1)">
+              
+              <g data-template="tile" id="" class="tile" transform="translate(0,0) rotate(0) scale(1)">
+                <rect x="0" y="0" width="1" height="1" transform="translate(0,0) rotate(0) scale(1)" />
+                <circle class="note-marker" cx="0.0" cy="0.0" r="0.5" transform="translate(0.5,0.5) rotate(0) scale(0.9)" />
+              </g>
+            </g>
+        
+            <g id="string-5" class="string-container" data-base-note="A2" transform="translate(1.0,0.0) rotate(0) scale(1)">
+              
+              <g data-template="tile" id="" class="tile" transform="translate(0,0) rotate(0) scale(1)">
                 <rect x="0" y="0" width="1" height="1" transform="translate(0,0) rotate(0) scale(1)" />
                 <circle class="note-marker" cx="0.0" cy="0.0" r="0.5" transform="translate(0.5,0.5) rotate(0) scale(0.9)" />
                 
               </g>
-            
             </g>
-            <g id="string-5" class="string-container" data-base-note="A2" transform="translate(1.0,0.0) rotate(0) scale(1)"></g>
+            
+            <g id="string-5" class="string-container" data-base-note="A2" transform="translate(1.0,0.0) rotate(0) scale(1)">
+              
+            </g>
             <g id="string-4" class="string-container" data-base-note="D3" transform="translate(2.0,0.0) rotate(0) scale(1)"></g>
             <g id="string-3" class="string-container" data-base-note="G3" transform="translate(3.0,0.0) rotate(0) scale(1)"></g>
             <g id="string-2" class="string-container" data-base-note="B3" transform="translate(4.0,0.0) rotate(0) scale(1)"></g>

@@ -42,14 +42,13 @@ function* generator(rootName, scaleName = 'major', orderedPitches = [], octave =
   const baseIndex = baseNote.id;
   
   let shouldStringify = false;
-  let index = baseIndex;
+  let index = 0;
   let currentDegree = scale[index]
-  let note = baseNote //  NoteData[baseIndex + currentDegree];
+  let note =  NoteData[baseIndex + currentDegree];
   
   let msg = shouldStringify ? [...JSON.stringify(note, null, 2)].reduce((acc, curr, i) => badChars.includes(curr) ? acc : acc.concat(curr), '') : note
   
   while (true) {
-  // console.log('Scale Note: ', note.json())  
     shouldStringify = !!(yield msg)
     index = index >= scale.length ? 0 : index + 1
     

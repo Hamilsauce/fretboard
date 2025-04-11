@@ -159,7 +159,7 @@ mapInput$.pipe(
     console.log('tileLayer', tileLayer.children.length)
 
   }),
-).subscribe()
+).subscribe();
 
 pointerDown$.pipe(
   tap(x => console.warn('CANVAS pointerDown$', x)),

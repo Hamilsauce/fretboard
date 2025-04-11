@@ -1,9 +1,9 @@
 .tile rect {
   fill: #65AF9D7D;
   stroke: #61492D;
-  stroke-width: 0.0px;
+  stroke-width: 0.01px;
   /* filter: invert(1); */
-  }
+}
 
 .tile circle {
   fill: #E6A622E0;
@@ -11,7 +11,7 @@
   stroke-width: 0.025px;
   /* filter: invert(1); */
   display: none;
-  }
+}
 
 .tile[data-active=true] circle {
   /* fill: #D07728; */
