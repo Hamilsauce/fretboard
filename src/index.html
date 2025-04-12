@@ -31,8 +31,8 @@
         <defs>
           <pattern id="smallGrid" width="1" height="1" patternUnits="userSpaceOnUse">
             <rect class="draggabl" id="largeGridRect" width="25" height="25" fill="#61492D" />
-            <path id="smallGridPath" d="M 1 0 H 0 V 0" fill="#none" stroke="#2F1B03" stroke-width="0.15" />
-            <path id="smallGridPath" d="M 0 0 H 0 V 1" fill="#none" transform="translate(0.5,0)" stroke="#E7E7E7" stroke-width="0.08" />
+            <path id="grid-frets" d="M 1 0 H 0 V 0" fill="#none" stroke="#2F1B0390" stroke-width="0.15" />
+            <path id="grid-strings" d="M 0 0 H 0 V 1" fill="#none" transform="translate(0.5,0)" stroke="#E7E7E7" stroke-width="0.08" />
           </pattern>
           <pattern id="largeGrid" width="25" height="25" patternUnits="userSpaceOnUse">
             <rect class="draggabl" id="largeGridRect" width="25" height="25" fill="url(#smallGrid)" />
@@ -47,43 +47,64 @@
             <circle cx="0" cy="0" r="0.4" transform="translate(0,0) rotate(0) scale(1)" />
           </g>
           
-          <g data-template="tile" data-fret="0" id="" class="tile" transform="translate(0.5,0.5) rotate(0) scale(1)">
+          <!-- <g data-template="tile" data-fret="0" id="" class="tile" transform="translate(0.5,0.5) rotate(0) scale(1)">
             <rect x="0" y="0" width="1" height="1" transform="translate(0,0) rotate(0) scale(1)" />
+          </g> -->
+          
+          <g data-template="tile" id="" class="tile" transform="translate(0,0) rotate(0) scale(1)">
+            <rect x="0" y="0" width="1" height="1" transform="translate(0,0) rotate(0) scale(1)" />
+            
+            <g id="" class="note-marker" transform="translate(0.5,0.5) rotate(0) scale(1)">
+              <circle cx="0" cy="0" r="0.5" transform="translate(0,0) rotate(0) scale(1)" />
+              <text x="0" y="0" text-anchor="middle" dominant-baseline="middle" transform="translate(0,0)">E</text>
+            </g>
           </g>
           
-          <g data-template="note-marker" id="" class="note-marker" transform="translate(0,0) rotate(0) scale(1)">
+          <!-- <g data-template="note-marker" id="" class="note-marker" transform="translate(0,0) rotate(0) scale(1)">
             <circle cx="0" cy="0" r="0.5" transform="translate(0,0) rotate(0) scale(1)" />
-          </g>
+                
+            <text width="1" text-anchor="middle" transform="translate(0.5,0.6)" style="font-size: 0.01 75rem;">0,0</text>
+          </g> -->
           
         </defs>
         
         <g id="scene" transform="translate(0,0) rotate(0) scale(1)">
-          <g id="surface-layer" transform="translate(-0, 1) rotate(0) scale(1)">
-            <rect id="surface" x="0" y="0" rx="0" ry="0" width="6" height="13" fill="url(#smallGrid)"></rect>
+          <g id="surface-layer" transform="translate(-0, 0) rotate(0) scale(1)">
+            <g id="nut" transform="translate(-0,-0) rotate(0) scale(1)">
+              <rect id="nut-top" x="0" y="0" rx="0" ry="0" width="6" height="0.8"></rect>
+              <rect id="nut-bottom" x="0" y="0" rx="0" ry="0" width="6" height="0.2" transform="translate(-0,0.8) rotate(0) scale(1)"></rect>
+            </g>
+      
+            <rect id="surface" x="0" y="0" rx="0" ry="0" width="6" height="13" fill="url(#smallGrid)" transform="translate(0, 1)"></rect>
+            
+            <g id="fret-markers" transform="translate(3,3.5) rotate(0) scale(1)">
+              <circle class="fret-marker" cx="0.0" cy="0.0" r="0.2" transform="translate(0,0) rotate(0) scale(1)" />
+              <circle class="fret-marker" cx="0.0" cy="0.0" r="0.2" transform="translate(0,2) rotate(0) scale(1)" />
+              <circle class="fret-marker" cx="0.0" cy="0.0" r="0.2" transform="translate(0,4) rotate(0) scale(1)" />
+              <circle class="fret-marker" cx="0.0" cy="0.0" r="0.2" transform="translate(0,6) rotate(0) scale(1)" />
+              <g transform="translate(0,9) rotate(0) scale(1)">
+                <circle class="fret-marker" r="0.2" transform="translate(-1,0) rotate(0) scale(1)" />
+                <circle class="fret-marker" r="0.2" transform="translate(1,0) rotate(0) scale(1)" />
+              </g>
+            </g>
           </g>
           
-          <g id="string-layer" transform="translate(0,1) rotate(0) scale(1)">
+  
+          <g id="string-layer" transform="translate(0,0) rotate(0) scale(1)">
             
             <g id="string-6" class="string-container" data-base-note="E2" transform="translate(0.0,0.0) rotate(0) scale(1)">
               
               <g data-template="tile" id="" class="tile" transform="translate(0,0) rotate(0) scale(1)">
                 <rect x="0" y="0" width="1" height="1" transform="translate(0,0) rotate(0) scale(1)" />
-                <circle class="note-marker" cx="0.0" cy="0.0" r="0.5" transform="translate(0.5,0.5) rotate(0) scale(0.9)" />
-              </g>
-            </g>
-        
-            <g id="string-5" class="string-container" data-base-note="A2" transform="translate(1.0,0.0) rotate(0) scale(1)">
-              
-              <g data-template="tile" id="" class="tile" transform="translate(0,0) rotate(0) scale(1)">
-                <rect x="0" y="0" width="1" height="1" transform="translate(0,0) rotate(0) scale(1)" />
-                <circle class="note-marker" cx="0.0" cy="0.0" r="0.5" transform="translate(0.5,0.5) rotate(0) scale(0.9)" />
-                
+     
+                <g data-template="note-marker" id="" class="note-marker" transform="translate(0.5,0.5) rotate(0) scale(1)">
+                  <circle cx="0" cy="0" r="0.5" transform="translate(0,0) rotate(0) scale(1)" />
+                  <text x="0" y="0" text-anchor="middle" dominant-baseline="middle" transform="translate(0,0)">E</text>
+                </g>
               </g>
             </g>
             
-            <g id="string-5" class="string-container" data-base-note="A2" transform="translate(1.0,0.0) rotate(0) scale(1)">
-              
-            </g>
+            <g id="string-5" class="string-container" data-base-note="A2" transform="translate(1.0,0.0) rotate(0) scale(1)"></g>
             <g id="string-4" class="string-container" data-base-note="D3" transform="translate(2.0,0.0) rotate(0) scale(1)"></g>
             <g id="string-3" class="string-container" data-base-note="G3" transform="translate(3.0,0.0) rotate(0) scale(1)"></g>
             <g id="string-2" class="string-container" data-base-note="B3" transform="translate(4.0,0.0) rotate(0) scale(1)"></g>

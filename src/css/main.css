@@ -20,3 +20,30 @@ body {
   width: 100%;
   height: 100%;
 }
+
+
+#nut-top {
+  fill: #FFFFFF00;
+}
+
+#nut-bottom {
+  fill: #4A3327;
+}
+/* #fret-marker {
+  fill: #4A3327;
+} */
+
+#smallGrid #grid-frets{
+  filter: drop-shadow(0 0 0.4px #D0C56799);
+
+}
+#smallGrid #grid-strings{
+  filter: drop-shadow(0 0 0.095px #00000090);
+
+}
+
+g[id*="fret-marker"] circle {
+  fill: #DEDEDEB5;
+  stroke: #221C1590;
+  stroke-width: 0.025;
+}

@@ -1,30 +1,27 @@
 .tile rect {
-  fill: #65AF9D7D;
+  fill: #FF00BA;
   stroke: #61492D;
   stroke-width: 0.01px;
   /* filter: invert(1); */
 }
 
-.tile circle {
+.note-marker circle {
   fill: #E6A622E0;
   stroke: #EAEAEA;
   stroke-width: 0.025px;
-  /* filter: invert(1); */
+}
+
+.tile[data-active=true] .note-marker {
+  display: initial;
+}
+.tile[data-active=false] .note-marker {
   display: none;
 }
 
-.tile[data-active=true] circle {
-  /* fill: #D07728; */
-  display: initial;
-}
-
-
-
-
-
-.tile text {
-  fill: var(--tiletext-dark);
-  /* filter: opacity(0.5); */
+.note-marker text {
+  fill: #FFFFFF;
+  stroke-width: 0.025px;
+  font-size: 0.5px;
   font-weight: 600;
 }
 

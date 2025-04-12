@@ -190,7 +190,7 @@ graph.nodes.forEach(({ x, y, tileType }, rowNumber) => {
 
 let isMoving = false;
 
-
+console.log(tileLayer.children.item(0).innerHTML)
 const goalTile = tileLayer.querySelector('[data-tile-type="goal"]');
 
 
