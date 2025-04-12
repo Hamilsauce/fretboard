@@ -33,10 +33,27 @@ const moduleState = {
   },
 };
 
+const sleep = async (time = 500) => {
+  
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve("Success!"); // Yay! Everything went well!
+    }, time);
+  });
+  
+};
+
+const myFirstPromise = new Promise((resolve, reject) => {
+  // We call resolve(...) when what we were doing asynchronously
+  // was successful, and reject(...) when it failed.
+  setTimeout(() => {
+    resolve("Success!"); // Yay! Everything went well!
+  }, 250);
+});
 
 const badChars = '",{,} ';
 
-function* generator(rootName, scaleName = 'major', orderedPitches = [], octave = 0) {
+async function* generator(rootName, scaleName = 'major', orderedPitches = [], octave = 0) {
   const baseNote = moduleState.noteMap.get(rootName);
   const scale = moduleState.getScale(scaleName);
   const baseIndex = baseNote.id;
@@ -44,12 +61,15 @@ function* generator(rootName, scaleName = 'major', orderedPitches = [], octave =
   let shouldStringify = false;
   let index = 0;
   let currentDegree = scale[index]
-  let note =  NoteData[baseIndex + currentDegree];
+  let note = NoteData[baseIndex + currentDegree];
   
   let msg = shouldStringify ? [...JSON.stringify(note, null, 2)].reduce((acc, curr, i) => badChars.includes(curr) ? acc : acc.concat(curr), '') : note
   
   while (true) {
+    await sleep()
+    console.log('BEFORE YIELD')
     shouldStringify = !!(yield msg)
+    console.log('AFTER YIELD')
     index = index >= scale.length ? 0 : index + 1
     
     currentDegree = scale[index] ?? 12

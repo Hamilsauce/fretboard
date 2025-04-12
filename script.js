@@ -62,15 +62,22 @@ let stopClickId = null;
 const app = document.querySelector('#app')
 const stringGens = setupStrings()
 
-app.addEventListener('click', e => {
-  stringGens.reduce(async (acc, updateStringNote, i) => {
-    
-    const res = (await acc)
-    
-    return updateStringNote()
-  }, async () => null);
+const lowEStringGen = stringGens[0]
+
+app.addEventListener('click', async (e) => {
   
-  if (!stopClickId) stopClickId = autoClicker(app)
+  // stringGens.reduce(async (acc, updateStringNote, i) => {
+    
+    // const res = lowEStringGen()
+    const result =  lowEStringGen()
+console.warn('result', result)
+const { value, done } = await result
+console.warn('value', value)
+
+  //   return updateStringNote()
+  // }, async () => null);
+  
+  // if (!stopClickId) stopClickId = autoClicker(app)
 });
 
 app.addEventListener('dblclick', e => {

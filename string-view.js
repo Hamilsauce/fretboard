@@ -26,11 +26,11 @@ export const setupStrings = (tuning = standardTuning) => {
       }
       
       el.textContent = (value.pitch || '').split('/')[0]
+    
+      return { value, done }
     }
+    
   });
   
   return stringsNoteGenerators
 }
-
-
-  
