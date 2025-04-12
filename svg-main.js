@@ -52,6 +52,8 @@ const insertComponent = (context, name, options) => {
   return template;
 };
 
+
+
 const svg = document.createElementNS(SVG_NS, 'svg')
 
 const application = new Application();

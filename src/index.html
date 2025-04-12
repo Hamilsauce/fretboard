@@ -43,30 +43,30 @@
             <path class="draggabl" id="largeGridPath" d="M 20 0 H 0 V 20" fill="none" stroke="lightgrey" stroke-width="2" />
           </pattern>
           
-          <g data-template="actor" id="" class="actor" transform="translate(1,1) rotate(0) scale(1)">
-            <circle cx="0" cy="0" r="0.4" transform="translate(0,0) rotate(0) scale(1)" />
-          </g>
           
-          <!-- <g data-template="tile" data-fret="0" id="" class="tile" transform="translate(0.5,0.5) rotate(0) scale(1)">
-            <rect x="0" y="0" width="1" height="1" transform="translate(0,0) rotate(0) scale(1)" />
-          </g> -->
-          
-          <g data-template="tile" id="" class="tile" transform="translate(0,0) rotate(0) scale(1)">
-            <rect x="0" y="0" width="1" height="1" transform="translate(0,0) rotate(0) scale(1)" />
-            
-            <g id="" class="note-marker" transform="translate(0.5,0.5) rotate(0) scale(1)">
-              <circle cx="0" cy="0" r="0.5" transform="translate(0,0) rotate(0) scale(1)" />
-              <text x="0" y="0" text-anchor="middle" dominant-baseline="middle" transform="translate(0,0)">E</text>
+          <g id="templates">
+            <g data-template="actor" id="" class="actor" transform="translate(1,1) rotate(0) scale(1)">
+              <circle cx="0" cy="0" r="0.4" transform="translate(0,0) rotate(0) scale(1)" />
             </g>
-          </g>
-          
-          <!-- <g data-template="note-marker" id="" class="note-marker" transform="translate(0,0) rotate(0) scale(1)">
+            
+            <g data-template="tile" id="" class="tile" transform="translate(0,0) rotate(0) scale(1)">
+              <rect x="0" y="0" width="1" height="1" transform="translate(0,0) rotate(0) scale(1)" />
+              
+              <g id="" class="note-marker" transform="translate(0.5,0.5) rotate(0) scale(1)">
+                <circle cx="0" cy="0" r="0.5" transform="translate(0,0) rotate(0) scale(1)" />
+                <text x="0" y="0" text-anchor="middle" dominant-baseline="middle" transform="translate(0,0)">E</text>
+              </g>
+            </g>
+            
+            <!-- <g data-template="note-marker" id="" class="note-marker" transform="translate(0,0) rotate(0) scale(1)">
             <circle cx="0" cy="0" r="0.5" transform="translate(0,0) rotate(0) scale(1)" />
                 
             <text width="1" text-anchor="middle" transform="translate(0.5,0.6)" style="font-size: 0.01 75rem;">0,0</text>
           </g> -->
-          
+            
+          </g>
         </defs>
+        
         
         <g id="scene" transform="translate(0,0) rotate(0) scale(1)">
           <g id="surface-layer" transform="translate(-0, 0) rotate(0) scale(1)">
@@ -74,7 +74,7 @@
               <rect id="nut-top" x="0" y="0" rx="0" ry="0" width="6" height="0.8"></rect>
               <rect id="nut-bottom" x="0" y="0" rx="0" ry="0" width="6" height="0.2" transform="translate(-0,0.8) rotate(0) scale(1)"></rect>
             </g>
-      
+            
             <rect id="surface" x="0" y="0" rx="0" ry="0" width="6" height="13" fill="url(#smallGrid)" transform="translate(0, 1)"></rect>
             
             <g id="fret-markers" transform="translate(3,3.5) rotate(0) scale(1)">
@@ -89,14 +89,14 @@
             </g>
           </g>
           
-  
+          
           <g id="string-layer" transform="translate(0,0) rotate(0) scale(1)">
             
             <g id="string-6" class="string-container" data-base-note="E2" transform="translate(0.0,0.0) rotate(0) scale(1)">
               
               <g data-template="tile" id="" class="tile" transform="translate(0,0) rotate(0) scale(1)">
                 <rect x="0" y="0" width="1" height="1" transform="translate(0,0) rotate(0) scale(1)" />
-     
+                
                 <g data-template="note-marker" id="" class="note-marker" transform="translate(0.5,0.5) rotate(0) scale(1)">
                   <circle cx="0" cy="0" r="0.5" transform="translate(0,0) rotate(0) scale(1)" />
                   <text x="0" y="0" text-anchor="middle" dominant-baseline="middle" transform="translate(0,0)">E</text>
