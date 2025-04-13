@@ -6,9 +6,12 @@
 }
 
 .note-marker circle {
+  /* r: 5; */
   fill: #E6A622E0;
   stroke: #EAEAEA;
   stroke-width: 0.025px;
+  filter: drop-shadow(0 0 0.095px #00000090);
+
 }
 
 .tile[data-active=true] .note-marker {
@@ -20,7 +23,7 @@
 
 .note-marker text {
   fill: #FFFFFF;
-  stroke-width: 0.025px;
+  /* stroke-width: 0.025px; */
   font-size: 0.5px;
   font-weight: 600;
 }

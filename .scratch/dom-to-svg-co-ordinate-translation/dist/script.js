@@ -36,6 +36,15 @@ function getCoordinates(event) {
   
 };
 
+// translate page to SVG co-ordinate
+function svgPoint(element, x, y) {
+  var pt = svg.createSVGPoint();
+  pt.x = x;
+  pt.y = y;
+  return pt.matrixTransform(element.getScreenCTM().inverse());
+}
+
+
 
 // add a circle to the target
 function createCircle(event) {
@@ -63,15 +72,6 @@ function createCircle(event) {
   out.addY.value = cY;
   updateInfo();
   
-}
-
-
-// translate page to SVG co-ordinate
-function svgPoint(element, x, y) {
-  var pt = svg.createSVGPoint();
-  pt.x = x;
-  pt.y = y;
-  return pt.matrixTransform(element.getScreenCTM().inverse());
 }
 
 

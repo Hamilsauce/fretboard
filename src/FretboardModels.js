@@ -35,7 +35,7 @@ export class FretModel extends Model {
 }
 
 /* Note on string */
-export class NoteModel {
+export class NoteModel extends Model {
   constructor(noteData = NoteDataType) {
     super('note', noteData);
   }
@@ -51,11 +51,34 @@ export class NoteModel {
 }
 
 /* List of notes */
-export class StringModel {
+export class StringModel extends Model {
+  #noteMap = new Map();
+  #baseNotePitch;
+  #activeNotePitch;
+  
   constructor(noteArray = []) {
+    super('string', noteData);
     
+    noteData.forEach(({ pitch, ...note }, i) => {
+      if (i === 0) {
+        this.#baseNotePitch = pitch;
+      }
+      
+      this.#noteMap.set(pitch, note);
+    });
   }
   
+  playNoteAt(position = 1) {
+    this.#activeNotePitch = this.value[position].pitch
+  }
+  
+  get activeNote() {
+    return this.#noteMap.get(this.#activeNotePitch)
+  }
+  
+  get notePitches() {
+    return [...this.#noteMap.keys()]
+  }
   
 }
 
