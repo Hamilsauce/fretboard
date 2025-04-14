@@ -34,9 +34,15 @@ console.log('noteMarkerCircle!', noteMarkerCircle.getAttribute('height'))
 init()
 
 window.addEventListener('resize', (e) => {
-canvasEl.style.height = getComputedStyle(canvasEl.parentElement).height
+  canvasEl.style.height = getComputedStyle(canvasEl.parentElement).height
   
 });
+document.addEventListener('dblclick', (e) => {
+  e.stopImmediatePropagation()
+  e.stopPropagation()
+  e.preventDefault()
+  
+}, { passive: false });
 
 stringLayer.addEventListener('click', (e) => {
   // if (isMoving) return;
