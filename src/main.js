@@ -14,6 +14,7 @@ const circleBB = noteMarkerCircle.getBoundingClientRect()
 const circleRect = noteMarkerCircle.getBBox()
 const surfaceRect = surface.getBBox()
 const radius = noteMarkerCircle.r.baseVal.value
+canvasEl.style.height = getComputedStyle(canvasEl.parentElement).height
 // noteMarkerCircle.setAttribute('r', 10)
 // noteMarkerCircle.style.r = '0.5'
 /*
@@ -31,6 +32,11 @@ console.log('noteMarkerCircle!', noteMarkerCircle.getAttribute('height'))
 // )
 
 init()
+
+window.addEventListener('resize', (e) => {
+canvasEl.style.height = getComputedStyle(canvasEl.parentElement).height
+  
+});
 
 stringLayer.addEventListener('click', (e) => {
   // if (isMoving) return;
