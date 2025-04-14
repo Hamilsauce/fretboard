@@ -37,28 +37,27 @@ window.addEventListener('resize', (e) => {
   canvasEl.style.height = getComputedStyle(canvasEl.parentElement).height
   
 });
-document.addEventListener('dblclick', (e) => {
-  e.stopImmediatePropagation()
-  e.stopPropagation()
-  e.preventDefault()
-  
-}, { passive: false });
 
-stringLayer.addEventListener('click', (e) => {
-  // if (isMoving) return;
-  // const coords = getCoordinates(e)
+// document.addEventListener('dblclick', (e) => {
+//   e.stopImmediatePropagation()
+//   e.stopPropagation()
+//   e.preventDefault()
   
-  // console.log('coords!', coords)
-  const tile = e.target.closest('.tile');
+// }, { passive: false });
+
+// stringLayer.addEventListener('click', (e) => {
+//   const tile = e.target.closest('.tile');
   
-  if (!tile) return;
-  const string = e.target.closest('.string-container');
+//   if (!tile) return;
   
-  const prevActive = [...string.children].find((tile) => tile.dataset.active === 'true')
-  if (prevActive && prevActive !== tile) {
-    prevActive.dataset.active = false;
-  }
+//   const string = e.target.closest('.string-container');
   
-  const isActive = tile.dataset.active === 'true' ? true : false;
-  tile.dataset.active = !isActive;
-});
+//   const prevActive = [...string.children].find((tile) => tile.dataset.active === 'true')
+
+//   if (prevActive && prevActive !== tile) {
+//     prevActive.dataset.active = false;
+//   }
+  
+//   const isActive = tile.dataset.active === 'true' ? true : false;
+//   tile.dataset.active = !isActive;
+// });

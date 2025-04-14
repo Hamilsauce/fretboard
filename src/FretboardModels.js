@@ -60,7 +60,7 @@ export class StringModel extends Model {
     super('strings', noteArray.map((note, i) => {
       return new NoteModel(note)
     }));
-  
+    
     this.#baseNote = this.notes[0];
   }
   
@@ -84,6 +84,11 @@ export class StringModel extends Model {
     return null;
   }
   
+  getNoteByPitch(pitchName = 'E2') {
+    const res = this.notes.find((note) => note.pitch === pitchName)
+    
+    return res
+  }
   // get activeNote() {
   //   return this.#noteMap.get(this.#activeNotePitch)
   // }
@@ -117,11 +122,11 @@ export class FretboardModel extends Model {
   }
   
   getStringByBase(pitchName = 'E2') {
-    
     const res = this.strings.find((string) => string.baseNote.pitch === pitchName)
-
+    
     return res
   }
+  
 }
 
 

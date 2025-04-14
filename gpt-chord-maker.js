@@ -25,9 +25,9 @@ function generateChord(rootNote, chordType) {
     'minor7': [0, 3, 7, 10],
     'dominant7': [0, 4, 7, 10]
   };
-
+  
   const rootFrequency = noteFrequency[rootNote];
-
+  
   // Generate the chord by adding the intervals to the root note's frequency
   const chord = intervals[chordType]
     .map(interval => rootFrequency * Math.pow(2, interval / 12));
@@ -44,27 +44,32 @@ console.log(`Chord: ${chord}`);
 
 // ```javascript
 // Create an audio context
-const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+const audioContext = new(window.AudioContext || window.webkitAudioContext)();
 
 // Create an OscillatorNode
 const oscillator = audioContext.createOscillator();
+const gain = audioContext.createGain();
+gain.gain.value = 0.1
 oscillator.type = 'triangle'; // Set oscillator type to triangle wave
-oscillator.frequency.setValueAtTime(440, audioContext.currentTime); // Set frequency to 440 Hz
+oscillator.frequency.setValueAtTime(200, audioContext.currentTime); // Set frequency to 440 Hz
+oscillator.frequency.exponentialRampToValueAtTime(440, audioContext.currentTime + 0.5); // Set frequency to 440 Hz
 
 // Connect the oscillator to the audio output (speaker)
-oscillator.connect(audioContext.destination);
+oscillator.connect(gain);
+gain.connect(audioContext.destination);
 
 // Start the oscillator
 oscillator.start();
 
 // Stop the oscillator after some time (e.g., 1 second)
 setTimeout(() => {
-    oscillator.stop();
-}, 1000);
+  oscillator.stop();
+}, 10000);
 // ```
 
 // This code creates an audio context, creates an oscillator node with a triangle waveform, sets its frequency to 440 Hz, connects it to the audio output (speakers), starts the oscillator, and stops it after 1 second. This will generate a triangle wave oscillation at 440 Hz. Adjust the `setTimeout` duration to control how long the sound plays.
-
+const setman = new Set()
+setman
 
 // E7
 // E7
@@ -80,5 +85,3 @@ setTimeout(() => {
 // G
 // A7
 // A7
-
-
