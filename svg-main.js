@@ -21,6 +21,7 @@ const createObjectTemplate = (context, type) => {
 const getSVGTemplate = (context, type, options) => {
   const template = context
     .querySelector('#templates')
+  
     .querySelector(`[data-component="${type}"]`)
     .cloneNode(true);
 

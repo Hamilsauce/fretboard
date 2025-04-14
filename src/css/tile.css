@@ -1,32 +1,42 @@
 .tile rect {
-  fill: #FF00BA;
-  stroke: #61492D;
-  stroke-width: 0.01px;
+  fill: transparent;
+  /* stroke: #612D2D; */
+  /* stroke-width: 0.01px; */
   /* filter: invert(1); */
+  /* display: none; */
+  /* background: radial-gradient(#e66465, #9198e5); */
 }
 
 .note-marker circle {
   /* r: 5; */
-  fill: #E6A622E0;
+  fill: #DFAA3D;
   stroke: #EAEAEA;
   stroke-width: 0.025px;
   filter: drop-shadow(0 0 0.095px #00000090);
-
+  
 }
 
+.tile[data-active=true],
 .tile[data-active=true] .note-marker {
-  display: initial;
+  
+  /* display: initial; */
+  opacity: 1;
 }
+
+.tile[data-active=false],
 .tile[data-active=false] .note-marker {
-  display: none;
+  /* display: none; */
+  opacity: 0;
 }
 
 .note-marker text {
   fill: #FFFFFF;
   /* stroke-width: 0.025px; */
-  font-size: 0.5px;
+  font-size: 0.4px;
   font-weight: 600;
 }
+
+/*
 
 .tile[data-tile-type=barrier] rect {
   fill: #4F5057;
@@ -38,7 +48,6 @@
 
 .tile[data-is-path-node=true] rect {
   fill: #DFFFB382;
-  /* filter: hue-rotate(45deg); */
 }
 
 .tile[data-is-path-node=true] text {
@@ -47,7 +56,6 @@
   font-weight: 900;
   stroke-width: 0.015px;
   
-  /* filter: invert(1); */
 }
 
 
@@ -100,3 +108,4 @@
 .tile[data-tile-type=goal] text {
   fill: var(--tiletext-light);
 }
+*/

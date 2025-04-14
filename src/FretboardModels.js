@@ -53,42 +53,75 @@ export class NoteModel extends Model {
 /* List of notes */
 export class StringModel extends Model {
   #noteMap = new Map();
-  #baseNotePitch;
+  #baseNote;
   #activeNotePitch;
   
   constructor(noteArray = []) {
-    super('string', noteData);
-    
-    noteData.forEach(({ pitch, ...note }, i) => {
-      if (i === 0) {
-        this.#baseNotePitch = pitch;
-      }
-      
-      this.#noteMap.set(pitch, note);
-    });
+    super('strings', noteArray.map((note, i) => {
+      return new NoteModel(note)
+    }));
+  
+    this.#baseNote = this.notes[0];
+  }
+  
+  get baseNote() {
+    return this.notes[0];
+  }
+  
+  get notes() {
+    return this.value;
   }
   
   playNoteAt(position = 1) {
-    this.#activeNotePitch = this.value[position].pitch
+    this.#activeNotePitch = this.value[position]
   }
   
-  get activeNote() {
-    return this.#noteMap.get(this.#activeNotePitch)
+  getNoteAt(position = 1) {
+    if (!!(+position) && position < this.notes.length) {
+      return this.notes[position]
+    }
+    
+    return null;
   }
   
-  get notePitches() {
-    return [...this.#noteMap.keys()]
-  }
+  // get activeNote() {
+  //   return this.#noteMap.get(this.#activeNotePitch)
+  // }
+  
+  // get notePitches() {
+  //   return [...this.#noteMap.keys()]
+  // }
   
 }
 
 /* List of frets */
-export class FretboardModel {
-  constructor(tuning) {
-    
+export class FretboardModel extends Model {
+  // #strings = [];
+  
+  constructor(stringArray = []) {
+    super('fretboard', stringArray
+      // .reverse()
+      .map((noteArray, i) => {
+        return new StringModel(noteArray)
+      }));
   }
   
+  get strings() { return this.value; }
   
+  getStringAt(position = 0) {
+    if (!!(+position) && position < this.strings.length) {
+      return this.strings[position]
+    }
+    
+    return null;
+  }
+  
+  getStringByBase(pitchName = 'E2') {
+    
+    const res = this.strings.find((string) => string.baseNote.pitch === pitchName)
+
+    return res
+  }
 }
 
 

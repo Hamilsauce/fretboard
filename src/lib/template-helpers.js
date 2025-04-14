@@ -4,10 +4,12 @@ export const getPlaceholder = (el, name) => el.querySelector(`[data-component-pl
 export const getSVGTemplate = (context, type, options) => {
   const template = context
     .querySelector('#templates')
-    .querySelector(`[data-component="${type}"]`)
-    .cloneNode(true);
+    .querySelector(`[data-template="${type}"]`)
+    .cloneNode(true)
   
   template.dataset.type = type;
+  template.removeAttribute('data-template');
+  delete template.dataset.template;
   
   return template;
 }
@@ -21,12 +23,6 @@ export const insertComponent = (context, name, options) => {
     
     template = getSVGTemplate(context, name);
   }
-  
-  // else if (context instanceof HTMLElement || context === document) {
-  //   placeholder = getPlaceholder(context, name);
-    
-  //   template = ham.template(name);
-  // }
   
   if (options) Object.assign(template, options);
   

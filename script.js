@@ -11,7 +11,7 @@ const stuningMap = new Map(
 const stringsNoteGenerators = standardTuning.map((baseNote, i) => run(baseNote, 'chromatic'));
 // console.warn('stringsNoteGenerators', stringsNoteGenerators)
 
-const emptyMatrix = new Array(6)
+const stringList = new Array(6)
   .fill([])
   .map((noteArray, i) => new Array(13)
     .fill(null)

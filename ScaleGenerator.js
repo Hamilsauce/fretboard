@@ -53,7 +53,7 @@ const myFirstPromise = new Promise((resolve, reject) => {
 
 const badChars = '",{,} ';
 
-async function* generator(rootName, scaleName = 'major', orderedPitches = [], octave = 0) {
+ function* generator(rootName, scaleName = 'major', orderedPitches = [], octave = 0) {
   const baseNote = moduleState.noteMap.get(rootName);
   const scale = moduleState.getScale(scaleName);
   const baseIndex = baseNote.id;
@@ -66,10 +66,8 @@ async function* generator(rootName, scaleName = 'major', orderedPitches = [], oc
   let msg = shouldStringify ? [...JSON.stringify(note, null, 2)].reduce((acc, curr, i) => badChars.includes(curr) ? acc : acc.concat(curr), '') : note
   
   while (true) {
-    await sleep()
-    console.log('BEFORE YIELD')
+    // await sleep()
     shouldStringify = !!(yield msg)
-    console.log('AFTER YIELD')
     index = index >= scale.length ? 0 : index + 1
     
     currentDegree = scale[index] ?? 12
