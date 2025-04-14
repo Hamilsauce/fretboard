@@ -1,9 +1,9 @@
-import { getCoordinates, svgPoint } from '../src/svg-helpers.js';
+// import { getCoordinates, svgPoint } from '../src/svg-helpers.js';
 // import { FretboardModel } from '../src/FretboardModels.js';
 // import { StandardTuningStrings } from '../src/init-fretboard-data.js';
 import { init } from '../src/fretboard.controller.js';
 
-
+console.log('MAIN')
 const canvasEl = document.querySelector('#canvas');
 const surface = document.querySelector('#surface')
 const stringLayer = document.querySelector('#string-layer')
@@ -34,9 +34,9 @@ init()
 
 stringLayer.addEventListener('click', (e) => {
   // if (isMoving) return;
-  const coords = getCoordinates(e)
+  // const coords = getCoordinates(e)
   
-  console.log('coords!', coords)
+  // console.log('coords!', coords)
   const tile = e.target.closest('.tile');
   
   if (!tile) return;

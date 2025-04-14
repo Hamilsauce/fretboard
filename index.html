@@ -8,45 +8,110 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
-  <title>app</title>
+  <title>Fretboard King</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/7.3.0/rxjs.umd.min.js" integrity="sha512-y3JTS47nnpKORJX8Jn1Rlm+QgRIIZHtu3hWxal0e81avPrqUH48yk+aCi+gprT0RMAcpYa0WCkapxe+bpBHD6g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <link rel="stylesheet" href="./style.css" />
-  <script async type="text/javascript" src="https://www.scales-chords.com/api/scales-chords-api.js"></script>
+  <link rel="stylesheet" href="./src/css/main.css" />
+  <link rel="stylesheet" href="./src/css/app.css" />
+  <link rel="stylesheet" href="./src/css/actor.css" />
+  <link rel="stylesheet" href="./src/css/tile.css" />
+  
 </head>
 
 <body>
   <div id="app">
     <header id="app-header">
-      <div id="app-header-left">L</div>
+      <div id="app-header-left"></div>
       <div id="app-header-center">
-        <h1>Title</h1>
-        <ins class="scales_chords_api" chord="D#m(maj9)" instrument="piano" output="sound"></ins>
+        <h1>Fretboard King</h1>
       </div>
-      <div id="app-header-right">R</div>
+      <div id="app-header-right"></div>
     </header>
     <section id="app-body">
-      <div id="strings">
-        <div class="string" data-base-note="E2"></div>
-        <div class="string" data-base-note="A2"></div>
-        <div class="string" data-base-note="D3"></div>
-        <div class="string" data-base-note="G3"></div>
-        <div class="string" data-base-note="B3"></div>
-        <div class="string" data-base-note="E4"></div>
-      </div>
-      <pre class="container">
-        Body
-      </pre>
+      <svg id="canvas" style="background:#FFFFFF;" width="412" height="681" viewBox="-0 -0 6 13" preserveAspectRatio="xMidYMin meet" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <pattern id="smallGrid" width="1" height="1" patternUnits="userSpaceOnUse">
+            <rect class="draggabl" id="largeGridRect" width="25" height="25" fill="#61492D" />
+            <path id="grid-frets" d="M 1 0 H 0 V 0" fill="#none" stroke="#2F1B0390" stroke-width="0.15" />
+            <path id="grid-strings" d="M 0 0 H 0 V 1" fill="#none" transform="translate(0.5,0)" stroke="#E7E7E7" stroke-width="0.08" />
+          </pattern>
+          
+          <pattern id="fretboard-pattern" width="6" height="13" patternUnits="userSpaceOnUse">
+            <g id="surface-layer" transform="translate(-0, 0) rotate(0) scale(1)">
+              <g id="nut" transform="translate(-0,-0) rotate(0) scale(1)">
+                <rect id="nut-top" x="0" y="0" rx="0" ry="0" width="6" height="0.8"></rect>
+                <rect id="nut-bottom" x="0" y="0" rx="0" ry="0" width="6" height="0.2" transform="translate(-0,0.8) rotate(0) scale(1)"></rect>
+              </g>
+              <rect id="surface" x="0" y="0" rx="0" ry="0" width="6" height="13" fill="url(#smallGrid)" transform="translate(0, 1)"></rect>
+              <g id="fret-markers" transform="translate(3,3.5) rotate(0) scale(1)">
+                <circle class="fret-marker" cx="0.0" cy="0.0" r="0.2" transform="translate(0,0) rotate(0) scale(1)" />
+                <circle class="fret-marker" cx="0.0" cy="0.0" r="0.2" transform="translate(0,2) rotate(0) scale(1)" />
+                <circle class="fret-marker" cx="0.0" cy="0.0" r="0.2" transform="translate(0,4) rotate(0) scale(1)" />
+                <circle class="fret-marker" cx="0.0" cy="0.0" r="0.2" transform="translate(0,6) rotate(0) scale(1)" />
+                <g transform="translate(0,9) rotate(0) scale(1)">
+                  <circle class="fret-marker" r="0.2" transform="translate(-1,0) rotate(0) scale(1)" />
+                  <circle class="fret-marker" r="0.2" transform="translate(1,0) rotate(0) scale(1)" />
+                </g>
+              </g>
+            </g>
+          </pattern>
+          
+          <pattern id="rulerMarkers" width="20" height="20" patternUnits="userSpaceOnUse">
+            <rect class="draggabl" id="largeGridRect" width="32" height="32" fill="white" />
+            <path class="draggabl" id="largeGridPath" d="M 20 0 H 0 V 20" fill="none" stroke="lightgrey" stroke-width="2" />
+          </pattern>
+          
+          <g id="templates">
+            <g data-template="actor" id="" class="actor" transform="translate(1,1) rotate(0) scale(1)">
+              <circle cx="0" cy="0" r="0.4" transform="translate(0,0) rotate(0) scale(1)" />
+            </g>
+            
+            <g data-template="tile" id="" class="tile" transform="translate(0,0) rotate(0) scale(1)">
+              <rect x="0" y="0" width="1" height="1" transform="translate(0,0) rotate(0) scale(1)" />
+              
+              <g id="" class="note-marker" transform="translate(0.5,0.5) rotate(0) scale(0.9)">
+                <circle cx="0" cy="0" r="0.5" transform="translate(0,0) rotate(0) scale(1)" />
+                <text x="0" y="0" text-anchor="middle" dominant-baseline="middle" transform="translate(0,0.03)"></text>
+              </g>
+            </g>
+          </g>
+        </defs>
+        
+        
+        <g id="scene" transform="translate(0,0) rotate(0) scale(1)">
+          <g id="surface-layer" transform="translate(-0, 0) rotate(0) scale(1)">
+            <rect id="surface" x="0" y="0" rx="0" ry="0" width="6" height="13" fill="url(#fretboard-pattern)" transform="translate(0, 0)"></rect>
+          </g>
+          
+          <g id="string-layer" transform="translate(0,0) rotate(0) scale(1)">
+            <g id="string-6" class="string-container" data-base-note="E2" transform="translate(0.0,0.0) rotate(0) scale(1)"></g>
+            <g id="string-5" class="string-container" data-base-note="A2" transform="translate(1.0,0.0) rotate(0) scale(1)"></g>
+            <g id="string-4" class="string-container" data-base-note="D3" transform="translate(2.0,0.0) rotate(0) scale(1)"></g>
+            <g id="string-3" class="string-container" data-base-note="G3" transform="translate(3.0,0.0) rotate(0) scale(1)"></g>
+            <g id="string-2" class="string-container" data-base-note="B3" transform="translate(4.0,0.0) rotate(0) scale(1)"></g>
+            <g id="string-1" class="string-container" data-base-note="E4" transform="translate(5.0,0.0) rotate(0) scale(1)"></g>
+          </g>
+          
+          <g id="object-layer" transform="translate(0.0,0.0) rotate(0) scale(1)"></g>
+        </g>
+      </svg>
     </section>
+    
     <footer id="app-footer">
       <div class="container">
-        footer
+        <label for="map-input">Pick Map</label>
+        <select name="map-input" id="map-input">
+          <option value="FRETBOARD_1">FRETBOARD_1</option>
+          <option value="MAP_9X15_1">MAP_9X15_1</option>
+          <option value="BLANK_MAP_9X15_1">BLANK_MAP_9X15_1</option>
+        </select>
       </div>
     </footer>
   </div>
-  
-  <!-- <script src="./ScaleGenerator.js" type="module"></script> -->
-  <script src="./script.js" type="module"></script>
-  <!-- <script src="./utils.js" type="module"></script> -->
+  <script type="text/javascript" charset="utf-8">
+    const SVG_NS = 'http://www.w3.org/2000/svg';
+  </script>
+  <!-- <script src="./script.js" type="module"></script> -->
+  <script src="./src/main.js" type="module"></script>
 </body>
 
 </html>
