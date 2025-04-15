@@ -49,8 +49,9 @@ const autoClicker = (elIterator, interval = 500, clickTimes = 0) => {
   let el
   
   const clearIntervalId = setInterval( () => {
-    const {value}  =  elIterator.next()
-    el = value
+    const result  =  elIterator.next()
+   
+    el = result.value ?? null
     // console.warn('el', el.dataset.pitch)
     if (el &&  !clickTimes || clickCount < clickTimes) {
       // el.dispatchEvent(new Event('click'))
@@ -109,7 +110,7 @@ app.addEventListener('click', async (e) => {
   //   return updateStringNote()
   // }, async () => null);
   
-  if (!autoClickerId) autoClickerId = autoClicker(app)
+  if (!autoClickerId) autoClickerId = autoClicker(noteTileGenerator)
 });
 
 app.addEventListener('dblclick', e => {
