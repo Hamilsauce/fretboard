@@ -7,13 +7,16 @@
   /* background: radial-gradient(#e66465, #9198e5); */
 }
 
+.note-marker, .note-marker *  {
+  /* r: 5; */
+  transition: 0.2s ease-in;
+}
 .note-marker circle {
   /* r: 5; */
-  fill: #DFAA3D;
+  fill: #DEA329;
   stroke: #EAEAEA;
-  stroke-width: 0.025px;
+  stroke-width: 0.05px;
   filter: drop-shadow(0 0 0.095px #00000090);
-  
 }
 
 .tile[data-active=true],

@@ -1,46 +1,61 @@
 import { StandardTuningStrings } from '../src/init-fretboard-data.js';
 import { FretboardModel } from '../src/FretboardModels.js';
 import { getSVGTemplate } from '../src/lib/template-helpers.js'
+import { getCoordinates, svgPoint } from '../src/lib/svg-helpers.js'
 
 const fretboardModel = new FretboardModel(StandardTuningStrings);
 
 const svgCanvas = document.querySelector('#canvas');
 const stringLayer = svgCanvas.querySelector('#string-layer')
+const appHeaderRight = document.querySelector('#app-header-right')
 
 const stringContainers = [...svgCanvas.querySelectorAll('.string-container')];
 
 const audioCtx = new AudioContext()
 
+const updateHeader = (value) => {
+  appHeaderRight.textContent = value
+};
+
 
 function playPulse(pulseHz = 440) {
- let time = audioCtx.currentTime
-
+  let time = audioCtx.currentTime
+  
   const osc = new OscillatorNode(audioCtx, {
     type: "sine",
-    frequency: 50,
+    frequency: 20,
   });
   
-  osc.frequency.exponentialRampToValueAtTime(pulseHz, time + 0.2)
-
-  const amp = new GainNode(audioCtx, { value: 0.3 });
+  osc.frequency.exponentialRampToValueAtTime(pulseHz, time + 0.15)
+  
+  const amp = new GainNode(audioCtx, { value: 0.01 });
   
   const lfo = new OscillatorNode(audioCtx, {
     type: "square",
-    frequency: 2,
+    frequency: 1,
   });
   
   // lfo.connect(amp.gain);
+  amp.gain.exponentialRampToValueAtTime(0.5, time + 1)
   osc.connect(amp).connect(audioCtx.destination);
+  // osc.frequency.exponentialRampToValueAtTime(1, time + 0.3)
+  
   // lfo.start();
   osc.start();
-
+  
   return (pulseTime = 1) => {
     // time = performance.now();
     time = audioCtx.currentTime
     
+    osc.frequency.cancelAndHoldAtTime(time+0.1)
+    osc.frequency.exponentialRampToValueAtTime(1, time + 0.3)
+    // amp.gain.exponentialRampToValueAtTime(0.25, time + 0.4)
+    // amp.gain.exponentialRampToValueAtTime(0.2, time + 0.9)
+    amp.gain.cancelAndHoldAtTime(time+0.9)
+    // amp.gain.cancelScheduledValues(time+2)
+    
     amp.gain.exponentialRampToValueAtTime(0.01, time + 1)
-    osc.frequency.exponentialRampToValueAtTime(1, time + 0.9)
-    osc.stop(time + 1.1);
+    osc.stop(time +1)
   }
 }
 
@@ -59,6 +74,7 @@ export const init = () => {
       template.dataset.active = false
       template.dataset.fret = y
       template.dataset.pitch = note.pitch
+      template.dataset.pitchClass = note.pitchClass
       
       const textEl = template.querySelector('text')
       const noteText = note.pitch.split('\/')[0]
@@ -68,41 +84,67 @@ export const init = () => {
   });
 }
 
-stringLayer.addEventListener('click', (e) => {
+stringLayer.addEventListener('click', (e = new MouseEvent()) => {
   // playPulse(440)()
   
   const tile = e.target.closest('.tile');
+  const coords = getCoordinates(e)
+  
+  // console.log('coords', coords)
   
   if (!tile) return;
   
   const string = e.target.closest('.string-container');
+  tile.dataset.active = false //!isActive;
   
-  const baseNote = tile.dataset.baseNote
+  const targetPitch = tile.dataset.pitch
+  const targetPitchClass = tile.dataset.pitchClass
   
   const stringNumber = +string.dataset.stringNumber - 1
   
   const prevActive = [...string.children].find((tile) => tile.dataset.active === 'true')
   
-  if (prevActive && prevActive !== tile) {
-    prevActive.dataset.active = false;
-  }
-
+  // if (prevActive && prevActive !== tile) {
+  //   prevActive.dataset.active = false;
+  // }
+  
   const osc = stringOscillators[stringNumber];
   
-  if (osc) {
-    osc();
-    stringOscillators[stringNumber] = null
-  }
   
   const isActive = tile.dataset.active === 'true' ? true : false;
-  tile.dataset.active = !isActive;
   
-  if (tile.dataset.active === 'true') {
-    const baseNote = string.dataset.baseNote
+  
+  stringContainers.forEach((el, i) => {
+    const osc = stringOscillators[i];
+    if (osc) {
+      osc();
+      // stringOscillators[stringNumber] = null
+    }
     
-    const stringModel = fretboardModel.getStringByBase(baseNote)
-    const note = stringModel.getNoteByPitch(tile.dataset.pitch)
+    [...el.children].forEach((child, i) => {
+      // child.dataset.active = false;
+      
+      if (
+        child.dataset.pitchClass === targetPitchClass
+      ) {
+        child.dataset.active = true //!isActive;
+      }
+      else {
+        child.dataset.active = false;
+      }
+      
+    });
     
-    stringOscillators[stringNumber] = playPulse(note.frequency)
-  }
+  });
+  
+  
+  
+  // if (tile.dataset.active === 'true') {
+  const baseNote = string.dataset.baseNote
+  
+  const stringModel = fretboardModel.getStringByBase(baseNote)
+  const note = stringModel.getNoteByPitch(tile.dataset.pitch)
+  
+  stringOscillators[stringNumber] = playPulse(note.frequency)
+  // }
 });

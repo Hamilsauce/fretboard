@@ -18,8 +18,8 @@ export function getCoordinates(event) {
   
   // SVG co-ordinate
   const svgP = svgPoint(svg, out.clientX, out.clientY);
-  out.svgX = svgP.x;
-  out.svgY = svgP.y;
+  out.svgX = Math.floor(svgP.x);
+  out.svgY = Math.floor(svgP.y);
   
   // target co-ordinate
   const svgT = svgPoint(event.target, out.clientX, out.clientY);
