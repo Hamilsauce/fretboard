@@ -12,6 +12,7 @@ let noteTileGenerator;
 let stringTileGenerators;
 let appHeaderLeft = document.querySelector('#app-header-left');
 let startButton = document.querySelector('#start-button');
+let audioButton = document.querySelector('#audio-button');
 
 const dispatchClick = target => {
   const ev = new PointerEvent('click', {
@@ -88,7 +89,6 @@ canvasEl = document.querySelector('#canvas');
 sceneEl = document.querySelector('#scene');
 
 
-
 setTimeout(() => {
   stringEls = sceneEl.querySelectorAll('.string-container');
   lowEString = sceneEl.querySelector('[data-base-note="E2"]');
@@ -108,26 +108,37 @@ setTimeout(() => {
 
 
 
-sceneEl.addEventListener('click', async (e) => {
-  // if (!autoClickerId) autoClickerId = autoClicker(stringTileGenerators);
-  audioCtx.resume()
+sceneEl.addEventListener('click', (e) => {
+  // audioCtx.resume()
+});
+
+audioButton.addEventListener('click', (e) => {
+  const buttonText = {
+    on: 'Audio: On',
+    off: 'Audio: Off',
+  }
+  
+  const textContent = audioButton.value;
+  
+  if (textContent === buttonText.on) {
+    audioCtx.suspend()
+    audioButton.value = buttonText.off
+  } else {
+    audioButton.value = buttonText.on
+    audioCtx.resume()
+  }
 });
 
 startButton.addEventListener('click', async (e) => {
   startButton.value = startButton.value == 'Stop' ? 'Start' : 'Stop'
   const runningState = startButton.value
   
-  // const parentHeight = +getComputedStyle(canvasEl.parentElement).height.replace(/[^0-9.]/g, '');
-  // const canvasHeight = parentHeight >= 900 ? 900 : parentHeight
-  // canvasEl.style.height = `${(parentHeight)}px`
   setCanvasHeight();
-  
   
   if (runningState === 'Stop' && !autoClickerId) {
     autoClickerId = autoClicker(stringTileGenerators);
     audioCtx.resume()
   }
-  
   else {
     clearInterval(autoClickerId);
     autoClickerId = null;

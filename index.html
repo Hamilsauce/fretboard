@@ -14,20 +14,24 @@
   <link rel="stylesheet" href="./src/css/app.css" />
   <link rel="stylesheet" href="./src/css/actor.css" />
   <link rel="stylesheet" href="./src/css/tile.css" />
-
+  
 </head>
 
 <body>
   <div id="app">
     <header id="app-header">
-      <div id="app-header-left"></div>
+      <div id="app-header-left">
+        <div id="controls">
+          <input type="button" name="audio-button" id="audio-button" value="Audio: On" />
+        </div>
+      </div>
       <div id="app-header-center">
         <h1>Fretboard King</h1>
       </div>
       <div id="app-header-right">
         <div id="controls">
-  <input type="button" name="start-button" id="start-button" value="Start" />
-</div>
+          <input type="button" name="start-button" id="start-button" value="Start" />
+        </div>
       </div>
     </header>
     <section id="app-body">
@@ -116,10 +120,10 @@
   <script type="text/javascript" charset="utf-8">
     const SVG_NS = 'http://www.w3.org/2000/svg';
   </script>
-
+  
   <script src="./src/main.js" type="module"></script>
   <script src="./script.js" type="module"></script>
-
+  
   <!-- <script src="./circlelozop.js" type="module"></script> -->
 </body>
 
