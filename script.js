@@ -12,7 +12,11 @@ let noteTileGenerator;
 let stringTileGenerators;
 let appHeaderLeft = document.querySelector('#app-header-left');
 let startButton = document.querySelector('#start-button');
-let audioButton = document.querySelector('#audio-button');
+let soundButton = document.querySelector('#audio-button');
+
+
+const isSequencerOn = () => startButton.value.includes('On')
+const isSoundOn = () => soundButton.value.includes('On')
 
 const dispatchClick = target => {
   const ev = new PointerEvent('click', {
@@ -109,33 +113,35 @@ setTimeout(() => {
 
 
 sceneEl.addEventListener('click', (e) => {
-  // audioCtx.resume()
+  if (!isSequencerOn() && isSoundOn()) {
+    audioCtx.resume()
+  }
 });
 
-audioButton.addEventListener('click', (e) => {
+soundButton.addEventListener('click', (e) => {
   const buttonText = {
-    on: 'Audio: On',
-    off: 'Audio: Off',
+    on: 'Sound: On',
+    off: 'Sound: Off',
   }
   
-  const textContent = audioButton.value;
+  const textContent = soundButton.value;
   
-  if (textContent === buttonText.on) {
+  if (isSoundOn()) {
     audioCtx.suspend()
-    audioButton.value = buttonText.off
+    soundButton.value = buttonText.off
   } else {
-    audioButton.value = buttonText.on
+    soundButton.value = buttonText.on
     audioCtx.resume()
   }
 });
 
 startButton.addEventListener('click', async (e) => {
-  startButton.value = startButton.value == 'Stop' ? 'Start' : 'Stop'
-  const runningState = startButton.value
+  const runningState = isSequencerOn()
+  startButton.value = runningState ? 'Auto: Off' : 'Auto: On'
   
-  setCanvasHeight();
+  // setCanvasHeight();
   
-  if (runningState === 'Stop' && !autoClickerId) {
+  if (!runningState && !autoClickerId &&  isSoundOn()) {
     autoClickerId = autoClicker(stringTileGenerators);
     audioCtx.resume()
   }
