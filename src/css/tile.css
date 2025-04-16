@@ -39,7 +39,14 @@
   fill: #FFFFFF;
   font-size: 0.4px;
   font-weight: 600;
+  user-select: none;
 }
+
+/* #scene {
+  cursor: pointer;
+  box-shadow: 0 0  10 #000000;
+  filter: drop-shadow(0 0 2px #00000090);
+} */
 
 /*
 
