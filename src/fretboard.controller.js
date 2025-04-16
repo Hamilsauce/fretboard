@@ -38,24 +38,18 @@ function playPulse(pulseHz = 440) {
   // lfo.connect(amp.gain);
   amp.gain.exponentialRampToValueAtTime(0.5, time + 1)
   osc.connect(amp).connect(audioCtx.destination);
-  // osc.frequency.exponentialRampToValueAtTime(1, time + 0.3)
   
   // lfo.start();
   osc.start();
   
   return (pulseTime = 1) => {
-    // time = performance.now();
     time = audioCtx.currentTime
     
-    osc.frequency.cancelAndHoldAtTime(time+0.1)
+    osc.frequency.cancelAndHoldAtTime(time + 0.1)
     osc.frequency.exponentialRampToValueAtTime(1, time + 0.3)
-    // amp.gain.exponentialRampToValueAtTime(0.25, time + 0.4)
-    // amp.gain.exponentialRampToValueAtTime(0.2, time + 0.9)
-    amp.gain.cancelAndHoldAtTime(time+0.9)
-    // amp.gain.cancelScheduledValues(time+2)
-    
+    amp.gain.cancelAndHoldAtTime(time + 0.9)
     amp.gain.exponentialRampToValueAtTime(0.01, time + 1)
-    osc.stop(time +1)
+    osc.stop(time + 1)
   }
 }
 
@@ -75,6 +69,7 @@ export const init = () => {
       template.dataset.fret = y
       template.dataset.pitch = note.pitch
       template.dataset.pitchClass = note.pitchClass
+      template.dataset.frequency = note.frequency
       
       const textEl = template.querySelector('text')
       const noteText = note.pitch.split('\/')[0]

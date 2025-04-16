@@ -1,4 +1,4 @@
-const sleep = async (time = 500) => {
+export const sleep = async (time = 500) => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       resolve("Success!"); // Yay! Everything went well!
@@ -9,29 +9,32 @@ const sleep = async (time = 500) => {
 
 // const badChars = '",{,} ';
 
- function* circleLooper(sourceArray = [], delay = 0) {
+function* circleLooper(sourceArray = [], delay = 0) {
   // const baseIndex = 0;
   let index = 0;
+  let indexOverride
   let currentItem = sourceArray[index]
   
   while (true) {
     if (delay) {
-       sleep(delay)
+      sleep(delay)
     }
     // console.warn('pitchClass, index', currentItem.dataset.pitchClass, index)
-
-    yield currentItem
     
-    index = index < sourceArray.length ? index + 1 : 0
-    // index++
-    // index < sourceArray.length ? index + 1 : 0
-    // console.warn('index', index)
+    indexOverride = yield currentItem
+    
+    if (indexOverride >= 0) {
+      index = indexOverride
+      indexOverride = null
+    } else {
+     index = index < sourceArray.length ? index + 1 : 0
+    }
+    
     currentItem = sourceArray[index]
     
     if (!currentItem) {
-      index =0
-    currentItem = sourceArray[index]
-
+      index = 0
+      currentItem = sourceArray[index]
     }
   }
 }

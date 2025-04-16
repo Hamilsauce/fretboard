@@ -1,4 +1,4 @@
-import { makeCircular } from './circular-loop-generator.js';
+import { makeCircular, sleep } from './circular-loop-generator.js';
 // import { run } from './ScaleGenerator.js';
 // import { PitchClassSets, NoteData } from './data/index.js';
 // import { setupStrings } from '/string-view.js'
@@ -29,14 +29,16 @@ const standardTuning = ['E2', 'A2', 'D3', 'G3', 'B3', 'E4']
 
 let canvasEl
 let sceneEl
+let stringEls
 let lowEString
 let highEString
 let autoClickerId
 let noteTileGenerator
+let stringTileGenerators
 
 
 const dispatchClick = target => {
-  const ev = new MouseEvent('click', {
+  const ev = new PointerEvent('click', {
     view: window,
     bubbles: true,
     cancelable: true
@@ -44,25 +46,50 @@ const dispatchClick = target => {
   target.dispatchEvent(ev);
 };
 
-const autoClicker = (elIterator, interval = 500, clickTimes = 0) => {
+const dispatchDblClick = target => {
+  const ev = new PointerEvent('dblclick', {
+    view: window,
+    bubbles: true,
+    cancelable: true
+  });
+  target.dispatchEvent(ev);
+};
+
+const randoDigi = (range = 5) => Math.floor(Math.random() * range);
+
+const autoClicker = (tileGenerators, interval = 500, clickTimes = 0) => {
+  
   let clickCount = 0
+  let delay = 0
   let el
   
-  const clearIntervalId = setInterval( () => {
-    const result  =  elIterator.next()
-   
+  const clearIntervalId = setInterval(async () => {
+    if (!autoClickerId) return
+    
+    const randomStringNumber = randoDigi(5)
+    
+    console.warn('randomStringNumber, clickCount', randomStringNumber, clickCount)
+    if (delay) {
+      await sleep(delay)
+      delay = null
+    }
+    const result = tileGenerators[randomStringNumber]
+      .next(clickCount)
+    
     el = result.value ?? null
-    // console.warn('el', el.dataset.pitch)
-    if (el &&  !clickTimes || clickCount < clickTimes) {
-      // el.dispatchEvent(new Event('click'))
-      // el.click()
+    
+    if (el && !clickTimes || clickCount < clickTimes) {
       dispatchClick(el)
       clickCount++
     }
+    
     else if (clickCount >= clickTimes) {
-      clearInterval(clearIntervalId)
+      dispatchClick(el)
+      
       clickCount = 0
+      clearInterval(clearIntervalId)
     }
+    delay = randoDigi(4) * 1000
   }, interval)
   
   return clearIntervalId
@@ -81,17 +108,24 @@ const app = document.querySelector('#app')
 // const lowEStringGen = stringGens[0]
 
 setTimeout(() => {
-  
-  
   canvasEl = document.querySelector('#canvas');
   sceneEl = document.querySelector('#scene');
+  stringEls = sceneEl.querySelectorAll('.string-container');
   lowEString = sceneEl.querySelector('[data-base-note="E2"]');
   highEString = sceneEl.querySelector('[data-base-note="E4"]');
   // console.warn('lowEString', lowEString)
+
+  stringTileGenerators = [
+    makeCircular([...sceneEl.querySelector('[data-base-note="E2"]').children]),
+    makeCircular([...sceneEl.querySelector('[data-base-note="A2"]').children]),
+    makeCircular([...sceneEl.querySelector('[data-base-note="D3"]').children]),
+    makeCircular([...sceneEl.querySelector('[data-base-note="G3"]').children]),
+    makeCircular([...sceneEl.querySelector('[data-base-note="B3"]').children]),
+    makeCircular([...sceneEl.querySelector('[data-base-note="E4"]').children]),
+  ]
   
-  noteTileGenerator = makeCircular([...highEString.children])
   
-  autoClickerId = autoClicker(noteTileGenerator)
+  autoClickerId = autoClicker(stringTileGenerators, 400)
   // console.warn('canvasEl', canvasEl)
 }, 250)
 
