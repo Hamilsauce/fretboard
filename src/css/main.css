@@ -8,6 +8,7 @@
   padding: 0;
   margin: 0;
   z-index: 0;
+  user-select: none;
 }
 
 html {
@@ -29,6 +30,7 @@ body {
 }
 
 #scene{
+  cursor: pointer;
   /* box-shadow: 0 0  10 #000000; */
   /* filter: drop-shadow(0 0 2px #00000090); */
 }
