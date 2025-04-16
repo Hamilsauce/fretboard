@@ -7,12 +7,12 @@
   /* background: radial-gradient(#e66465, #9198e5); */
 }
 
-.note-marker, .note-marker *  {
-  /* r: 5; */
-  transition: 0.2s ease-in;
+.note-marker,
+.note-marker * {
+  transition: 0.2s ease-out;
 }
+
 .note-marker circle {
-  /* r: 5; */
   fill: #DEA329;
   stroke: #EAEAEA;
   stroke-width: 0.05px;
@@ -21,20 +21,22 @@
 
 .tile[data-active=true],
 .tile[data-active=true] .note-marker {
-  
-  /* display: initial; */
   opacity: 1;
 }
 
 .tile[data-active=false],
 .tile[data-active=false] .note-marker {
-  /* display: none; */
   opacity: 0;
 }
 
+.tile[data-is-target=true] .note-marker circle {
+  opacity: 1;
+  filter: invert(1) hue-rotate(130deg);
+}
+
+
 .note-marker text {
   fill: #FFFFFF;
-  /* stroke-width: 0.025px; */
   font-size: 0.4px;
   font-weight: 600;
 }

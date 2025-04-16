@@ -22,6 +22,22 @@ body {
   touch-action: manipulation;
 }
 
+#canvas{
+  padding: 4px 0;
+  /* box-shadow: 0 0  10 #000000; */
+  /* filter: drop-shadow(0 0 0.095px #00000090); */
+}
+
+#scene{
+  /* box-shadow: 0 0  10 #000000; */
+  /* filter: drop-shadow(0 0 2px #00000090); */
+}
+
+#surface{
+  /* box-shadow: 0 0  10 #000000; */
+  /* filter: drop-shadow(0 0 2px #00000090); */
+}
+
 
 #nut-top {
   fill: #FFFFFF00;
@@ -36,11 +52,9 @@ body {
 
 #smallGrid #grid-frets{
   filter: drop-shadow(0 0 0.4px #D0C56799);
-
 }
 #smallGrid #grid-strings{
   filter: drop-shadow(0 0 0.095px #00000090);
-
 }
 
 g[id*="fret-marker"] circle {

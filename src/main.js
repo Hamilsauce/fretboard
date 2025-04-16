@@ -1,6 +1,6 @@
 // import { getCoordinates, svgPoint } from '../src/svg-helpers.js';
 // import { FretboardModel } from '../src/FretboardModels.js';
-// import { StandardTuningStrings } from '../src/init-fretboard-data.js';
+import { setCanvasHeight } from '../script.js';
 import { init } from '../src/fretboard.controller.js';
 
 console.log('MAIN')
@@ -14,7 +14,9 @@ const circleBB = noteMarkerCircle.getBoundingClientRect()
 const circleRect = noteMarkerCircle.getBBox()
 const surfaceRect = surface.getBBox()
 const radius = noteMarkerCircle.r.baseVal.value
-canvasEl.style.height = getComputedStyle(canvasEl.parentElement).height
+setCanvasHeight(canvasEl)
+
+// canvasEl.style.height = getComputedStyle(canvasEl.parentElement).height
 // noteMarkerCircle.setAttribute('r', 10)
 // noteMarkerCircle.style.r = '0.5'
 /*
@@ -34,7 +36,8 @@ console.log('noteMarkerCircle!', noteMarkerCircle.getAttribute('height'))
 init()
 
 window.addEventListener('resize', (e) => {
-  canvasEl.style.height = getComputedStyle(canvasEl.parentElement).height
+setCanvasHeight(canvasEl);
+  // canvasEl.style.height = getComputedStyle(canvasEl.parentElement).height
   
 });
 

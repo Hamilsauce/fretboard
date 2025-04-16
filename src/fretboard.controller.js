@@ -11,7 +11,7 @@ const appHeaderRight = document.querySelector('#app-header-right')
 
 const stringContainers = [...svgCanvas.querySelectorAll('.string-container')];
 
-const audioCtx = new AudioContext()
+export const audioCtx = new AudioContext()
 
 const updateHeader = (value) => {
   appHeaderRight.textContent = value
@@ -80,17 +80,15 @@ export const init = () => {
 }
 
 stringLayer.addEventListener('click', (e = new MouseEvent()) => {
-  // playPulse(440)()
-  
   const tile = e.target.closest('.tile');
   const coords = getCoordinates(e)
   
-  // console.log('coords', coords)
-  
   if (!tile) return;
+    // tile.dataset.active = false
+    // tile.dataset.isTarget = false
   
   const string = e.target.closest('.string-container');
-  tile.dataset.active = false //!isActive;
+  
   
   const targetPitch = tile.dataset.pitch
   const targetPitchClass = tile.dataset.pitchClass
@@ -99,15 +97,9 @@ stringLayer.addEventListener('click', (e = new MouseEvent()) => {
   
   const prevActive = [...string.children].find((tile) => tile.dataset.active === 'true')
   
-  // if (prevActive && prevActive !== tile) {
-  //   prevActive.dataset.active = false;
-  // }
-  
   const osc = stringOscillators[stringNumber];
   
-  
   const isActive = tile.dataset.active === 'true' ? true : false;
-  
   
   stringContainers.forEach((el, i) => {
     const osc = stringOscillators[i];
@@ -117,29 +109,36 @@ stringLayer.addEventListener('click', (e = new MouseEvent()) => {
     }
     
     [...el.children].forEach((child, i) => {
-      // child.dataset.active = false;
-      
+      child.dataset.isTarget = false
+      child.dataset.active = false;
+
       if (
-        child.dataset.pitchClass === targetPitchClass
+        child.dataset.pitchClass === targetPitchClass 
+        // &&
+        // child !== prevActive
       ) {
-        child.dataset.active = true //!isActive;
+        child.dataset.active = !isActive;
       }
       else {
         child.dataset.active = false;
       }
       
+      // tile.dataset.isTarget = true
     });
-    
   });
   
-  
-  
-  // if (tile.dataset.active === 'true') {
   const baseNote = string.dataset.baseNote
   
   const stringModel = fretboardModel.getStringByBase(baseNote)
   const note = stringModel.getNoteByPitch(tile.dataset.pitch)
   
-  stringOscillators[stringNumber] = playPulse(note.frequency)
-  // }
+  if (tile !== prevActive ) {
+    stringOscillators[stringNumber] = playPulse(note.frequency)
+    tile.dataset.active = true
+    tile.dataset.isTarget = true
+  } else{
+    tile.dataset.active = false
+    tile.dataset.isTarget = false
+    
+  }
 });
