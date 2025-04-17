@@ -76,6 +76,7 @@ export const init = () => {
       
       const textEl = template.querySelector('text')
       const noteText = note.pitch.split('\/')[0]
+      
       textEl.textContent = noteText //note.pitch
       stringEl.appendChild(template)
     });
@@ -87,11 +88,7 @@ stringLayer.addEventListener('click', (e = new MouseEvent()) => {
   const coords = getCoordinates(e)
   
   if (!tile) return;
-  // tile.dataset.active = false
-  // tile.dataset.isTarget = false
-  
   const string = e.target.closest('.string-container');
-  
   
   const targetPitch = tile.dataset.pitch
   const targetPitchClass = tile.dataset.pitchClass
@@ -103,33 +100,28 @@ stringLayer.addEventListener('click', (e = new MouseEvent()) => {
   const osc = stringOscillators[stringNumber];
   
   const isActive = tile.dataset.active === 'true' ? true : false;
+  let stringParentNumber
   
   stringContainers.forEach((el, i) => {
     const osc = stringOscillators[i];
     if (osc) {
       osc();
-      // setTimeout(() => {
-      //   // stringpOscillators[stringNumber] = null
-      //   console.log(' ', );
-      // }, 10000)
     }
     
-    [...el.children].forEach((child, i) => {
+    [...el.children].forEach((child, k) => {
       child.dataset.isTarget = false
       child.dataset.active = false;
-      
+      stringParentNumber = +child.closest('.string-container').dataset.stringNumber - 1
+
       if (
-        child.dataset.pitchClass === targetPitchClass
-        // &&
-        // child !== prevActive
+        child.dataset.pitchClass === targetPitchClass &&
+        stringNumber !== stringParentNumber
       ) {
         child.dataset.active = !isActive;
       }
       else {
         child.dataset.active = false;
       }
-      
-      // tile.dataset.isTarget = true
     });
   });
   
@@ -138,13 +130,12 @@ stringLayer.addEventListener('click', (e = new MouseEvent()) => {
   const stringModel = fretboardModel.getStringByBase(baseNote)
   const note = stringModel.getNoteByPitch(tile.dataset.pitch)
   
-  if (tile !== prevActive) {
+  if (tile !== prevActive && stringParentNumber == stringNumber) {
     stringOscillators[stringNumber] = playPulse(note.frequency)
     tile.dataset.active = true
     tile.dataset.isTarget = true
   } else {
     tile.dataset.active = false
     tile.dataset.isTarget = false
-    
   }
 });

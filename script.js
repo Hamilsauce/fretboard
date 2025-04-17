@@ -34,7 +34,7 @@ const autoClicker = (tileGenerators, interval = 300, clickTimes = 0, ) => {
   let delay = 0;
   let el;
   let stringNumber = 5
-  let clickLoopLimit = 12
+  let clickLoopLimit = 10
   
   const autoClickerId = setInterval(async () => {
     if (!autoClickerId) return;
@@ -65,7 +65,7 @@ const tempCount = clickCount
     
      if (tempCount >= clickLoopLimit) {
       clickCount = 0;
-      stringNumber = stringNumber === 0 ? 5 : stringNumber - 1
+      stringNumber = 5//stringNumber === 0 ? 5 : stringNumber - 1
 
       // stringNumber = stringNumber <= 5 ? 0 : stringNumber - 1
 
