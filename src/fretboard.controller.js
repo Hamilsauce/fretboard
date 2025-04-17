@@ -130,7 +130,7 @@ stringLayer.addEventListener('click', (e = new MouseEvent()) => {
   const stringModel = fretboardModel.getStringByBase(baseNote)
   const note = stringModel.getNoteByPitch(tile.dataset.pitch)
   
-  if (tile !== prevActive && stringParentNumber == stringNumber) {
+  if (tile !== prevActive) {
     stringOscillators[stringNumber] = playPulse(note.frequency)
     tile.dataset.active = true
     tile.dataset.isTarget = true
