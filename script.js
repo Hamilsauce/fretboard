@@ -29,19 +29,20 @@ const dispatchClick = target => {
 
 const randoDigi = (range = 5) => Math.floor(Math.random() * range);
 
-const autoClicker = (tileGenerators, interval = 500, clickTimes = 0, ) => {
+const autoClicker = (tileGenerators, interval = 300, clickTimes = 0, ) => {
   let clickCount = 0;
   let delay = 0;
   let el;
   let stringNumber = 5
-  let clickLoopLimit = 13
+  let clickLoopLimit = 12
   
   const autoClickerId = setInterval(async () => {
     if (!autoClickerId) return;
     
-    const randomStringNumber = randoDigi(5);
-    
-    const result = tileGenerators[randomStringNumber].next(clickCount);
+    const randomStringNumber = stringNumber //randoDigi(5);
+    console.warn('stringNumber', stringNumber)
+    const result = tileGenerators[randomStringNumber]
+      .next()//clickCount);
     
     if (delay) {
       await sleep(delay);
@@ -49,27 +50,30 @@ const autoClicker = (tileGenerators, interval = 500, clickTimes = 0, ) => {
     }
     
     el = result.value ?? null;
-    
-    if (el && !clickTimes || clickCount < clickTimes) {
+const tempCount = clickCount    
+    if (el && !clickTimes || tempCount < clickTimes) {
       dispatchClick(el);
       clickCount++;
     }
     
-    else if (clickCount >= clickTimes) {
+    else if (tempCount >= clickTimes) {
       dispatchClick(el);
       
       clickCount = 0;
       clearInterval(autoClickerId);
     }
     
-    if (clickCount >= clickLoopLimit) {
+     if (tempCount >= clickLoopLimit) {
       clickCount = 0;
+      stringNumber = stringNumber === 0 ? 5 : stringNumber - 1
+
+      // stringNumber = stringNumber <= 5 ? 0 : stringNumber - 1
+
     }
     
     delay = 0;
     // appHeaderLeft.textContent = `Click: ${clickCount}, \n ${el.dataset.pitch}`
     
-    stringNumber = stringNumber === 0 ? 5 : stringNumber - 1
   }, interval);
   
   return autoClickerId;
@@ -141,7 +145,7 @@ startButton.addEventListener('click', async (e) => {
   
   // setCanvasHeight();
   
-  if (!runningState && !autoClickerId &&  isSoundOn()) {
+  if (!runningState && !autoClickerId && isSoundOn()) {
     autoClickerId = autoClicker(stringTileGenerators);
     audioCtx.resume()
   }

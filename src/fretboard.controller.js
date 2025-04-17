@@ -28,7 +28,7 @@ function playPulse(pulseHz = 440) {
   
   osc.frequency.exponentialRampToValueAtTime(pulseHz, time + 0.15)
   
-  const amp = new GainNode(audioCtx, { value: 0.01 });
+  const amp = new GainNode(audioCtx, { value: 0.0 });
   
   const lfo = new OscillatorNode(audioCtx, {
     type: "square",
@@ -36,7 +36,7 @@ function playPulse(pulseHz = 440) {
   });
   
   // lfo.connect(amp.gain);
-  amp.gain.exponentialRampToValueAtTime(0.5, time + 1)
+  amp.gain.exponentialRampToValueAtTime(0.3, time + 1)
   osc.connect(amp).connect(audioCtx.destination);
   
   // lfo.start();
@@ -45,10 +45,13 @@ function playPulse(pulseHz = 440) {
   return (pulseTime = 1) => {
     time = audioCtx.currentTime
     
-    osc.frequency.cancelAndHoldAtTime(time + 0.1)
-    osc.frequency.exponentialRampToValueAtTime(1, time + 0.3)
-    amp.gain.cancelAndHoldAtTime(time + 0.9)
-    amp.gain.exponentialRampToValueAtTime(0.01, time + 1)
+    // osc.frequency.cancelAndHoldAtTime(time)
+    osc.frequency.exponentialRampToValueAtTime(1, time)
+    amp.gain.exponentialRampToValueAtTime(0.1, time + 1)
+    // amp.gain.cancelScheduledValues(time+1)
+    // osc.frequency.cancelScheduledValues(time)
+    
+    
     osc.stop(time + 1)
   }
 }
@@ -84,8 +87,8 @@ stringLayer.addEventListener('click', (e = new MouseEvent()) => {
   const coords = getCoordinates(e)
   
   if (!tile) return;
-    // tile.dataset.active = false
-    // tile.dataset.isTarget = false
+  // tile.dataset.active = false
+  // tile.dataset.isTarget = false
   
   const string = e.target.closest('.string-container');
   
@@ -105,15 +108,18 @@ stringLayer.addEventListener('click', (e = new MouseEvent()) => {
     const osc = stringOscillators[i];
     if (osc) {
       osc();
-      // stringOscillators[stringNumber] = null
+      // setTimeout(() => {
+      //   // stringpOscillators[stringNumber] = null
+      //   console.log(' ', );
+      // }, 10000)
     }
     
     [...el.children].forEach((child, i) => {
       child.dataset.isTarget = false
       child.dataset.active = false;
-
+      
       if (
-        child.dataset.pitchClass === targetPitchClass 
+        child.dataset.pitchClass === targetPitchClass
         // &&
         // child !== prevActive
       ) {
@@ -132,11 +138,11 @@ stringLayer.addEventListener('click', (e = new MouseEvent()) => {
   const stringModel = fretboardModel.getStringByBase(baseNote)
   const note = stringModel.getNoteByPitch(tile.dataset.pitch)
   
-  if (tile !== prevActive ) {
+  if (tile !== prevActive) {
     stringOscillators[stringNumber] = playPulse(note.frequency)
     tile.dataset.active = true
     tile.dataset.isTarget = true
-  } else{
+  } else {
     tile.dataset.active = false
     tile.dataset.isTarget = false
     
