@@ -11,13 +11,13 @@ const appHeaderRight = document.querySelector('#app-header-right')
 
 const stringContainers = [...svgCanvas.querySelectorAll('.string-container')];
 
-export const audioCtx = new AudioContext()
 
 const updateHeader = (value) => {
   appHeaderRight.textContent = value
 };
 
 
+export const audioCtx = new AudioContext()
 function playPulse(pulseHz = 440) {
   let time = audioCtx.currentTime
   

@@ -1,7 +1,7 @@
-export const sleep = async (time = 500) => {
+export const sleep = async (time = 500, cb) => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      resolve(); // Yay! Everything went well!
+      resolve(cb()); // Yay! Everything went well!
     }, time);
   });
   

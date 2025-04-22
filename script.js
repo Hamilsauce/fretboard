@@ -15,6 +15,14 @@ let startButton = document.querySelector('#start-button');
 let soundButton = document.querySelector('#audio-button');
 
 
+class TList extends SVGTransformList{
+  constructor() {
+    super()
+  }
+}
+
+console.warn('tlist', tlist)
+
 const isSequencerOn = () => startButton.value.includes('On')
 const isSoundOn = () => soundButton.value.includes('On')
 
@@ -42,7 +50,7 @@ const autoClicker = (tileGenerators, interval = 300, clickTimes = 0, ) => {
     const randomStringNumber = stringNumber //randoDigi(5);
     console.warn('stringNumber', stringNumber)
     const result = tileGenerators[randomStringNumber]
-      .next()//clickCount);
+      .next() //clickCount);
     
     if (delay) {
       await sleep(delay);
@@ -50,7 +58,7 @@ const autoClicker = (tileGenerators, interval = 300, clickTimes = 0, ) => {
     }
     
     el = result.value ?? null;
-const tempCount = clickCount    
+    const tempCount = clickCount
     if (el && !clickTimes || tempCount < clickTimes) {
       dispatchClick(el);
       clickCount++;
@@ -63,12 +71,12 @@ const tempCount = clickCount
       clearInterval(autoClickerId);
     }
     
-     if (tempCount >= clickLoopLimit) {
+    if (tempCount >= clickLoopLimit) {
       clickCount = 0;
-      stringNumber = 5//stringNumber === 0 ? 5 : stringNumber - 1
-
+      stringNumber = 5 //stringNumber === 0 ? 5 : stringNumber - 1
+      
       // stringNumber = stringNumber <= 5 ? 0 : stringNumber - 1
-
+      
     }
     
     delay = 0;

@@ -1,0 +1,155 @@
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  z-index: 0;
+}
+
+html {
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+}
+
+pre {
+  white-space: pre-wrap;
+  
+}
+
+#app {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  grid-template-columns: 1fr;
+  gap: 0px;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  transition: 0.1s ease-out;
+  background: #EBEBEBC2;
+  
+}
+
+#app.dim {
+  background: #ABE7DA;
+  /* filter: i#17A8A4C9nvert(1); */
+  background: #FFFFFF;
+  
+}
+
+#app-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0px;
+  padding: 8px;
+  color: #828282;
+}
+
+#app-body {
+  /* display: flex; */
+  /* flex-direction: column; */
+  /* justify-content: flex-start; */
+  /* align-items: flex-start; */
+  gap: 0px;
+  overflow-y: scroll;
+  padding: 4px;
+  /* width: 100%; */
+  /* height: 100%; */
+  
+  display: grid;
+  grid-template-rows: 80px 1fr;
+  grid-template-columns: 1fr;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 0px;
+  
+}
+
+
+.container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 0px;
+  overflow-y: scroll;
+  padding: 64px;
+  width: 100%;
+  /* height: 100%; */
+  /* border: 1px solid #C6C6C6; */
+}
+
+#tap-indicator {
+  width: 50px;
+  height: 50px;
+  border: 2px solid #898989;
+  border-radius: 50%;
+  transition: 0.075s ease-out;
+  background: #FFFFFF;
+}
+
+#tap-indicator[data-on=false] {
+  background: #FFFFFF;
+  
+}
+
+#tap-indicator[data-on=true] {
+  background: #FF3F3F;
+}
+
+#app-info-display {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  gap: 16px;
+}
+
+#app-beats {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  gap: 24px;
+  height: fit-content;
+  color: #FFFFFF;
+}
+
+.beat-marker {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0px;
+  width: 30px;
+  height: 30px;
+  border: 1px solid #808080;
+  border-radius: 50%;
+}
+
+.beat-marker[data-active=false] {
+  background: #A6A6A6;
+}
+.beat-marker[data-active=true] {
+  background: #FF3F3F;
+}
+
+#app-message {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 0px;
+  height: fit-content;
+  color: #A6A6A6;
+}
+
+#app-message[data-on=true] {
+  background: #FF3F3F;
+}
