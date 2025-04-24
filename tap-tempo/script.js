@@ -2,7 +2,9 @@
 // console.warn('TRANSCRIPTION_RAW', TRANSCRIPTION_RAW)
 import ham from 'https://hamilsauce.github.io/hamhelper/hamhelper1.0.0.js';
 import { playPulse, sleep } from '../tap-tempo/audio.js';
+
 const ONE_MINUTE = 60;
+const DEFAULT_BPM = 120;
 const { template, utils, DOM } = ham;
 
 class UI {
@@ -30,6 +32,7 @@ class UI {
   setMessage(msg) {
     if (!msg) return;
     this.messageDisplay.textContent = msg
+    return this
   }
   
   handleTap(updateBeats = false) {
@@ -86,19 +89,29 @@ const bpmToTimeIntervals = (bpm = 120, beatCount = 4) => {
   return new Array(beatCount).fill(beatInterval).map((int, i) => int * i);
 };
 
+const intervalsToBPM = (taps = tapTimes) => {
+  const totalInterval = tapTimes.slice(1).reduce((sum, time, i) => {
+    return sum + (time - tapTimes[i]);
+  }, 0);
+  
+  const averageInterval = totalInterval / (taps.length - 1);
+  
+  const bpm = Math.round(60000 / averageInterval);
+  
+  return bpm;
+};
+
 const tap = () => {
   tapTimes = tapTimes.length >= 4 ? [] : tapTimes;
   const now = performance.now();
   tapTimes.push(now);
   
   if (tapTimes.length > 1) {
-    const totalInterval = tapTimes.slice(1).reduce((sum, time, i) => {
-      return sum + (time - tapTimes[i]);
-    }, 0);
-    
-    const averageInterval = totalInterval / (tapTimes.length - 1);
-    const bpm = Math.round(60000 / averageInterval);
-    
+    // const totalInterval = tapTimes.slice(1).reduce((sum, time, i) => {
+    //   return sum + (time - tapTimes[i]);
+    // }, 0);
+    // const averageInterval = totalInterval / (tapTimes.length - 1);
+    const bpm = intervalsToBPM(tapTimes) // Math.round(60000 / averageInterval);
     return bpm;
     console.log(`BPM: ${bpm.toFixed(2)}`);
   } else {
@@ -118,25 +131,38 @@ const runMetch = (timeIntervals = []) => {
   const duration = timeIntervals.reduce((acc, curr, i) => acc + curr, 0) * 1000;
   let index = 0
   let currInterval = timeIntervals[index] * 1000
+  let targetBPM = DEFAULT_BPM
+  let targetIntervals = bpmToTimeIntervals(targetBPM)
   
-  playPulse(currInterval)
-  ui.handleTap.bind(ui)().updateBeatMarkers.bind(ui)()
-  index = index >= timeIntervals.length - 1 ? 0 : index + 1
-  console.log('timeIntervals', timeIntervals)
+  // let targetBPM = intervalsToBPM(tapTimes)
+  
+  // playPulse(currInterval)
+  
+  ui
+    // .handleTap.bind(ui)()
+    .setMessage(`Target BPM: ${targetBPM}`)
+    .updateBeatMarkers.bind(ui)()
+  
+  index = index >= targetIntervals.length - 1 ? 0 : index + 1
+  
+  console.log('targetIntervals', targetIntervals)
   
   const id = setInterval(() => {
     // console.log('duration', duration)
     
-    timeIntervals.forEach(async (int, i) => {
+    targetIntervals.forEach(async (int, i) => {
       // console.log('int', int)
       
       playPulse(int * 1000)
     });
-ui.handleTap.bind(ui)().updateBeatMarkers.bind(ui)()
-
-    index = index >= timeIntervals.length - 1 ? 0 : index + 1
     
-    currInterval = timeIntervals[index] * 1000
+    ui
+      // .handleTap.bind(ui)()
+      .updateBeatMarkers.bind(ui)()
+    
+    index = index >= targetIntervals.length - 1 ? 0 : index + 1
+    
+    currInterval = targetIntervals[index] * 1000
     
   }, duration / 4)
   

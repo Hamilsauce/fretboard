@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+  
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700;900&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <title>app</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/7.3.0/rxjs.umd.min.js" integrity="sha512-y3JTS47nnpKORJX8Jn1Rlm+QgRIIZHtu3hWxal0e81avPrqUH48yk+aCi+gprT0RMAcpYa0WCkapxe+bpBHD6g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <link rel="stylesheet" href="./style.css" />
+</head>
+
+<body>
+  <div id="app">
+    <header id="app-header">
+      <div id="app-header-left">L</div>
+      <div id="app-header-center">
+        <h3>game loop + coord system</h3>
+      </div>
+      <div id="app-header-right">
+        <div id="fps-label">FPS:</div>
+        <div id="fps-display"></div>
+
+      </div>
+    </header>
+    <section id="app-body">
+      <div class="grid"></div>
+      <div class="overlay">
+        <div class="actor" data-row="0" data-column="0"></div>
+      </div>
+    </section>
+    <footer id="app-footer">
+      <div class="container">
+        footer
+      </div>
+    </footer>
+  </div>
+  <script src="./script.js" type="module"></script>
+  
+  <template id="svg-grid-template">
+      <svg id="graph" height="600" width="412" viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+          <defs>
+            <marker id="m" orient="auto" overflow="visible" fill="red">
+              <path id="a" transform="scale(1.2)" d="m8.7 4-11-4 11-4c-1.7 2.4-1.7 5.6 0 8z" />
+            </marker>
+            <marker id="mR" orient="auto" overflow="visible">
+              <use xlink:href="#a" fill="#d00" />
+            </marker>
+          </defs>
+
+
+          <g id="scene" transform="translate(0,0)">
+            <g class="background-group" transform="translate(0,0)">
+              <circle id="slot1" class="slot" data-slotted="true" cy="50" cx="200" r="32" />
+              <circle id="slot1" class="slot" cy="250" cx="75" r="32" />
+            </g>
+
+            <g class="graph-group" data-group="1" transform="translate(25,0)">
+              <line marker-end="url(#m)" id="edge1" class="edge" data-vertices="vertex1 vertex2" x1=35 y1="32" x2="120" y2="106" stroke="white" stroke-width="3" />
+              <circle id="vertex1" edges="edge1" class="vertex" cy="32" cx="35" r="28" />
+              <circle id="vertex2" edges="edge1" class="vertex" cy="106" cx="120" r="28" />
+            <text y="40.4" x="35">1</text>
+            <text y="114.5" x="120.3">2</text>
+            </g>
+          </g>
+        </svg>
+
+  </template>
+  
+  <template id="grid-template">
+    <div class="grid"></div>
+  </template>
+  
+  <template id="tile-template">
+    <div class="tile" data-row="" data-column="" id="" data-target="false" data-occupied="false">
+      <div class="subtile" data-subtile-position="1">1</div>
+      <div class="subtile" data-subtile-position="2">2</div>
+      <div class="subtile" data-subtile-position="3">3</div>
+      <div class="subtile" data-subtile-position="4">4</div>
+    </div>
+  </template>
+</body>
+
+
+</html>
