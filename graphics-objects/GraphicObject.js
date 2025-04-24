@@ -6,12 +6,10 @@ import { addDragAction } from '../modules/drag-stream.js';
 import { TransformList } from './TransformList.js';
 import { domPoint } from '../lib/utils.js';
 
-
 const { template, DOM, utils } = ham;
 
 const { forkJoin, Observable, iif, BehaviorSubject, AsyncSubject, Subject, interval, of, fromEvent, merge, empty, delay, from } = rxjs;
 const { flatMap, reduce, groupBy, toArray, mergeMap, switchMap, scan, map, tap, filter } = rxjs.operators;
-
 
 export const GraphicObjectOptions = {
   type: '',
@@ -37,7 +35,6 @@ export class GraphicObject {
   constructor(context, type, { point, dimensions, id } = GraphicObjectOptions) {
     if (!type) throw new Error('No type passed to constructor for ', this.constructor.name);
 
-    
     this.#context = context;
 
     this.#self = GraphicObject.getTemplate(context, type);
@@ -52,8 +49,6 @@ export class GraphicObject {
     this.#dimensions.radius = this.#dimensions.radius || this.#dimensions.width / 2;
     this.dataset.id = id ? id : this.#self.id;
 
-
-    // console.log('[this.point', this.point)
     this.#transforms = new TransformList(this, {
       transforms: [
         {
@@ -84,7 +79,6 @@ export class GraphicObject {
               this.focus(false)
             }
           }),
-          // tap(x => console.log('GRAPH OBJ this.focusState$  ', x)),
         )
         .subscribe()
     }
@@ -215,7 +209,6 @@ export class GraphicObject {
       this.context.templates.querySelector(`[data-template="${nameOrDOM}"]`).cloneNode(true) :
       nameOrDOM;
 
-
     if (!obj) throw new Error('Failed to find/load a component class template. Class/template name: ' + nameOrDOM);
 
     delete obj.dataset.template;
@@ -233,7 +226,6 @@ export class GraphicObject {
   setStyle(styleObject = {}) {
     Object.assign(this.body.style, styleObject)
   }
-
 
   createSVGTransform() { return this.context.createSVGTransform() }
 
@@ -269,9 +261,6 @@ export class GraphicObject {
   }
 
   handleClick(e) {
-    // e.preventDefault();
-    // e.stopPropagation();
-
     this.emit('objectclick', e);
   }
 

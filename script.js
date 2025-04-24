@@ -15,13 +15,6 @@ let startButton = document.querySelector('#start-button');
 let soundButton = document.querySelector('#audio-button');
 
 
-class TList extends SVGTransformList{
-  constructor() {
-    super()
-  }
-}
-
-console.warn('tlist', tlist)
 
 const isSequencerOn = () => startButton.value.includes('On')
 const isSoundOn = () => soundButton.value.includes('On')
