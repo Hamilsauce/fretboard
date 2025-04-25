@@ -1,10 +1,11 @@
 // import { getCoordinates, svgPoint } from '../src/svg-helpers.js';
 // import { FretboardModel } from '../src/FretboardModels.js';
 import { setCanvasHeight } from '../script.js';
+import { svgUnitsToPixels } from '../src/lib/svg-units-to-pixels.js'
 import { init } from '../src/fretboard.controller.js';
 
-console.log('MAIN')
 const canvasEl = document.querySelector('#canvas');
+const scene = document.querySelector('#scene')
 const surface = document.querySelector('#surface')
 const stringLayer = document.querySelector('#string-layer')
 
@@ -13,54 +14,19 @@ const noteMarkerCircle = noteMarker.querySelector('circle');
 const circleBB = noteMarkerCircle.getBoundingClientRect()
 const circleRect = noteMarkerCircle.getBBox()
 const surfaceRect = surface.getBBox()
+const sceneRect = scene.getBBox()
+const sceneWidth = getComputedStyle(scene).width
+
 const radius = noteMarkerCircle.r.baseVal.value
+
 setCanvasHeight(canvasEl)
 
-// canvasEl.style.height = getComputedStyle(canvasEl.parentElement).height
-// noteMarkerCircle.setAttribute('r', 10)
-// noteMarkerCircle.style.r = '0.5'
-/*
-console.warn('radius', radius)
-console.warn('circleBB', circleBB)
-console.warn('surfaceRect', surfaceRect)
-console.log('noteMarkerCircle!', noteMarkerCircle.getAttribute('height'))
-*/
-// const fretboardModel = new FretboardModel(StandardTuningStrings)
-// console.log(
-//   'fretboardModel!',
-//   fretboardModel.getStringAt(1).notes.map(({ pitch }) => pitch),
-//   fretboardModel.getStringAt(1).getNoteAt(3).pitch
+const sceneWidthPixels = svgUnitsToPixels(canvas, scene)
 
-// )
+canvasEl.style.width = sceneWidthPixels + 'px'
 
 init()
 
 window.addEventListener('resize', (e) => {
-setCanvasHeight(canvasEl);
-  // canvasEl.style.height = getComputedStyle(canvasEl.parentElement).height
-  
+  setCanvasHeight(canvasEl);
 });
-
-// document.addEventListener('dblclick', (e) => {
-//   e.stopImmediatePropagation()
-//   e.stopPropagation()
-//   e.preventDefault()
-  
-// }, { passive: false });
-
-// stringLayer.addEventListener('click', (e) => {
-//   const tile = e.target.closest('.tile');
-  
-//   if (!tile) return;
-  
-//   const string = e.target.closest('.string-container');
-  
-//   const prevActive = [...string.children].find((tile) => tile.dataset.active === 'true')
-
-//   if (prevActive && prevActive !== tile) {
-//     prevActive.dataset.active = false;
-//   }
-  
-//   const isActive = tile.dataset.active === 'true' ? true : false;
-//   tile.dataset.active = !isActive;
-// });

@@ -99,8 +99,9 @@ const updateAppContent = (content) => {
 
 export const setCanvasHeight = (canvas = canvasEl) => {
   const parentHeight = +getComputedStyle(canvas.parentElement).height.replace(/[^0-9.]/g, '');
+  console.warn('parentHeight', parentHeight)
   const canvasHeight = parentHeight >= 900 ? 900 : parentHeight
-  canvas.style.height = `${(parentHeight)}px`
+  canvas.style.height = `${(canvasHeight)}px`
 };
 
 let stopClickId = null;
@@ -125,7 +126,7 @@ setTimeout(() => {
     makeCircular([...sceneEl.querySelector('[data-base-note="E4"]').children]),
   ];
   
-  setCanvasHeight()
+  // setCanvasHeight()
 }, 250);
 
 

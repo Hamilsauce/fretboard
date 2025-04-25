@@ -25,6 +25,8 @@ body {
 
 #canvas {
   padding: 4px 0;
+  background: none;
+  /* border: 2px solid #FFFFFF; */
   /* box-shadow: 0 0  10 #000000; */
   /* filter: drop-shadow(0 0 0.095px #00000090); */
 }
@@ -35,6 +37,9 @@ body {
   -webkit-tap-highlight-color: transparent;
   user-select: none;
   outline: none;
+  /* fill: #CFCFCF; */
+  /* stroke: #FFFFFF; */
+  /* stroke-width: 0.1px; */
 }
 
 #scene:active {
@@ -42,6 +47,12 @@ body {
 }
 
 #surface {
+  stroke: #FFFFFF;
+  stroke-width: 0.1px;
+  
+  /* fill: #474F5F; */
+
+  /* fill: #474F5F00; */
   /* box-shadow: 0 0  10 #000000; */
   /* filter: drop-shadow(0 0 2px #00000090); */
 }
