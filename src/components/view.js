@@ -8,32 +8,33 @@ export const ElementProperties = {
   dataset: Object,
 }
 
-export const ComponentOptions = {
+export const ViewOptions = {
   templateName: 'map',
   elementProperties: ElementProperties,
   children: [],
 }
 
-export class Component extends EventEmitter {
+export class View extends EventEmitter {
   #self;
   #name;
 
-  constructor(name, options = ComponentOptions) {
+  constructor(name, options = ViewOptions) {
     super();
 
     if (!name) throw new Error('No name passed to constructor for ', this.constructor.name);
 
-    if (options && options !== ComponentOptions) {
+    if (options && options !== ViewOptions) {
       this.#self = DOM.createElement(options)
     }
 
-    else this.#self = Component.#getTemplate(name);
+    else this.#self = View.#getTemplate(name);
 
-    if (!this.#self) throw new Error('Failed to find/load a component class template. Class/template name: ' + name);
+    if (!this.#self) throw new Error('Failed to find/load a view class template. Class/template name: ' + name);
 
     this.#name = name;
 
-    this.dataset.id = Component.uuid(name);
+    this.dataset.id = View.uuid(name);
+    
   }
 
   get self() { return this.#self };
@@ -59,11 +60,11 @@ export class Component extends EventEmitter {
   }
 
   create() {
-    throw 'Must define create in child class of component. Cannot call create on Component Class. '
+    throw 'Must define create in child class of view. Cannot call create on View Class. '
   }
 
   init(options) {
-    throw 'Must define init in child class of component. Cannot call create on Component Class. '
+    throw 'Must define init in child class of view. Cannot call create on View Class. '
   }
 
   selectDOM(selector) {

@@ -134,12 +134,7 @@ const runMetch = (timeIntervals = []) => {
   let targetBPM = DEFAULT_BPM
   let targetIntervals = bpmToTimeIntervals(targetBPM)
   
-  // let targetBPM = intervalsToBPM(tapTimes)
-  
-  // playPulse(currInterval)
-  
   ui
-    // .handleTap.bind(ui)()
     .setMessage(`Target BPM: ${targetBPM}`)
     .updateBeatMarkers.bind(ui)()
   
@@ -148,17 +143,12 @@ const runMetch = (timeIntervals = []) => {
   console.log('targetIntervals', targetIntervals)
   
   const id = setInterval(() => {
-    // console.log('duration', duration)
-    
     targetIntervals.forEach(async (int, i) => {
-      // console.log('int', int)
       
       playPulse(int * 1000)
     });
     
-    ui
-      // .handleTap.bind(ui)()
-      .updateBeatMarkers.bind(ui)()
+    ui.updateBeatMarkers.bind(ui)()
     
     index = index >= targetIntervals.length - 1 ? 0 : index + 1
     
@@ -185,53 +175,21 @@ const tempo120beats4 = bpmToTimeIntervals()
 document.addEventListener('click', (e) => {
   // tapTimes.push(performance.now())
   // const isOn = indicatorEl.dataset.on === 'true' ? true : false;
-  if (autoMetch && !autoMetchId) {
-    autoMetchId = runMetch(tempo120beats4)
-  }
-  
-  else {
-    tempo = tap(tapTimes)
-    const msg = tempo ? `${tempo} BPM` : 'Keep tapping...'
-    
-    ui
-      .handleTap()
-      .updateBeatMarkers()
-    
-    if (tapTimes.length >= 4) {
-      ui.setMessage(msg)
-    }
-  }
-  
-  // indicatorEl.dataset.on = true //!isOn
-  // app.classList.toggle('dim')
-  // setTimeout(() => {
-  //   indicatorEl.dataset.on = false //!isOn
-  //   app.classList.toggle('dim')
-  // }, 75)
-  
-  
-  // if (!setTimeoutId) {
-  //   setTimeoutId = setTimeout(() => {
-  //     tempo = tap(tapTimes)
-  //     console.warn('tempo', tempo)
-  //     tapTimes = []
-  //     setTimeoutId = undefined
-  //   }, 3000)
+  // if (autoMetch && !autoMetchId) {
+  //   autoMetchId = runMetch(tempo120beats4)
   // }
   
-  // else {}
+  // else {
+  tempo = tap(tapTimes)
+  const msg = tempo ? `${tempo} BPM` : 'Keep tapping...'
+  playPulse()
+
+  ui
+    .handleTap()
+    .updateBeatMarkers()
+  
+  if (tapTimes.length >= 4) {
+    ui.setMessage(msg)
+  }
+  // }
 });
-
-
-// console.warn(rawText.replace('\n', '\n\n'))
-// console.warn(rawText.split('\c').length)//replace('\n', '@@').)
-// console.warn(HTMLScriptElement.supports?.("importmap"))
-
-// const contentEl = DOM.newElement('pre')
-
-// contentEl.textContent = rawText
-// .replace('\c\n', '\n\n')
-// .replace('\c', '\n\n')
-// .replace('\r', '\n\n')
-// contentEl.textContent = rawText.replace('\n', '\n\n')
-// console.warn(rawText)

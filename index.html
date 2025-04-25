@@ -10,31 +10,68 @@
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
   <title>Fretboard King</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/7.3.0/rxjs.umd.min.js" integrity="sha512-y3JTS47nnpKORJX8Jn1Rlm+QgRIIZHtu3hWxal0e81avPrqUH48yk+aCi+gprT0RMAcpYa0WCkapxe+bpBHD6g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <link rel="stylesheet" href="./src/css/main.css" />
   <link rel="stylesheet" href="./src/css/app.css" />
+  <link rel="stylesheet" href="./src/css/main.css" />
   <link rel="stylesheet" href="./src/css/actor.css" />
   <link rel="stylesheet" href="./src/css/tile.css" />
+  <link rel="stylesheet" href="./src/css/app-menu.css" />
+  <link rel="stylesheet" href="./src/css/special.css" />
   
 </head>
 
 <body>
   <div id="app">
-    <header id="app-header">
-      <div id="app-header-left">
-        <div id="controls">
-          <input type="button" name="audio-button" id="audio-button" value="Sound: On" />
+    <header id="app-header" class="gradient">
+      <div id="app-header-top">
+        
+        <div id="app-header-left">
+        </div>
+        <div id="app-header-center">
+          <h1>Fretboard King</h1>
+        </div>
+        <div id="app-header-right">
+          <div class="controls">
+            
+            <svg id="menu-open" class="app-button" width="40" height="40" viewBox="0 0  32 32" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+              <g id="bars" fill="#CDCDCD">
+                <path id="top" d=" M 3,17 29,17 29,21.15 3,21.15 3,17 Z" transform="matrix(1,0,0,1,0,-3.1)" />
+                <path id="middle" d=" M 3,14 29,14 29,18.05 3,18.05 3,14 Z" transform="matrix(1,0,0,-1,-0,22.65)" />
+                <path id="bottom" transform="matrix(1,0,0,1,-0,9.3)" d=" M 3,14 29,14 29,18.05 3,18.05 3,14 Z" />
+              </g>
+            </svg>
+          </div>
         </div>
       </div>
-      <div id="app-header-center">
-        <h1>Fretboard King</h1>
-      </div>
-      <div id="app-header-right">
-        <div id="controls">
-          <input type="button" name="start-button" id="start-button" value="Auto: Off" />
+      
+      <div id="app-header-bottom">
+        <div id="app-header-bottom-left">
+          <div class="controls">
+            <label for="mode-select">Mode</label>
+            
+            <select name="mode-select" id="mode-select">
+              <option value="All Occurences">All Occurences</option>
+              <option value="Chord">Chord</option>
+              <option value="Scale">Scale</option>
+              <option value="Arpeggio">Arpeggio</option>
+            </select>
+          </div>
+        </div>
+        <div id="app-header-bottom-center">
+          <div class="controls">
+            <input type="button" name="audio-button" id="audio-button" value="Sound: On" />
+          </div>
+        </div>
+        <div id="app-header-bottom-right">
+          <div class="controls">
+            <input type="button" name="start-button" id="start-button" value="Auto: Off" />
+          
+          </div>
         </div>
       </div>
     </header>
-    <section id="app-body">
+    
+    
+    <section id="app-body" class="gradient">
       <svg id="canvas" style="background:#FFFFFF;" width="412" height="681" viewBox="-0 -0 6 13" preserveAspectRatio="xMidYMin meet" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <pattern id="smallGrid" width="1" height="1" patternUnits="userSpaceOnUse">
@@ -116,6 +153,10 @@
         </select> -->
       </div>
     </footer>
+    <!-- <div id="app-menu">
+      <a id="app-menu-close">×</a>
+      <div class="app-menu-items"></div>
+    </div> -->
   </div>
   <script type="text/javascript" charset="utf-8">
     const SVG_NS = 'http://www.w3.org/2000/svg';
@@ -123,6 +164,13 @@
   
   <script src="./src/main.js" type="module"></script>
   <script src="./script.js" type="module"></script>
+  
+  <template id="app-menu-template">
+    <div id="app-menu">
+      <div id="app-menu-close">×</div>
+      <div id="app-menu-items"></div>
+    </div>
+  </template>
   
   <!-- <script src="./circlelozop.js" type="module"></script> -->
 </body>

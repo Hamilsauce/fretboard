@@ -1,7 +1,11 @@
 import { makeCircular, sleep } from './circular-loop-generator.js';
 import { audioCtx } from './src/fretboard.controller.js';
+import { draggable } from 'https://hamilsauce.github.io/hamhelper/draggable.js';
+import { AppMenu } from './src/components/app-menu.view.js';
 const standardTuning = ['E2', 'A2', 'D3', 'G3', 'B3', 'E4']
 
+// console.log('draggable', draggable)
+const app = document.querySelector('#app');
 let canvasEl;
 let sceneEl;
 let stringEls;
@@ -13,7 +17,15 @@ let stringTileGenerators;
 let appHeaderLeft = document.querySelector('#app-header-left');
 let startButton = document.querySelector('#start-button');
 let soundButton = document.querySelector('#audio-button');
+let menuOpenButton = document.querySelector('#menu-open');
 
+const appMenu = new AppMenu();
+
+app.appendChild(appMenu.dom)
+
+menuOpenButton.addEventListener('click', e => {
+  appMenu.open();
+});
 
 
 const isSequencerOn = () => startButton.value.includes('On')
@@ -93,7 +105,6 @@ export const setCanvasHeight = (canvas = canvasEl) => {
 
 let stopClickId = null;
 
-const app = document.querySelector('#app');
 canvasEl = document.querySelector('#canvas');
 sceneEl = document.querySelector('#scene');
 
@@ -102,6 +113,8 @@ setTimeout(() => {
   stringEls = sceneEl.querySelectorAll('.string-container');
   lowEString = sceneEl.querySelector('[data-base-note="E2"]');
   highEString = sceneEl.querySelector('[data-base-note="E4"]');
+  
+  // draggable(canvasEl, [...stringEls][0])
   
   stringTileGenerators = [
     makeCircular([...sceneEl.querySelector('[data-base-note="E2"]').children]),
