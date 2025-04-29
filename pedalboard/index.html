@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700;900&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <title>Pedalboard King</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/7.3.0/rxjs.umd.min.js" integrity="sha512-y3JTS47nnpKORJX8Jn1Rlm+QgRIIZHtu3hWxal0e81avPrqUH48yk+aCi+gprT0RMAcpYa0WCkapxe+bpBHD6g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <link rel="stylesheet" href="./src/css/app.css" />
+  <link rel="stylesheet" href="./src/css/main.css" />
+  <link rel="stylesheet" href="./src/css/actor.css" />
+  <link rel="stylesheet" href="./src/css/tile.css" />
+  <link rel="stylesheet" href="./src/css/app-menu.css" />
+  <link rel="stylesheet" href="./src/css/special.css" />
+  <link rel="stylesheet" href="./style.css" />
+  
+</head>
+
+<body>
+  <div id="app">
+    <header id="app-header" class="gradient"></header>
+    
+    
+    <section id="app-body" class="gradient">
+      <svg id="canvas" width="375" height="500" viewBox="-0 -0 16 32" preserveAspectRatio="xMidYMin meet" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <g id="templates">
+            
+            <g data-template="tile" id="" class="tile" transform="translate(0,0) rotate(0) scale(1)">
+              <rect x="0" y="0" width="1" height="1" transform="translate(0,0) rotate(0) scale(1)" />
+              
+              <g id="" class="note-marker" transform="translate(0.5,0.5) rotate(0) scale(0.85)">
+                <circle cx="0" cy="0" r="0.5" transform="translate(0,0) rotate(0) scale(1)" />
+                <text x="0" y="0" text-anchor="middle" dominant-baseline="middle" transform="translate(0,0.03)"></text>
+              </g>
+            </g>
+          </g>
+        </defs>
+        
+        
+        <g id="scene" transform="translate(0,-0) rotate(0) scale(1)">
+          <g id="surface-layer" transform="translate(0, 0) rotate(0) scale(1)">
+            <rect id="surface" x="0" y="0" rx="0" ry="0" width="16" height="32" fill="" transform="translate(0, 0)"></rect>
+          </g>
+          
+          <!-- <g id="string-layer" transform="translate(0,0) rotate(0) scale(1)">
+            <g id="string-6" data-string-number="6" class="string-container" data-base-note="E2" transform="translate(0.0,0.0) rotate(0) scale(1)"></g>
+            <g id="string-5" data-string-number="5" class="string-container" data-base-note="A2" transform="translate(1.0,0.0) rotate(0) scale(1)"></g>
+            <g id="string-4" data-string-number="4" class="string-container" data-base-note="D3" transform="translate(2.0,0.0) rotate(0) scale(1)"></g>
+            <g id="string-3" data-string-number="3" class="string-container" data-base-note="G3" transform="translate(3.0,0.0) rotate(0) scale(1)"></g>
+            <g id="string-2" data-string-number="2" class="string-container" data-base-note="B3" transform="translate(4.0,0.0) rotate(0) scale(1)"></g>
+            <g id="string-1" data-string-number="1" class="string-container" data-base-note="E4" transform="translate(5.0,0.0) rotate(0) scale(1)"></g>
+          </g> -->
+          
+          <g class="delay-pedal" transform="translate(0.0,0.0) rotate(0) scale(1)">
+            <rect class="pedal-face" x="0" y="0" rx="0" ry="0" width="4" height="6" fill="" transform="translate(0, 0)"></rect>
+          </g>
+      
+          <g class="distortion-pedal" transform="translate(12, 26) rotate(0) scale(1)">
+            <rect class="pedal-face" x="0" y="0" rx="0" ry="0" width="4" height="6" fill="" transform="translate(0, 0)"></rect>
+          </g>
+          
+          <g id="object-layer" transform="translate(0.0,0.0) rotate(0) scale(1)"></g>
+        </g>
+      </svg>
+      
+    </section>
+    
+    <footer id="app-footer">
+      <div class="container">
+        <label for="map-input"></label>
+        <!-- <input type="button" name="start-button" id="start-button" value="Start" /> -->
+        <!-- <select name="map-input" id="map-input">
+          <option value="FRETBOARD_1">FRETBOARD_1</option>
+          <option value="MAP_9X15_1">MAP_9X15_1</option>
+          <option value="BLANK_MAP_9X15_1">BLANK_MAP_9X15_1</option>
+        </select> -->
+      </div>
+    </footer>
+    <!-- <div id="app-menu">
+      <a id="app-menu-close">×</a>
+      <div class="app-menu-items"></div>
+    </div> -->
+  </div>
+  <script type="text/javascript" charset="utf-8">
+    const SVG_NS = 'http://www.w3.org/2000/svg';
+  </script>
+  
+  <!-- <script src="./src/main.js" type="module"></script> -->
+  <script src="./script.js" type="module"></script>
+  
+  <template id="app-menu-template">
+    <div id="app-menu">
+      <div id="app-menu-close">×</div>
+      <div id="app-menu-items"></div>
+    </div>
+  </template>
+  
+  <!-- <script src="./circlelozop.js" type="module"></script> -->
+</body>
+
+</html>

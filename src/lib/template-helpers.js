@@ -30,3 +30,4 @@ export const insertComponent = (context, name, options) => {
   
   return template;
 };
+

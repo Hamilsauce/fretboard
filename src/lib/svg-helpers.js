@@ -1,9 +1,7 @@
-const svg = document.querySelector('svg');
-
 
 // translate page to SVG co-ordinate
-export function svgPoint(element, x, y) {
-  var pt = svg.createSVGPoint();
+export function svgPoint(svgRoot, element, x, y) {
+  var pt = svgRoot.createSVGPoint();
   pt.x = x;
   pt.y = y;
   return pt.matrixTransform(element.getScreenCTM().inverse());

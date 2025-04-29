@@ -1,7 +1,5 @@
 import ham from 'https://hamilsauce.github.io/hamhelper/hamhelper1.0.0.js';
 import { EventEmitter } from 'https://hamilsauce.github.io/hamhelper/event-emitter.js';
-import { draggable } from 'https://hamilsauce.github.io/hamhelper/draggable.js';
-import { addDragAction } from '../modules/drag-stream.js';
 
 import { TransformList } from './TransformList.js';
 import { domPoint } from '../lib/utils.js';
