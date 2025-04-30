@@ -85,7 +85,6 @@ export const init = () => {
 
 stringLayer.addEventListener('click', (e = new MouseEvent()) => {
   const tile = e.target.closest('.tile');
-  const coords = getCoordinates(e)
   
   if (!tile) return;
   const string = e.target.closest('.string-container');

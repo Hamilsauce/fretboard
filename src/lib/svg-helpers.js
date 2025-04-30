@@ -1,4 +1,3 @@
-
 // translate page to SVG co-ordinate
 export function svgPoint(svgRoot, element, x, y) {
   var pt = svgRoot.createSVGPoint();
@@ -8,7 +7,7 @@ export function svgPoint(svgRoot, element, x, y) {
 }
 
 // update co-ordinates
-export function getCoordinates(event) {
+export function getCoordinates(event, svg = document.querySelector('#canvas')) {
   const out = {}
   // DOM co-ordinate
   out.clientX = event.clientX;
