@@ -2,6 +2,7 @@ import { StandardTuningStrings } from '../src/init-fretboard-data.js';
 import { FretboardModel } from '../src/FretboardModels.js';
 import { getSVGTemplate } from '../src/lib/template-helpers.js'
 import { getCoordinates, svgPoint } from '../src/lib/svg-helpers.js'
+import { MusicalScales, NoteData } from '../data/index.js';
 
 const fretboardModel = new FretboardModel(StandardTuningStrings);
 
@@ -11,18 +12,17 @@ const appHeaderRight = document.querySelector('#app-header-right')
 
 const stringContainers = [...svgCanvas.querySelectorAll('.string-container')];
 
-
 const updateHeader = (value) => {
   appHeaderRight.textContent = value
 };
 
-
 export const audioCtx = new AudioContext()
+
 function playPulse(pulseHz = 440) {
   let time = audioCtx.currentTime
   
   const osc = new OscillatorNode(audioCtx, {
-    type: "sine",
+    type: "triangle",
     frequency: 20,
   });
   
@@ -45,12 +45,8 @@ function playPulse(pulseHz = 440) {
   return (pulseTime = 1) => {
     time = audioCtx.currentTime
     
-    // osc.frequency.cancelAndHoldAtTime(time)
     osc.frequency.exponentialRampToValueAtTime(1, time)
     amp.gain.exponentialRampToValueAtTime(0.1, time + 1)
-    // amp.gain.cancelScheduledValues(time+1)
-    // osc.frequency.cancelScheduledValues(time)
-    
     
     osc.stop(time + 1)
   }
@@ -111,7 +107,7 @@ stringLayer.addEventListener('click', (e = new MouseEvent()) => {
       child.dataset.isTarget = false
       child.dataset.active = false;
       stringParentNumber = +child.closest('.string-container').dataset.stringNumber - 1
-
+      
       if (
         child.dataset.pitchClass === targetPitchClass &&
         stringNumber !== stringParentNumber
@@ -138,3 +134,39 @@ stringLayer.addEventListener('click', (e = new MouseEvent()) => {
     tile.dataset.isTarget = false
   }
 });
+
+const getScale = (root, scaleName) => {
+  const scaleFormula = MusicalScales[scaleName]
+  const firstRoot = NoteData.findIndex(note => note.pitchClass === root)
+  const scaleNotes = []
+  let scaleIndex = 0
+  let baseIndex = 0
+  let currDegreeInterval = scaleFormula[scaleIndex];
+  let currNote = NoteData[baseIndex + currDegreeInterval]
+  
+  while (currNote) {
+    scaleNotes.push(currNote);
+  console.log({ currDegreeInterval, currNote, scaleIndex, baseIndex })
+  
+    scaleIndex = scaleIndex >= scaleFormula.length ? 0 : scaleIndex + 1
+    currDegreeInterval = scaleFormula[scaleIndex];
+    currNote = NoteData[baseIndex + currDegreeInterval]
+    if (!currDegreeInterval) {
+      scaleIndex = 0
+    }
+    
+    if (currNote & currNote.pitch === root) {
+      baseIndex = currNote.id ?? currNote.index
+      scaleIndex = 0
+    }
+  }
+  
+  return scaleNotes
+};
+
+
+const showScaleNotes = (root, scaleName) => {};
+
+const scaler = getScale('C', 'major')
+
+console.warn('scaler', scaler)

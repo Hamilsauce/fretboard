@@ -1,4 +1,4 @@
-export const PitchClassSets = {
+export const MusicalScales = {
   major: [0, 2, 4, 5, 7, 9, 11],
   majorPentatonic: [0, 2, 4, 7, 9],
   majorSeventh: [0, 4, 7, 11],

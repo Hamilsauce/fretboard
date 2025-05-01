@@ -1,5 +1,5 @@
 import { run } from '../ScaleGenerator.js';
-import { PitchClassSets, NoteData } from '../data/index.js';
+import { MusicalScales, NoteData } from '../data/index.js';
 
 const standardTuning = ['E2', 'A2', 'D3', 'G3', 'B3', 'E4']
 

@@ -1,4 +1,4 @@
-import { PitchClassSets, NoteData } from './data/index.js';
+import { MusicalScales, NoteData } from './data/index.js';
 
 console.log('NoteData', JSON.stringify(NoteData[0], null, 2))
 
@@ -7,7 +7,7 @@ const toPitchClassNames = (notesArray = []) => notesArray
   .map(({ pitchClass }, i) => pitchClass);
 
 const moduleState = {
-  scaleMap: new Map(Object.entries(PitchClassSets)),
+  scaleMap: new Map(Object.entries(MusicalScales)),
   noteMap: new Map(
     NoteData.map((note) => [note.pitch, note])
   ),

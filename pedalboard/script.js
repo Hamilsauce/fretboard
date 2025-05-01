@@ -1,12 +1,14 @@
 // import { makeCircular, sleep } from './circular-loop-generator.js';
 // import { audioCtx } from './src/fretboard.controller.js';
 import { draggable } from 'https://hamilsauce.github.io/hamhelper/draggable.js';
-
+import { createPedal } from '../pedalboard/pedal.js';
 const app = document.querySelector('#app');
 const canvasEl = document.querySelector('#canvas');
 const sceneEl = document.querySelector('#scene');
 const distortion = document.querySelector('.distortion-pedal');
-console.log(draggable)
+
+console.log('draggable', draggable)
+createPedal('distortion')
 const dispatchClick = target => {
   const ev = new PointerEvent('click', {
     view: window,
@@ -25,9 +27,8 @@ export const setCanvasHeight = (canvas = canvasEl) => {
 };
 
 setCanvasHeight(canvasEl)
-draggable(canvasEl, distortion)
+// draggable(canvasEl, distortion)
 
 let stopClickId = null;
 
-sceneEl.addEventListener('click', (e) => {
-});
+sceneEl.addEventListener('click', (e) => {});

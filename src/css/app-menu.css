@@ -18,8 +18,8 @@
   overflow-x: hidden;
   transition: 0.3s;
   z-index: 500;
-  backdrop-filter: hue-rotate(180deg) brightness(200%) blur(3.5px);
-  filter: invert(1) contrast(100%);
+  filter: invert(1);
+  backdrop-filter: hue-rotate(10deg) blur(5.5px) contrast(0.5) brightness(0.5);
 }
 
 #app-menu * {
