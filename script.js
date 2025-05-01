@@ -1,10 +1,11 @@
 import { makeCircular, sleep } from './circular-loop-generator.js';
-import { audioCtx } from './src/fretboard.controller.js';
+import { audioCtx, getScalePitchClasses, targetNotes, activateNotes, deactivateAllNotes } from './src/fretboard.controller.js';
 import { draggable } from 'https://hamilsauce.github.io/hamhelper/draggable.js';
 import { AppMenu } from './src/components/app-menu.view.js';
-const standardTuning = ['E2', 'A2', 'D3', 'G3', 'B3', 'E4']
+import { StandardTuningStrings } from '../src/init-fretboard-data.js';
+import { MusicalScales, NoteData } from '../data/index.js';
 
-// console.log('draggable', draggable)
+const standardTuning = ['E2', 'A2', 'D3', 'G3', 'B3', 'E4']
 const app = document.querySelector('#app');
 let canvasEl;
 let sceneEl;
@@ -18,10 +19,48 @@ let appHeaderLeft = document.querySelector('#app-header-left');
 let startButton = document.querySelector('#start-button');
 let soundButton = document.querySelector('#audio-button');
 let menuOpenButton = document.querySelector('#menu-open');
+let keySelect = document.querySelector('#key-select-container');
+
+// new HTMLSelectElement().options.add()
+const chromatic = NoteData.slice(0, 12)
+// console.log('chromatic', chromatic)
+
+chromatic.forEach((note, i) => {
+  const option = document.createElement('option');
+  option.value = note.pitchClass
+  option.textContent = note.pitchClass
+  
+  keySelect.querySelector('#key-select').options.add(option)
+  
+});
+
+keySelect.addEventListener('change', e => {
+  const key = keySelect.querySelector('select').value
+  const scalePitchClasses = getScalePitchClasses(key, 'major')
+  
+  deactivateAllNotes()
+  activateNotes((note) => scalePitchClasses.includes(note.dataset.pitchClass))
+  targetNotes((note) => note.dataset.pitchClass === key)
+  
+});
 
 const appMenu = new AppMenu();
 
 app.appendChild(appMenu.dom)
+
+appMenu.on('menu:scale-mode', e => {
+  const show = keySelect.dataset.show === 'true' ? true : false
+  keySelect.dataset.show = true //!show
+  
+  appMenu.open();
+  
+  console.log('duck')
+});
+
+appMenu.on('*',
+  e => {
+    console.log('HEAR IT ALL')
+  });
 
 menuOpenButton.addEventListener('click', e => {
   appMenu.open();
@@ -42,12 +81,12 @@ const dispatchClick = target => {
 
 const randoDigi = (range = 5) => Math.floor(Math.random() * range);
 
-const autoClicker = (tileGenerators, interval = 300, clickTimes = 0, ) => {
+const autoClicker = (tileGenerators, interval = 200, clickTimes = 0, ) => {
   let clickCount = 0;
   let delay = 0;
   let el;
   let stringNumber = 5
-  let clickLoopLimit = 10
+  let clickLoopLimit = 12
   
   const autoClickerId = setInterval(async () => {
     if (!autoClickerId) return;
@@ -78,7 +117,7 @@ const autoClicker = (tileGenerators, interval = 300, clickTimes = 0, ) => {
     
     if (tempCount >= clickLoopLimit) {
       clickCount = 0;
-      stringNumber = 5 //stringNumber === 0 ? 5 : stringNumber - 1
+      stringNumber = stringNumber === 0 ? 5 : stringNumber - 1
       
       // stringNumber = stringNumber <= 5 ? 0 : stringNumber - 1
       

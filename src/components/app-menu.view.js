@@ -58,16 +58,16 @@ export class MenuItem {
 const DEFAULT_MENU_OPTIONS = {
   items: [
     {
-      name: 'save-map',
-      title: 'Save',
+      name: 'auto-mode',
+      title: 'Auto Mode',
       path: null,
-      action: new Action('save-map'),
+      action: new Action('auto-mode'),
     },
     {
-      name: 'load-map',
-      title: 'Load',
+      name: 'scale-mode',
+      title: 'Scale Mode',
       path: null,
-      action: new Action('load-map'),
+      action: new Action('scale-mode'),
     },
   ]
 }

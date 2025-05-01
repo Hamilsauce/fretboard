@@ -52,6 +52,52 @@ function playPulse(pulseHz = 440) {
   }
 }
 
+export const activateNotes = (selectFn) => {
+  
+  const tiles = [...svgCanvas.querySelectorAll('.tile')]
+    .filter((tile, i) => {
+      return selectFn(tile)
+    });
+  
+  
+  tiles.forEach((tile, i) => {
+    
+    tile.dataset.active = true;
+  });
+  
+}
+export const targetNotes = (selectFn) => {
+  
+  const tiles = [...svgCanvas.querySelectorAll('.tile')]
+    .filter((tile, i) => {
+      return selectFn(tile)
+    });
+  
+  
+  tiles.forEach((tile, i) => {
+    
+    tile.dataset.isTarget = true;
+  });
+  
+}
+
+
+
+export const getActiveNotes = () => {
+  return [...document.querySelectorAll('.tile[data-active=true]')];
+};
+
+export const deactivateAllNotes = (detarget = true) => {
+  getActiveNotes().forEach((tile, i) => {
+    tile.dataset.active = false
+    if (detarget) {
+      tile.dataset.isTarget = false
+      
+    }
+  });
+};
+
+
 const stringOscillators = new Array(6).fill(null)
 
 export const init = () => {
@@ -137,60 +183,15 @@ stringLayer.addEventListener('click', (e = new MouseEvent()) => {
 
 // const initNoteIndexTracker = (b)
 
-const getScale = (root, scaleName) => {
+export const getScalePitchClasses = (root, scaleName) => {
   const scaleFormula = MusicalScales[scaleName]
-  const firstRoot = NoteData.find(note => note.pitchClass === root)
-  const scaleNotes = []
-  let scaleIndex = 0
-  let baseIndex = 0
-  let currDegreeInterval = scaleFormula[scaleIndex];
-  let notePosition = [baseIndex + currDegreeInterval]
-  let currNote = NoteData[notePosition]
-  let count = 0
-  console.warn('firstRoot', firstRoot)
-  // console.warn('NoteData.length', NoteData.length)
-  // while (!(notePosition >= NoteData.length)) {
-  // while (!(count >= NoteData.length)) {
-  while (!(count >= 30)) {
-    count++
-    scaleNotes.push(currNote);
-    
-    
-    // if (!currDegreeInterval) {
-    //   scaleIndex = 0
-    // }
-    scaleIndex = scaleIndex >= scaleFormula.length ? 0 : scaleIndex + 1
-    currDegreeInterval = scaleFormula[scaleIndex];
-    
-    console.log({ currNote })
-    if (currNote && currNote.pitch === root && currNote.id !== firstRoot.id) {
-      console.warn('currNote.id', currNote.id)
-      
-      baseIndex = currNote.id ?? currNote.index
-      scaleIndex = 0
-      console.warn('FOUND PITCH CLASS', baseIndex, scaleIndex)
-    }
-    
-    console.warn('baseIndex', baseIndex)
-    notePosition = [baseIndex + currDegreeInterval]
-    currNote = NoteData[notePosition]
-    
-    
-    // console.log({
-    //   scaleIndex,
-    //   baseIndex,
-    //   currDegreeInterval,
-    //   currNote,
-    // })
-    
-  }
+  const firstRootIndex = NoteData.findIndex(note => note.pitchClass === root)
   
-  return scaleNotes
-};
+  return scaleFormula.map((interval) => {
+    const noteIndex = firstRootIndex + interval
+    return NoteData[noteIndex].pitchClass
+  });
+}
 
 
-const showScaleNotes = (root, scaleName) => {};
-
-const scaler = getScale('C', 'major')
-
-console.warn('scaler', scaler)
+const showScaleNotes = (root, scaleName) => {}

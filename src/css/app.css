@@ -164,6 +164,14 @@
   box-shadow: 0 2px 1px 1px #00000070;
 }
 
+#key-select-container {
+  display: none;
+}
+
+#key-select-container[data-show=true] {
+  display: initial;
+}
+
 .controls {
   display: flex;
   flex-direction: column;

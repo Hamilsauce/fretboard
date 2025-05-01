@@ -44,14 +44,13 @@
       
       <div id="app-header-bottom">
         <div id="app-header-bottom-left">
-          <div class="controls">
-            <label for="mode-select">Mode</label>
-            
-            <select name="mode-select" id="mode-select">
-              <option value="All Occurences">All Occurences</option>
-              <option value="Chord">Chord</option>
-              <option value="Scale">Scale</option>
-              <option value="Arpeggio">Arpeggio</option>
+          <div id="key-select-container">
+            <label for="key-select">Key</label>
+            <select name="key-select" id="key-select">
+              <!-- <option value="All Occurences">All Occurences</option> -->
+              <!-- <option value="Chord">Chord</option> -->
+              <!-- <option value="Scale">Scale</option> -->
+              <!-- <option value="Arpeggio">Arpeggio</option> -->
             </select>
           </div>
         </div>
@@ -107,7 +106,7 @@
               <rect x="0" y="0" width="1" height="1" transform="translate(0,0) rotate(0) scale(1)" />
               
               <g id="" class="note-marker" transform="translate(0.5,0.5) rotate(0) scale(0.85)">
-                <circle cx="0" cy="0" r="0.5" transform="translate(0,0) rotate(0) scale(1)" />
+                <circle cx="0" cy="0" r="0.42" transform="translate(0,0) rotate(0) scale(1)" />
                 <text x="0" y="0" text-anchor="middle" dominant-baseline="middle" transform="translate(0,0.03)"></text>
               </g>
             </g>
@@ -152,6 +151,14 @@
     <div id="app-menu">
       <div id="app-menu-close">×</div>
       <div id="app-menu-items"></div>
+    </div>
+  </template>
+  
+  <template id="key-select-template">
+    <div id="key-select-container">
+      <label for="key-select">Key</label>
+      <select name="key-select" id="key-select">
+      </select>
     </div>
   </template>
   
