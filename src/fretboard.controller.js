@@ -135,30 +135,54 @@ stringLayer.addEventListener('click', (e = new MouseEvent()) => {
   }
 });
 
+// const initNoteIndexTracker = (b)
+
 const getScale = (root, scaleName) => {
   const scaleFormula = MusicalScales[scaleName]
-  const firstRoot = NoteData.findIndex(note => note.pitchClass === root)
+  const firstRoot = NoteData.find(note => note.pitchClass === root)
   const scaleNotes = []
   let scaleIndex = 0
   let baseIndex = 0
   let currDegreeInterval = scaleFormula[scaleIndex];
-  let currNote = NoteData[baseIndex + currDegreeInterval]
-  
-  while (currNote) {
+  let notePosition = [baseIndex + currDegreeInterval]
+  let currNote = NoteData[notePosition]
+  let count = 0
+  console.warn('firstRoot', firstRoot)
+  // console.warn('NoteData.length', NoteData.length)
+  // while (!(notePosition >= NoteData.length)) {
+  // while (!(count >= NoteData.length)) {
+  while (!(count >= 30)) {
+    count++
     scaleNotes.push(currNote);
-  console.log({ currDegreeInterval, currNote, scaleIndex, baseIndex })
-  
+    
+    
+    // if (!currDegreeInterval) {
+    //   scaleIndex = 0
+    // }
     scaleIndex = scaleIndex >= scaleFormula.length ? 0 : scaleIndex + 1
     currDegreeInterval = scaleFormula[scaleIndex];
-    currNote = NoteData[baseIndex + currDegreeInterval]
-    if (!currDegreeInterval) {
-      scaleIndex = 0
-    }
     
-    if (currNote & currNote.pitch === root) {
+    console.log({ currNote })
+    if (currNote && currNote.pitch === root && currNote.id !== firstRoot.id) {
+      console.warn('currNote.id', currNote.id)
+      
       baseIndex = currNote.id ?? currNote.index
       scaleIndex = 0
+      console.warn('FOUND PITCH CLASS', baseIndex, scaleIndex)
     }
+    
+    console.warn('baseIndex', baseIndex)
+    notePosition = [baseIndex + currDegreeInterval]
+    currNote = NoteData[notePosition]
+    
+    
+    // console.log({
+    //   scaleIndex,
+    //   baseIndex,
+    //   currDegreeInterval,
+    //   currNote,
+    // })
+    
   }
   
   return scaleNotes
