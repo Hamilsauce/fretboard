@@ -1,5 +1,12 @@
 import { makeCircular, sleep } from './circular-loop-generator.js';
-import { audioCtx, getScalePitchClasses, targetNotes, activateNotes, deactivateAllNotes } from './src/fretboard.controller.js';
+import {
+  audioCtx,
+  getScalePitchClasses,
+  targetNotes,
+  getActiveNotes,
+  activateNotes,
+  deactivateAllNotes,
+} from './src/fretboard.controller.js';
 import { draggable } from 'https://hamilsauce.github.io/hamhelper/draggable.js';
 import { AppMenu } from './src/components/app-menu.view.js';
 import { StandardTuningStrings } from '../src/init-fretboard-data.js';
@@ -16,14 +23,13 @@ let autoClickerId;
 let noteTileGenerator;
 let stringTileGenerators;
 let appHeaderLeft = document.querySelector('#app-header-left');
+let appHeaderCenter = document.querySelector('#app-header-center');
 let startButton = document.querySelector('#start-button');
 let soundButton = document.querySelector('#audio-button');
 let menuOpenButton = document.querySelector('#menu-open');
 let keySelect = document.querySelector('#key-select-container');
 
-// new HTMLSelectElement().options.add()
 const chromatic = NoteData.slice(0, 12)
-// console.log('chromatic', chromatic)
 
 chromatic.forEach((note, i) => {
   const option = document.createElement('option');
@@ -34,14 +40,17 @@ chromatic.forEach((note, i) => {
   
 });
 
-keySelect.addEventListener('change', e => {
+keySelect.addEventListener('change', async (e) => {
   const key = keySelect.querySelector('select').value
   const scalePitchClasses = getScalePitchClasses(key, 'major')
   
-  deactivateAllNotes()
+  if (getActiveNotes()) {
+    deactivateAllNotes()
+  }
+  
+  await sleep(12 * 66)
   activateNotes((note) => scalePitchClasses.includes(note.dataset.pitchClass))
   targetNotes((note) => note.dataset.pitchClass === key)
-  
 });
 
 const appMenu = new AppMenu();
@@ -53,19 +62,17 @@ appMenu.on('menu:scale-mode', e => {
   keySelect.dataset.show = true //!show
   
   appMenu.open();
-  
-  console.log('duck')
 });
-
-appMenu.on('*',
-  e => {
-    console.log('HEAR IT ALL')
-  });
 
 menuOpenButton.addEventListener('click', e => {
   appMenu.open();
 });
 
+appHeaderCenter.addEventListener('click', e => {
+  keySelect.value = keySelect.value === 'F#' ? 'A' : 'F#';
+  
+  keySelect.dispatchEvent(new Event('change'))
+});
 
 const isSequencerOn = () => startButton.value.includes('On')
 const isSoundOn = () => soundButton.value.includes('On')
@@ -102,7 +109,9 @@ const autoClicker = (tileGenerators, interval = 200, clickTimes = 0, ) => {
     }
     
     el = result.value ?? null;
+   
     const tempCount = clickCount
+    
     if (el && !clickTimes || tempCount < clickTimes) {
       dispatchClick(el);
       clickCount++;
@@ -119,13 +128,9 @@ const autoClicker = (tileGenerators, interval = 200, clickTimes = 0, ) => {
       clickCount = 0;
       stringNumber = stringNumber === 0 ? 5 : stringNumber - 1
       
-      // stringNumber = stringNumber <= 5 ? 0 : stringNumber - 1
-      
+      // stringNumber = stringNumber <= 5 ? 0 : stringNumber - 
     }
-    
     delay = 0;
-    // appHeaderLeft.textContent = `Click: ${clickCount}, \n ${el.dataset.pitch}`
-    
   }, interval);
   
   return autoClickerId;
@@ -138,7 +143,6 @@ const updateAppContent = (content) => {
 
 export const setCanvasHeight = (canvas = canvasEl) => {
   const parentHeight = +getComputedStyle(canvas.parentElement).height.replace(/[^0-9.]/g, '');
-  console.warn('parentHeight', parentHeight)
   const canvasHeight = parentHeight >= 900 ? 900 : parentHeight
   canvas.style.height = `${(canvasHeight)}px`
 };
@@ -153,8 +157,6 @@ setTimeout(() => {
   stringEls = sceneEl.querySelectorAll('.string-container');
   lowEString = sceneEl.querySelector('[data-base-note="E2"]');
   highEString = sceneEl.querySelector('[data-base-note="E4"]');
-  
-  // draggable(canvasEl, [...stringEls][0])
   
   stringTileGenerators = [
     makeCircular([...sceneEl.querySelector('[data-base-note="E2"]').children]),
@@ -196,8 +198,6 @@ soundButton.addEventListener('click', (e) => {
 startButton.addEventListener('click', async (e) => {
   const runningState = isSequencerOn()
   startButton.value = runningState ? 'Auto: Off' : 'Auto: On'
-  
-  // setCanvasHeight();
   
   if (!runningState && !autoClickerId && isSoundOn()) {
     autoClickerId = autoClicker(stringTileGenerators);

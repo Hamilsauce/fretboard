@@ -1,4 +1,4 @@
-export const sleep = async (time = 500, cb) => {
+export const sleep = async (time = 500, cb = () => {}) => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       resolve(cb()); // Yay! Everything went well!

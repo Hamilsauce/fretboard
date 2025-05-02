@@ -3,6 +3,7 @@ import { FretboardModel } from '../src/FretboardModels.js';
 import { getSVGTemplate } from '../src/lib/template-helpers.js'
 import { getCoordinates, svgPoint } from '../src/lib/svg-helpers.js'
 import { MusicalScales, NoteData } from '../data/index.js';
+import {  sleep } from '../circular-loop-generator.js';
 
 const fretboardModel = new FretboardModel(StandardTuningStrings);
 
@@ -53,46 +54,42 @@ function playPulse(pulseHz = 440) {
 }
 
 export const activateNotes = (selectFn) => {
-  
   const tiles = [...svgCanvas.querySelectorAll('.tile')]
     .filter((tile, i) => {
       return selectFn(tile)
     });
   
-  
-  tiles.forEach((tile, i) => {
-    
+  tiles.forEach(async (tile, i) => {
+    await sleep(50 * i)
     tile.dataset.active = true;
   });
-  
 }
+
+
 export const targetNotes = (selectFn) => {
-  
   const tiles = [...svgCanvas.querySelectorAll('.tile')]
     .filter((tile, i) => {
       return selectFn(tile)
-    });
+    }).reverse();
   
-  
-  tiles.forEach((tile, i) => {
+  tiles.forEach(async (tile, i) => {
+    await sleep(66 * i)
     
     tile.dataset.isTarget = true;
   });
-  
 }
-
-
 
 export const getActiveNotes = () => {
   return [...document.querySelectorAll('.tile[data-active=true]')];
 };
 
 export const deactivateAllNotes = (detarget = true) => {
-  getActiveNotes().forEach((tile, i) => {
+  getActiveNotes().forEach(async(tile, i) => {
+    await sleep(66 * i)
+
     tile.dataset.active = false
     if (detarget) {
       tile.dataset.isTarget = false
-      
     }
   });
 };
@@ -122,6 +119,16 @@ export const init = () => {
       textEl.textContent = noteText //note.pitch
       stringEl.appendChild(template)
     });
+  });
+}
+
+export const getScalePitchClasses = (root, scaleName) => {
+  const scaleFormula = MusicalScales[scaleName]
+  const firstRootIndex = NoteData.findIndex(note => note.pitchClass === root)
+  
+  return scaleFormula.map((interval) => {
+    const noteIndex = firstRootIndex + interval
+    return NoteData[noteIndex].pitchClass
   });
 }
 
@@ -180,18 +187,3 @@ stringLayer.addEventListener('click', (e = new MouseEvent()) => {
     tile.dataset.isTarget = false
   }
 });
-
-// const initNoteIndexTracker = (b)
-
-export const getScalePitchClasses = (root, scaleName) => {
-  const scaleFormula = MusicalScales[scaleName]
-  const firstRootIndex = NoteData.findIndex(note => note.pitchClass === root)
-  
-  return scaleFormula.map((interval) => {
-    const noteIndex = firstRootIndex + interval
-    return NoteData[noteIndex].pitchClass
-  });
-}
-
-
-const showScaleNotes = (root, scaleName) => {}
