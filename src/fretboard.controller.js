@@ -3,7 +3,7 @@ import { FretboardModel } from '../src/FretboardModels.js';
 import { getSVGTemplate } from '../src/lib/template-helpers.js'
 import { getCoordinates, svgPoint } from '../src/lib/svg-helpers.js'
 import { MusicalScales, NoteData } from '../data/index.js';
-import {  sleep } from '../circular-loop-generator.js';
+import { sleep } from '../circular-loop-generator.js';
 
 const fretboardModel = new FretboardModel(StandardTuningStrings);
 
@@ -53,16 +53,35 @@ function playPulse(pulseHz = 440) {
   }
 }
 
-export const activateNotes = (selectFn) => {
+export const setEachNoteTo = async (selectFn, updateFn) => {
   const tiles = [...svgCanvas.querySelectorAll('.tile')]
     .filter((tile, i) => {
       return selectFn(tile)
     });
   
-  tiles.forEach(async (tile, i) => {
+  // console.log('tiles', tiles)
+  
+  return await tiles.reduce(async (acc, tile, i) => {
+    // await sleep(33 * i)
+    
+    updateFn(tile)
+    // console.log('tile after updatefn', tile)
+    return true
+  }, Promise.resolve());
+}
+
+export const activateNotes = async (selectFn) => {
+  const tiles = [...svgCanvas.querySelectorAll('.tile')]
+    .filter((tile, i) => {
+      return selectFn(tile)
+    });
+  
+  return await tiles.reduce(async (acc, tile, i) => {
     await sleep(50 * i)
+    
     tile.dataset.active = true;
-  });
+    return true
+  }, Promise.resolve());
 }
 
 
@@ -73,9 +92,8 @@ export const targetNotes = (selectFn) => {
     }).reverse();
   
   tiles.forEach(async (tile, i) => {
-    await sleep(66 * i)
-    
     tile.dataset.isTarget = true;
+    await sleep(66 * i)
   });
 }
 
@@ -83,18 +101,24 @@ export const getActiveNotes = () => {
   return [...document.querySelectorAll('.tile[data-active=true]')];
 };
 
-export const deactivateAllNotes = (detarget = true) => {
-  getActiveNotes().forEach(async(tile, i) => {
-    await sleep(66 * i)
-
-    tile.dataset.active = false
-    if (detarget) {
-      tile.dataset.isTarget = false
-    }
-  });
+export const deactivateAllNotes = async (resetData = true) => {
+  return await getActiveNotes()
+    .reverse()
+    .reduce(async (acc, tile, i) => {
+      await sleep(33 * i)
+      
+      tile.dataset.active = false;
+      
+      if (resetData) {
+        delete tile.dataset.scaleDegree
+        tile.dataset.isTarget = false
+      }
+      
+      return true
+    }, Promise.resolve());
 };
 
-
+console.warn('document.body.dataset.clear()', document.body.dataset)
 const stringOscillators = new Array(6).fill(null)
 
 export const init = () => {

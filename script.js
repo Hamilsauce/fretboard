@@ -6,6 +6,7 @@ import {
   getActiveNotes,
   activateNotes,
   deactivateAllNotes,
+  setEachNoteTo,
 } from './src/fretboard.controller.js';
 import { draggable } from 'https://hamilsauce.github.io/hamhelper/draggable.js';
 import { AppMenu } from './src/components/app-menu.view.js';
@@ -28,8 +29,12 @@ let startButton = document.querySelector('#start-button');
 let soundButton = document.querySelector('#audio-button');
 let menuOpenButton = document.querySelector('#menu-open');
 let keySelect = document.querySelector('#key-select-container');
+let keySelectEl = document
+  .querySelector('#key-select-container')
+  .querySelector('select')
 
 const chromatic = NoteData.slice(0, 12)
+let chromaticIndex = 0;
 
 chromatic.forEach((note, i) => {
   const option = document.createElement('option');
@@ -37,18 +42,46 @@ chromatic.forEach((note, i) => {
   option.textContent = note.pitchClass
   
   keySelect.querySelector('#key-select').options.add(option)
-  
 });
 
-keySelect.addEventListener('change', async (e) => {
+keySelectEl.addEventListener('change', async (e) => {
+  console.warn('e', e)
   const key = keySelect.querySelector('select').value
   const scalePitchClasses = getScalePitchClasses(key, 'major')
   
   if (getActiveNotes()) {
-    deactivateAllNotes()
+    await deactivateAllNotes()
   }
+  console.warn('scalePitchClasses', scalePitchClasses)
+  await setEachNoteTo(
+    (tile) => {
+      return [
+        scalePitchClasses[0],
+        scalePitchClasses[2],
+        scalePitchClasses[4],
+      ].includes(tile.dataset.pitchClass)
+    },
+    (tile) => {
+      const tilePC = tile.dataset.pitchClass
+      const [root, third, fifth] = [
+        scalePitchClasses[0],
+        scalePitchClasses[2],
+        scalePitchClasses[4],
+      ]
+      
+      if (tilePC === root) {
+        tile.dataset.scaleDegree = 'root'
+        
+      } else if (tilePC === third) {
+        tile.dataset.scaleDegree = 'third'
+        
+      } else if (tilePC === fifth) {
+        tile.dataset.scaleDegree = 'fifth'
+      }
+    },
+  )
   
-  await sleep(12 * 66)
+  await sleep(12 * 50)
   activateNotes((note) => scalePitchClasses.includes(note.dataset.pitchClass))
   targetNotes((note) => note.dataset.pitchClass === key)
 });
@@ -69,9 +102,11 @@ menuOpenButton.addEventListener('click', e => {
 });
 
 appHeaderCenter.addEventListener('click', e => {
-  keySelect.value = keySelect.value === 'F#' ? 'A' : 'F#';
   
-  keySelect.dispatchEvent(new Event('change'))
+  keySelect.value = chromatic[chromaticIndex]
+  chromaticIndex = chromaticIndex >= chromatic.length ? 0 : chromaticIndex + 1;
+  
+  keySelectEl.dispatchEvent(new Event('change'))
 });
 
 const isSequencerOn = () => startButton.value.includes('On')
@@ -109,7 +144,7 @@ const autoClicker = (tileGenerators, interval = 200, clickTimes = 0, ) => {
     }
     
     el = result.value ?? null;
-   
+    
     const tempCount = clickCount
     
     if (el && !clickTimes || tempCount < clickTimes) {
