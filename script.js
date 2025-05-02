@@ -45,14 +45,13 @@ chromatic.forEach((note, i) => {
 });
 
 keySelectEl.addEventListener('change', async (e) => {
-  console.warn('e', e)
   const key = keySelect.querySelector('select').value
   const scalePitchClasses = getScalePitchClasses(key, 'major')
   
   if (getActiveNotes()) {
     await deactivateAllNotes()
   }
-  console.warn('scalePitchClasses', scalePitchClasses)
+  
   await setEachNoteTo(
     (tile) => {
       return [
@@ -134,7 +133,6 @@ const autoClicker = (tileGenerators, interval = 200, clickTimes = 0, ) => {
     if (!autoClickerId) return;
     
     const randomStringNumber = stringNumber //randoDigi(5);
-    console.warn('stringNumber', stringNumber)
     const result = tileGenerators[randomStringNumber]
       .next() //clickCount);
     

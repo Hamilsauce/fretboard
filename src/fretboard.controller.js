@@ -59,13 +59,10 @@ export const setEachNoteTo = async (selectFn, updateFn) => {
       return selectFn(tile)
     });
   
-  // console.log('tiles', tiles)
-  
   return await tiles.reduce(async (acc, tile, i) => {
     // await sleep(33 * i)
     
     updateFn(tile)
-    // console.log('tile after updatefn', tile)
     return true
   }, Promise.resolve());
 }
@@ -118,7 +115,6 @@ export const deactivateAllNotes = async (resetData = true) => {
     }, Promise.resolve());
 };
 
-console.warn('document.body.dataset.clear()', document.body.dataset)
 const stringOscillators = new Array(6).fill(null)
 
 export const init = () => {
