@@ -9,8 +9,8 @@ import {
 } from './src/fretboard.controller.js';
 import { draggable } from 'https://hamilsauce.github.io/hamhelper/draggable.js';
 import { AppMenu } from './src/components/app-menu.view.js';
-import { StandardTuningStrings } from '../src/init-fretboard-data.js';
-import { MusicalScales, NoteData } from '../data/index.js';
+import { StandardTuningStrings } from './src/init-fretboard-data.js';
+import { MusicalScales, NoteData } from './data/index.js';
 
 const standardTuning = ['E2', 'A2', 'D3', 'G3', 'B3', 'E4']
 const app = document.querySelector('#app');

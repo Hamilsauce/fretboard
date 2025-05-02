@@ -1,6 +1,5 @@
 import { MusicalScales, NoteData } from './data/index.js';
 
-console.log('NoteData', JSON.stringify(NoteData[0], null, 2))
 
 const toPitchClassNames = (notesArray = []) => notesArray
   .filter((x, i) => i <= 11)
