@@ -1,10 +1,5 @@
 .tile rect {
   fill: transparent;
-  /* stroke: #612D2D; */
-  /* stroke-width: 0.01px; */
-  /* filter: invert(1); */
-  /* display: none; */
-  /* background: radial-gradient(#e66465, #9198e5); */
 }
 
 .note-marker,
@@ -13,7 +8,7 @@
 }
 
 .note-marker circle {
-  fill: #C7890A;
+  fill: #B95E18;
   stroke: #EAEAEA;
   stroke-width: 0.05px;
   filter: drop-shadow(0 0 0.095px #00000090);
@@ -31,9 +26,8 @@
 
 .tile[data-is-target=true] .note-marker circle {
   opacity: 1;
-  filter: invert(1) hue-rotate(130deg);
+  filter: invert(1) hue-rotate(70deg) brightness(0.7);
 }
-
 
 .note-marker text {
   fill: #FFFFFF;
@@ -41,83 +35,3 @@
   font-weight: 600;
   user-select: none;
 }
-
-/* #scene {
-  cursor: pointer;
-  box-shadow: 0 0  10 #000000;
-  filter: drop-shadow(0 0 2px #00000090);
-} */
-
-/*
-
-.tile[data-tile-type=barrier] rect {
-  fill: #4F5057;
-}
-
-.tile[data-tile-type=barrier] text {
-  fill: var(--tiletext-light);
-}
-
-.tile[data-is-path-node=true] rect {
-  fill: #DFFFB382;
-}
-
-.tile[data-is-path-node=true] text {
-  fill: #E9C71C;
-  stroke: #000000;
-  font-weight: 900;
-  stroke-width: 0.015px;
-  
-}
-
-
-
-.tile[data-tile-type=start] rect {
-  fill: #9B2B2B;
-}
-
-.tile[data-tile-type=start] text {
-  fill: var(--tiletext-light);
-}
-
-.tile[data-active=true] rect {
-  fill: #288ED0;
-  fill: #F2CA69;
-}
-
-.tile[data-current=true] rect {
-  fill: #288ED0;
-  fill: #F2CA69;
-}
-
-.tile[data-active=true][data-is-path-node=false] text {
-  fill: #288ED0;
-  fill: #F2CA69;
-  fill: var(--tiletext-light);
-}
-
-.tile[data-highlight=true] rect {
-  fill: #FFEE9F;
-}
-
-.tile[data-highlight=true][data-is-path-node=false][data-tile-type=empty] text {
-  fill: #FFEE9F;
-  fill: var(--tiletext-light);
-}
-
-.tile[data-target=true] rect {
-  fill: #D07728;
-}
-
-.tile[data-target=true] rect {
-  fill: #D07728;
-}
-
-.tile[data-tile-type=goal] rect {
-  fill: #329B2B;
-}
-
-.tile[data-tile-type=goal] text {
-  fill: var(--tiletext-light);
-}
-*/

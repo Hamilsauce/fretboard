@@ -1,6 +1,5 @@
 import { MusicalScales, NoteData } from './data/index.js';
 
-
 const toPitchClassNames = (notesArray = []) => notesArray
   .filter((x, i) => i <= 11)
   .map(({ pitchClass }, i) => pitchClass);
