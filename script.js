@@ -6,6 +6,7 @@ import {
   getActiveNotes,
   activateNotes,
   deactivateAllNotes,
+  initThemeTransformer,
   setEachNoteTo,
 } from './src/fretboard.controller.js';
 import { draggable } from 'https://hamilsauce.github.io/hamhelper/draggable.js';
@@ -92,6 +93,26 @@ app.appendChild(appMenu.dom)
 appMenu.on('menu:scale-mode', e => {
   const show = keySelect.dataset.show === 'true' ? true : false
   keySelect.dataset.show = true //!show
+  
+  appMenu.open();
+});
+
+let stopThemeTransformer;
+
+appMenu.on('menu:lightshow-mode', async (e) => {
+  console.warn('stopThemeTransformer', stopThemeTransformer)
+  if (stopThemeTransformer) {
+    // e.target.filter = 'invert(0)'
+    
+    stopThemeTransformer()
+    stopThemeTransformer = null;
+  }
+  else {
+    // e.target.filter = 'invert(1)'
+    
+    // stopThemeTransformer = await initThemeTransformer(app.querySelector('#app-body'),8000)
+    stopThemeTransformer = await initThemeTransformer(app, 80)
+  }
   
   appMenu.open();
 });
@@ -200,7 +221,12 @@ setTimeout(() => {
     makeCircular([...sceneEl.querySelector('[data-base-note="E4"]').children]),
   ];
   
-  // setCanvasHeight()
+  dispatchClick(menuOpenButton)
+  
+  setTimeout(() => {
+    const closer = appMenu.dom.querySelector('#app-menu-close');
+    dispatchClick(closer)
+  }, 1000)
 }, 250);
 
 

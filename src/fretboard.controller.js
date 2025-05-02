@@ -17,6 +17,32 @@ const updateHeader = (value) => {
   appHeaderRight.textContent = value
 };
 
+export const initThemeTransformer = async (el, interval = 1000) => {
+  // const appbody = document.querySelector('#app-body');
+  await sleep(500)
+  
+  let intensityOn = true
+  let intervalTime = interval
+  let stopTransformerId = null
+
+  
+  stopTransformerId = setInterval(() => {
+    if (intensityOn) el.style.filter = 'hue-rotate(80deg) contrast(1.8) brightness(1.2)'
+    else el.style.filter = 'hue-rotate(330deg) contrast(1.4) brightness(1.8)'
+    
+    intensityOn = !intensityOn
+  }, intervalTime)
+  
+  return () => {
+     el.style.filter = '';
+
+    clearInterval(stopTransformerId)
+  }
+};
+
+// initThemeTransformer(8000) 
+
+
 export const audioCtx = new AudioContext()
 
 function playPulse(pulseHz = 440) {

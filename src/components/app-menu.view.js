@@ -69,6 +69,12 @@ const DEFAULT_MENU_OPTIONS = {
       path: null,
       action: new Action('scale-mode'),
     },
+    {
+      name: 'lightshow-mode',
+      title: 'Light Show',
+      path: null,
+      action: new Action('lightshow-mode'),
+    },
   ]
 }
 
