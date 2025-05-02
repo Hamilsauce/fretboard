@@ -124,11 +124,11 @@
   /* min-width:100vw;min-height:100vh; */
   padding: 0 0;
   overflow: hidden;
-  /* backdrop-filter: brightness(1.25); */
-  /* filter: brightness(1.25) contrast(1.2); */
+  backdrop-filter: brightness(1.25);
+  filter: brightness(1.25) contrast(1.2);
   /* transition: 6s; */
   
-  backdrop-filter: hue-rotate(80deg) contrast(1.8) brightness(1.2);
+  /* backdrop-filter: hue-rotate(80deg) contrast(1.8) brightness(1.2); */
   transition: 6s;
   
 }
