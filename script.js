@@ -37,97 +37,6 @@ let keySelectEl = document
 const chromatic = NoteData.slice(0, 12)
 let chromaticIndex = 0;
 
-chromatic.forEach((note, i) => {
-  const option = document.createElement('option');
-  option.value = note.pitchClass
-  option.textContent = note.pitchClass
-  
-  keySelect.querySelector('#key-select').options.add(option)
-});
-
-keySelectEl.addEventListener('change', async (e) => {
-  const key = keySelect.querySelector('select').value
-  const scalePitchClasses = getScalePitchClasses(key, 'major')
-  
-  if (getActiveNotes()) {
-    await deactivateAllNotes()
-  }
-  
-  await setEachNoteTo(
-    (tile) => {
-      return [
-        scalePitchClasses[0],
-        scalePitchClasses[2],
-        scalePitchClasses[4],
-      ].includes(tile.dataset.pitchClass)
-    },
-    (tile) => {
-      const tilePC = tile.dataset.pitchClass
-      const [root, third, fifth] = [
-        scalePitchClasses[0],
-        scalePitchClasses[2],
-        scalePitchClasses[4],
-      ]
-      
-      if (tilePC === root) {
-        tile.dataset.scaleDegree = 'root'
-        
-      } else if (tilePC === third) {
-        tile.dataset.scaleDegree = 'third'
-        
-      } else if (tilePC === fifth) {
-        tile.dataset.scaleDegree = 'fifth'
-      }
-    },
-  )
-  
-  await sleep(12 * 50)
-  activateNotes((note) => scalePitchClasses.includes(note.dataset.pitchClass))
-  targetNotes((note) => note.dataset.pitchClass === key)
-});
-
-const appMenu = new AppMenu();
-
-app.appendChild(appMenu.dom)
-
-appMenu.on('menu:scale-mode', e => {
-  const show = keySelect.dataset.show === 'true' ? true : false
-  keySelect.dataset.show = true //!show
-  
-  appMenu.open();
-});
-
-let stopThemeTransformer;
-
-appMenu.on('menu:lightshow-mode', async (e) => {
-  console.warn('stopThemeTransformer', stopThemeTransformer)
-  if (stopThemeTransformer) {
-    // e.target.filter = 'invert(0)'
-    
-    stopThemeTransformer()
-    stopThemeTransformer = null;
-  }
-  else {
-    // e.target.filter = 'invert(1)'
-    
-    // stopThemeTransformer = await initThemeTransformer(app.querySelector('#app-body'),8000)
-    stopThemeTransformer = await initThemeTransformer(app, 80)
-  }
-  
-  appMenu.open();
-});
-
-menuOpenButton.addEventListener('click', e => {
-  appMenu.open();
-});
-
-appHeaderCenter.addEventListener('click', e => {
-  
-  keySelect.value = chromatic[chromaticIndex]
-  chromaticIndex = chromaticIndex >= chromatic.length ? 0 : chromaticIndex + 1;
-  
-  keySelectEl.dispatchEvent(new Event('change'))
-});
 
 const isSequencerOn = () => startButton.value.includes('On')
 const isSoundOn = () => soundButton.value.includes('On')
@@ -142,6 +51,113 @@ const dispatchClick = target => {
 };
 
 const randoDigi = (range = 5) => Math.floor(Math.random() * range);
+
+chromatic.forEach((note, i) => {
+  const option = document.createElement('option');
+  option.value = note.pitchClass
+  option.textContent = note.pitchClass
+  
+  keySelect.querySelector('#key-select').options.add(option)
+});
+
+keySelectEl.addEventListener('change', async (e) => {
+  const key = keySelect.querySelector('select').value
+  const scalePitchClasses = getScalePitchClasses(key, 'major')
+  
+  if (getActiveNotes()) await deactivateAllNotes()
+  
+  
+  await setEachNoteTo(
+    (tile) => [
+      scalePitchClasses[0],
+      scalePitchClasses[2],
+      scalePitchClasses[4],
+    ].includes(tile.dataset.pitchClass),
+    (tile) => {
+      const tilePC = tile.dataset.pitchClass
+      const [root, third, fifth] = [
+        scalePitchClasses[0],
+        scalePitchClasses[2],
+        scalePitchClasses[4],
+      ];
+      
+      if (tilePC === root) tile.dataset.scaleDegree = 'root'
+      else if (tilePC === third) tile.dataset.scaleDegree = 'third'
+      else if (tilePC === fifth) tile.dataset.scaleDegree = 'fifth'
+    },
+  )
+  
+  await sleep(12 * 50)
+  activateNotes((note) => scalePitchClasses.includes(note.dataset.pitchClass))
+  targetNotes((note) => note.dataset.pitchClass === key)
+});
+
+const appMenu = new AppMenu();
+app.appendChild(appMenu.dom)
+
+appMenu.on('menu:scale-mode', e => {
+  const show = keySelect.dataset.show === 'true' ? true : false
+  keySelect.dataset.show = true //!show
+  
+  appMenu.open();
+});
+
+let stopThemeTransformer;
+
+appMenu.on('menu:lightshow-mode', async (e) => {
+  if (stopThemeTransformer) {
+    stopThemeTransformer()
+    stopThemeTransformer = null;
+  }
+  else stopThemeTransformer = await initThemeTransformer(app, 80)
+  
+  appMenu.open();
+});
+
+appMenu.on('menu:audio-toggle', async (e) => {
+  const audioButton = appMenu.getItemByName('audio-toggle')
+  const buttonText = {
+    on: 'Audio: On',
+    off: 'Audio: Off',
+  }
+  
+  if (audioButton.title.includes('On')) {
+    audioCtx.suspend()
+    audioButton.title = buttonText.off
+  } else {
+    audioButton.title = buttonText.on
+    audioCtx.resume()
+  }
+});
+
+appMenu.on('menu:auto-mode', async (e) => {
+  const autoButton = appMenu.getItemByName('auto-mode')
+  const runningState = autoButton.title.includes('On')
+
+  autoButton.title = runningState ? 'Auto: Off' : 'Auto: On'
+  
+  if (!runningState && !autoClickerId) {
+    autoClickerId = autoClicker(stringTileGenerators);
+    audioCtx.resume()
+  }
+  else {
+    clearInterval(autoClickerId);
+    autoClickerId = null;
+    audioCtx.suspend()
+  }
+});
+
+menuOpenButton.addEventListener('click', e => {
+  appMenu.open();
+});
+
+appHeaderCenter.addEventListener('click', e => {
+  
+  keySelect.value = chromatic[chromaticIndex]
+  chromaticIndex = chromaticIndex >= chromatic.length ? 0 : chromaticIndex + 1;
+  
+  keySelectEl.dispatchEvent(new Event('change'))
+});
 
 const autoClicker = (tileGenerators, interval = 200, clickTimes = 0, ) => {
   let clickCount = 0;
@@ -230,42 +246,9 @@ setTimeout(() => {
 }, 250);
 
 
-
 sceneEl.addEventListener('click', (e) => {
   if (!isSequencerOn() && isSoundOn()) {
     audioCtx.resume()
-  }
-});
-
-soundButton.addEventListener('click', (e) => {
-  const buttonText = {
-    on: 'Sound: On',
-    off: 'Sound: Off',
-  }
-  
-  const textContent = soundButton.value;
-  
-  if (isSoundOn()) {
-    audioCtx.suspend()
-    soundButton.value = buttonText.off
-  } else {
-    soundButton.value = buttonText.on
-    audioCtx.resume()
-  }
-});
-
-startButton.addEventListener('click', async (e) => {
-  const runningState = isSequencerOn()
-  startButton.value = runningState ? 'Auto: Off' : 'Auto: On'
-  
-  if (!runningState && !autoClickerId && isSoundOn()) {
-    autoClickerId = autoClicker(stringTileGenerators);
-    audioCtx.resume()
-  }
-  else {
-    clearInterval(autoClickerId);
-    autoClickerId = null;
-    audioCtx.suspend()
   }
 });
 
