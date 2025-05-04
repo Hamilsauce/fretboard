@@ -37,10 +37,6 @@ let keySelectEl = document
 const chromatic = NoteData.slice(0, 12)
 let chromaticIndex = 0;
 
-
-const isSequencerOn = () => startButton.value.includes('On')
-const isSoundOn = () => soundButton.value.includes('On')
-
 const dispatchClick = target => {
   const ev = new PointerEvent('click', {
     view: window,
@@ -133,7 +129,7 @@ appMenu.on('menu:audio-toggle', async (e) => {
 appMenu.on('menu:auto-mode', async (e) => {
   const autoButton = appMenu.getItemByName('auto-mode')
   const runningState = autoButton.title.includes('On')
-
+  
   autoButton.title = runningState ? 'Auto: Off' : 'Auto: On'
   
   if (!runningState && !autoClickerId) {
@@ -197,8 +193,6 @@ const autoClicker = (tileGenerators, interval = 200, clickTimes = 0, ) => {
     if (tempCount >= clickLoopLimit) {
       clickCount = 0;
       stringNumber = stringNumber === 0 ? 5 : stringNumber - 1
-      
-      // stringNumber = stringNumber <= 5 ? 0 : stringNumber - 
     }
     delay = 0;
   }, interval);
@@ -222,7 +216,6 @@ let stopClickId = null;
 canvasEl = document.querySelector('#canvas');
 sceneEl = document.querySelector('#scene');
 
-
 setTimeout(() => {
   stringEls = sceneEl.querySelectorAll('.string-container');
   lowEString = sceneEl.querySelector('[data-base-note="E2"]');
@@ -245,12 +238,6 @@ setTimeout(() => {
   }, 1000)
 }, 250);
 
-
-sceneEl.addEventListener('click', (e) => {
-  if (!isSequencerOn() && isSoundOn()) {
-    audioCtx.resume()
-  }
-});
 
 sceneEl.addEventListener('dblclick', e => {
   clearInterval(autoClickerId);

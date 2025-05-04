@@ -18,13 +18,11 @@ const updateHeader = (value) => {
 };
 
 export const initThemeTransformer = async (el, interval = 1000) => {
-  // const appbody = document.querySelector('#app-body');
   await sleep(500)
   
   let intensityOn = true
   let intervalTime = interval
   let stopTransformerId = null
-
   
   stopTransformerId = setInterval(() => {
     if (intensityOn) el.style.filter = 'hue-rotate(80deg) contrast(1.8) brightness(1.2)'
@@ -34,14 +32,11 @@ export const initThemeTransformer = async (el, interval = 1000) => {
   }, intervalTime)
   
   return () => {
-     el.style.filter = '';
-
+    el.style.filter = '';
+    
     clearInterval(stopTransformerId)
   }
 };
-
-// initThemeTransformer(8000) 
-
 
 export const audioCtx = new AudioContext()
 
@@ -81,13 +76,9 @@ function playPulse(pulseHz = 440) {
 
 export const setEachNoteTo = async (selectFn, updateFn) => {
   const tiles = [...svgCanvas.querySelectorAll('.tile')]
-    .filter((tile, i) => {
-      return selectFn(tile)
-    });
+    .filter((tile, i) => selectFn(tile));
   
   return await tiles.reduce(async (acc, tile, i) => {
-    // await sleep(33 * i)
-    
     updateFn(tile)
     return true
   }, Promise.resolve());

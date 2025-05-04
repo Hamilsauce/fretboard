@@ -160,8 +160,8 @@ const runMetch = (timeIntervals = []) => {
 };
 
 
-// const z/app = document.querySelector('#app') //.append(contentEl);
-// const indicatorEl = document.querySelector('#tap-indicator') //.append(contentEl);
+const app = document.querySelector('#app') //.append(contentEl);
+const indicatorEl = document.querySelector('#tap-indicator') //.append(contentEl);
 
 // const TIME_OF_LOAD = performance.now()
 
@@ -173,13 +173,13 @@ let autoMetchId = null
 const tempo120beats4 = bpmToTimeIntervals()
 
 document.addEventListener('click', (e) => {
-  // tapTimes.push(performance.now())
-  // const isOn = indicatorEl.dataset.on === 'true' ? true : false;
-  // if (autoMetch && !autoMetchId) {
-  //   autoMetchId = runMetch(tempo120beats4)
-  // }
+  tapTimes.push(performance.now())
+  const isOn = indicatorEl.dataset.on === 'true' ? true : false;
+  if (autoMetch && !autoMetchId) {
+    autoMetchId = runMetch(tempo120beats4)
+  }
   
-  // else {
+  else {
   tempo = tap(tapTimes)
   const msg = tempo ? `${tempo} BPM` : 'Keep tapping...'
   playPulse()
@@ -191,5 +191,5 @@ document.addEventListener('click', (e) => {
   if (tapTimes.length >= 4) {
     ui.setMessage(msg)
   }
-  // }
+  }
 });
