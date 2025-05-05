@@ -24,18 +24,25 @@ let highEString;
 let autoClickerId;
 let noteTileGenerator;
 let stringTileGenerators;
-let appHeaderLeft = document.querySelector('#app-header-left');
-let appHeaderCenter = document.querySelector('#app-header-center');
-let startButton = document.querySelector('#start-button');
-let soundButton = document.querySelector('#audio-button');
-let menuOpenButton = document.querySelector('#menu-open');
-let keySelect = document.querySelector('#key-select-container');
-let keySelectEl = document
-  .querySelector('#key-select-container')
-  .querySelector('select')
+let appHeaderLeft = app.querySelector('#app-header-left');
+let appHeaderCenter = app.querySelector('#app-header-center');
+let startButton = app.querySelector('#start-button');
+let soundButton = app.querySelector('#audio-button');
+let menuOpenButton = app.querySelector('#menu-open');
+let keySelect = app.querySelector('#key-select-container');
+let keySelectEl = keySelect.querySelector('select');
 
-const chromatic = NoteData.slice(0, 12)
+
 let chromaticIndex = 0;
+const chromatic = NoteData.slice(0, 12);
+
+chromatic.forEach((note, i) => {
+  const option = document.createElement('option');
+  option.value = note.pitchClass
+  option.textContent = note.pitchClass
+  
+  keySelect.querySelector('#key-select').options.add(option)
+});
 
 const dispatchClick = target => {
   const ev = new PointerEvent('click', {
@@ -46,22 +53,21 @@ const dispatchClick = target => {
   target.dispatchEvent(ev);
 };
 
-const randoDigi = (range = 5) => Math.floor(Math.random() * range);
+export const randoDigi = (range = 5) => Math.floor(Math.random() * range);
 
-chromatic.forEach((note, i) => {
-  const option = document.createElement('option');
-  option.value = note.pitchClass
-  option.textContent = note.pitchClass
+const loopFunction = (fn = () => {}, interval = 500) => {
+  const looperId = setInterval(() => {
+    fn()
+  }, interval);
   
-  keySelect.querySelector('#key-select').options.add(option)
-});
+  return () => clearInterval(looperId)
+};
 
 keySelectEl.addEventListener('change', async (e) => {
   const key = keySelect.querySelector('select').value
   const scalePitchClasses = getScalePitchClasses(key, 'major')
   
   if (getActiveNotes()) await deactivateAllNotes()
-  
   
   await setEachNoteTo(
     (tile) => [
@@ -88,34 +94,29 @@ keySelectEl.addEventListener('change', async (e) => {
   targetNotes((note) => note.dataset.pitchClass === key)
 });
 
+
 const appMenu = new AppMenu();
-app.appendChild(appMenu.dom)
+app.appendChild(appMenu.dom);
+
+let stopScaleLooper;
 
 appMenu.on('menu:scale-mode', e => {
   const show = keySelect.dataset.show === 'true' ? true : false
-  keySelect.dataset.show = true //!show
-  
-  appMenu.open();
+  keySelect.dataset.show = true;
 });
 
-let stopThemeTransformer;
 
+let stopThemeTransformer;
 appMenu.on('menu:lightshow-mode', async (e) => {
   if (stopThemeTransformer) {
     stopThemeTransformer()
     stopThemeTransformer = null;
-  }
-  else stopThemeTransformer = await initThemeTransformer(app, 80)
-  
-  appMenu.open();
+  } else stopThemeTransformer = await initThemeTransformer(app)
 });
 
 appMenu.on('menu:audio-toggle', async (e) => {
   const audioButton = appMenu.getItemByName('audio-toggle')
-  const buttonText = {
-    on: 'Audio: On',
-    off: 'Audio: Off',
-  }
+  const buttonText = { on: 'Audio: On', off: 'Audio: Off', }
   
   if (audioButton.title.includes('On')) {
     audioCtx.suspend()
@@ -147,13 +148,22 @@ menuOpenButton.addEventListener('click', e => {
   appMenu.open();
 });
 
+
+
 appHeaderCenter.addEventListener('click', e => {
-  
-  keySelect.value = chromatic[chromaticIndex]
-  chromaticIndex = chromaticIndex >= chromatic.length ? 0 : chromaticIndex + 1;
-  
-  keySelectEl.dispatchEvent(new Event('change'))
+  changeKeyOption()
+  const show = keySelect.dataset.show === 'true' ? true : false
 });
+
+let keyChangeCount = 0
+
+const changeKeyOption = () => {
+  chromaticIndex = chromaticIndex >= chromatic.length ? 0 : chromaticIndex + 1;
+  keySelect.value = chromatic[chromaticIndex].pitch
+  document.querySelector('#app-header-left').textContent = keyChangeCount
+  keyChangeCount++
+  keySelectEl.dispatchEvent(new Event('change'))
+}
 
 const autoClicker = (tileGenerators, interval = 200, clickTimes = 0, ) => {
   let clickCount = 0;

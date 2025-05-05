@@ -13,26 +13,30 @@ const appHeaderRight = document.querySelector('#app-header-right')
 
 const stringContainers = [...svgCanvas.querySelectorAll('.string-container')];
 
+export const randoDigi = (range = 5) => Math.floor(Math.random() * range);
+
+
 const updateHeader = (value) => {
   appHeaderRight.textContent = value
 };
 
-export const initThemeTransformer = async (el, interval = 1000) => {
-  await sleep(500)
-  
+export const initThemeTransformer = async (el, interval = 2000) => {
   let intensityOn = true
   let intervalTime = interval
   let stopTransformerId = null
   
   stopTransformerId = setInterval(() => {
-    if (intensityOn) el.style.filter = 'hue-rotate(80deg) contrast(1.8) brightness(1.2)'
-    else el.style.filter = 'hue-rotate(330deg) contrast(1.4) brightness(1.8)'
+    const rand = randoDigi(360)
+    // const rand2 = randoDigi(2)
+    if (intensityOn) el.style.filter = `hue-rotate(${rand}deg) contrast(1.8) brightness(1.2)`
+    else el.style.filter = `hue-rotate(${rand}deg) contrast(1.4) brightness(1.8)`
     
     intensityOn = !intensityOn
   }, intervalTime)
   
   return () => {
     el.style.filter = '';
+    intensityOn = false;
     
     clearInterval(stopTransformerId)
   }
