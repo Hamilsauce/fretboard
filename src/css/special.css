@@ -1,5 +1,7 @@
 .gradient {
-  background-image: linear-gradient(66deg, #4C5255, #2E4F81),
+  transition: 2s;
+  
+  background-image: linear-gradient(66deg, #324753, #2E4F81),
     linear-gradient(to left, #646C74, #502249),
     linear-gradient(to right, #4C5F72, #3F4655);
   background-blend-mode: initial,

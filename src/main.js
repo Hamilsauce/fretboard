@@ -3,6 +3,7 @@
 import { setCanvasHeight } from '../script.js';
 import { svgUnitsToPixels } from '../src/lib/svg-units-to-pixels.js'
 import { init, getScalePitchClasses } from '../src/fretboard.controller.js';
+// import { scheduleOscillator } from '../src/audio/oscillator-scheduler.js';
 
 const canvasEl = document.querySelector('#canvas');
 const scene = document.querySelector('#scene')
@@ -25,7 +26,11 @@ canvasEl.style.width = widthString;
 
 init();
 
+
+
 window.addEventListener('resize', (e) => {
   setCanvasHeight(canvasEl);
   canvasEl.style.width = sceneWidthPixels + 'px'
 });
+
+

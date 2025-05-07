@@ -16,6 +16,10 @@ export class Action {
     this.#payload = payload;
   }
   
+  setPayload(data = {}) {
+    this.#payload = data
+  }
+  
   get type() { return this.#type };
   
   get payload() { return this.#payload || null };
@@ -26,16 +30,19 @@ export class MenuItem {
   #title = String;
   #path = String;
   #action = Action;
+  #value;
   #self;
   
-  constructor({ name, title, path, action }) {
+  constructor({ name, title, path, action, value }) {
     this.#self = document.createElement('div');
     this.#self.classList.add('app-menu-item', 'app-button')
     this.title = title;
     this.#name = name;
     this.#path = path;
+    this.#value = value ?? false;
     this.action = action;
     this.#self.dataset.menuItemName = name;
+    
   }
   
   
@@ -90,7 +97,6 @@ export class AppMenu extends View {
   
   constructor(options = DEFAULT_MENU_OPTIONS) {
     super('app-menu');
-    
     if (options && options.items) {
       this.init(options.items);
     }

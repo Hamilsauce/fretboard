@@ -4,6 +4,19 @@ import { getSVGTemplate } from '../src/lib/template-helpers.js'
 import { getCoordinates, svgPoint } from '../src/lib/svg-helpers.js'
 import { MusicalScales, NoteData } from '../data/index.js';
 import { sleep } from '../circular-loop-generator.js';
+import { scheduleOscillator, AudioNote, audioEngine } from '../src/audio/index.js';
+
+
+
+const newNote = (new AudioNote(audioEngine))
+  .at(audioEngine.currentTime + 0.2)
+  .frequencyHz(660)
+  .duration(2)
+// .velocity(0.4)
+// .play();
+
+console.warn('newNote', newNote)
+console.warn('audioEngine', audioEngine)
 
 const fretboardModel = new FretboardModel(StandardTuningStrings);
 
@@ -24,52 +37,97 @@ export const initThemeTransformer = async (el, interval = 2000) => {
   let intensityOn = true
   let intervalTime = interval
   let stopTransformerId = null
+  let originalTransition = el.style.transition
+  el.style.transition = '2s'
   
   stopTransformerId = setInterval(() => {
     const rand = randoDigi(360)
-    // const rand2 = randoDigi(2)
+    
     if (intensityOn) el.style.filter = `hue-rotate(${rand}deg) contrast(1.8) brightness(1.2)`
     else el.style.filter = `hue-rotate(${rand}deg) contrast(1.4) brightness(1.8)`
+    
+    // if (el.classList.contains('reverse-gradient')) {
+    //   el.classList.remove('reverse-gradient')
+    //   el.classList.add('gradient')
+    // }
+    // else {
+    //   el.classList.remove('gradient')
+    //   el.classList.add('reverse-gradient')
+    // }
     
     intensityOn = !intensityOn
   }, intervalTime)
   
   return () => {
     el.style.filter = '';
+    el.style.transition = originalTransition
     intensityOn = false;
     
     clearInterval(stopTransformerId)
   }
 };
 
-export const audioCtx = new AudioContext()
 
 function playPulse(pulseHz = 440) {
-  let time = audioCtx.currentTime
+  let time = audioEngine.currentTime
   
-  const osc = new OscillatorNode(audioCtx, {
+  const osc = new OscillatorNode(audioEngine, {
     type: "triangle",
     frequency: 20,
   });
   
   osc.frequency.exponentialRampToValueAtTime(pulseHz, time + 0.15)
   
-  const amp = new GainNode(audioCtx, { value: 0.0 });
+  const amp = new GainNode(audioEngine, { value: 0.0 });
   
-  const lfo = new OscillatorNode(audioCtx, {
+  const lfo = new OscillatorNode(audioEngine, {
     type: "square",
     frequency: 1,
   });
   
   // lfo.connect(amp.gain);
   amp.gain.exponentialRampToValueAtTime(0.3, time + 1)
-  osc.connect(amp).connect(audioCtx.destination);
+  osc.connect(amp).connect(audioEngine.destination);
   
   // lfo.start();
   osc.start();
   
   return (pulseTime = 1) => {
-    time = audioCtx.currentTime
+    time = audioEngine.currentTime
+    
+    osc.frequency.exponentialRampToValueAtTime(1, time)
+    amp.gain.exponentialRampToValueAtTime(0.1, time + 1)
+    
+    osc.stop(time + 1)
+  }
+}
+
+function playChord(pitches = [], arpeggiate = true) {
+  let time = audioEngine.currentTime
+  
+  const osc = new OscillatorNode(audioEngine, {
+    type: "triangle",
+    frequency: 20,
+  });
+  
+  osc.frequency.exponentialRampToValueAtTime(pulseHz, time + 0.15)
+  
+  const amp = new GainNode(audioEngine, { value: 0.0 });
+  
+  // const lfo = new OscillatorNode(audioEngine, {
+  //   type: "square",
+  //   frequency: 1,
+  // });
+  
+  // lfo.connect(amp.gain);
+  amp.gain.exponentialRampToValueAtTime(0.3, time + 1)
+  osc.connect(amp).connect(audioEngine.destination);
+  
+  // lfo.start();
+  osc.start();
+  
+  return (pulseTime = 1) => {
+    time = audioEngine.currentTime
     
     osc.frequency.exponentialRampToValueAtTime(1, time)
     amp.gain.exponentialRampToValueAtTime(0.1, time + 1)
@@ -173,6 +231,30 @@ export const getScalePitchClasses = (root, scaleName) => {
   });
 }
 
+export const getScaleNotes = (rootPitch, scaleName) => {
+  const scaleFormula = MusicalScales[scaleName]
+  const firstRootIndex = NoteData.findIndex(note => note.pitch === rootPitch)
+  
+  return scaleFormula.map((interval) => {
+    const noteIndex = firstRootIndex + interval
+    return NoteData[noteIndex]
+  });
+}
+
+export const getChordNotes = (root, scaleName) => {
+  const scalePitches = getScaleNotes(root, scaleName)
+  const majorChordDegreeSteps = [0, 2, 4, 6]
+  
+  return majorChordDegreeSteps.map((interval) => scalePitches[interval]);
+}
+
+export const toneChordState = {
+  arpeggiate: false,
+  playChords: true,
+}
+
+let scheduledOsc
+
 stringLayer.addEventListener('click', (e = new MouseEvent()) => {
   const tile = e.target.closest('.tile');
   
@@ -186,13 +268,13 @@ stringLayer.addEventListener('click', (e = new MouseEvent()) => {
   
   const prevActive = [...string.children].find((tile) => tile.dataset.active === 'true')
   
-  const osc = stringOscillators[stringNumber];
+  let osc = stringOscillators[stringNumber];
   
   const isActive = tile.dataset.active === 'true' ? true : false;
   let stringParentNumber
   
   stringContainers.forEach((el, i) => {
-    const osc = stringOscillators[i];
+    osc = stringOscillators[i];
     if (osc) {
       osc();
     }
@@ -217,13 +299,63 @@ stringLayer.addEventListener('click', (e = new MouseEvent()) => {
   const baseNote = string.dataset.baseNote
   
   const stringModel = fretboardModel.getStringByBase(baseNote)
-  const note = stringModel.getNoteByPitch(tile.dataset.pitch)
   
   if (tile !== prevActive) {
-    stringOscillators[stringNumber] = playPulse(note.frequency)
+    const { arpeggiate, playChords } = toneChordState
+    
+    if (!arpeggiate && !playChords) {
+      const note = stringModel.getNoteByPitch(tile.dataset.pitch)
+      stringOscillators[stringNumber] = playPulse(note.frequency)
+    } else if (!playChords && arpeggiate) {
+      getChordNotes(tile.dataset.pitch, 'major').forEach((note, i) => {
+        const timeMod = ((i + 1) / 1.5)
+        const startFreq = note.frequency - 100
+        
+        return scheduleOscillator({
+          audioCtx: audioEngine,
+          type: "triangle",
+          frequencyAutomation: [
+            { type: "setValue", value: startFreq, time: 0 },
+            { type: "linearRamp", value: note.frequency, time: 0.3 }
+          ],
+          gainAutomation: [
+            { type: "setValue", value: 0.0, time: timeMod + 0 },
+            { type: "linearRamp", value: 0.2, time: timeMod + 0.5 }, // fade in
+            { type: "linearRamp", value: 0.0, time: timeMod + 1.5 } // fade out
+          ],
+          startDelay: timeMod + 0.1,
+          stopAfter: timeMod + 2
+        }).osc;
+      });
+    } else if (!arpeggiate && playChords) {
+      getChordNotes(tile.dataset.pitch, 'major').forEach((note, i) => {
+        const timeMod = 0
+        const startFreq = note.frequency - 100
+        
+        return scheduleOscillator({
+          audioCtx: audioEngine,
+          type: "triangle",
+          frequencyAutomation: [
+            { type: "setValue", value: startFreq, time: 0 },
+            { type: "linearRamp", value: note.frequency, time: 0.3 }
+          ],
+          gainAutomation: [
+            { type: "setValue", value: 0.0, time: timeMod + 0 },
+            { type: "linearRamp", value: 0.2, time: timeMod + 0.5 }, // fade in
+            { type: "linearRamp", value: 0.0, time: timeMod + 1.5 } // fade out
+          ],
+          startDelay: timeMod + 0.1,
+          stopAfter: timeMod + 2
+        }).osc;
+      });
+    }
+    
     tile.dataset.active = true
     tile.dataset.isTarget = true
   } else {
+    if (scheduledOsc) {
+      scheduledOsc.stop(audioEngine.currentTime + 0.01)
+    }
     tile.dataset.active = false
     tile.dataset.isTarget = false
   }
