@@ -253,23 +253,18 @@ export const toneChordState = {
   playChords: true,
 }
 
-let scheduledOsc
+let scheduledOscs
 
 stringLayer.addEventListener('click', (e = new MouseEvent()) => {
   const tile = e.target.closest('.tile');
   
   if (!tile) return;
   const string = e.target.closest('.string-container');
-  
   const targetPitch = tile.dataset.pitch
   const targetPitchClass = tile.dataset.pitchClass
-  
   const stringNumber = +string.dataset.stringNumber - 1
-  
   const prevActive = [...string.children].find((tile) => tile.dataset.active === 'true')
-  
   let osc = stringOscillators[stringNumber];
-  
   const isActive = tile.dataset.active === 'true' ? true : false;
   let stringParentNumber
   
@@ -299,6 +294,13 @@ stringLayer.addEventListener('click', (e = new MouseEvent()) => {
   const baseNote = string.dataset.baseNote
   
   const stringModel = fretboardModel.getStringByBase(baseNote)
+
+if (scheduledOscs) {
+  scheduledOscs.forEach((scheduledOsc, i) => {
+    scheduledOsc.stop(audioEngine.currentTime + (i * 0.2))
+  });
+  scheduledOscs = null
+}  
   
   if (tile !== prevActive) {
     const { arpeggiate, playChords } = toneChordState
@@ -307,8 +309,8 @@ stringLayer.addEventListener('click', (e = new MouseEvent()) => {
       const note = stringModel.getNoteByPitch(tile.dataset.pitch)
       stringOscillators[stringNumber] = playPulse(note.frequency)
     } else if (!playChords && arpeggiate) {
-      getChordNotes(tile.dataset.pitch, 'major').forEach((note, i) => {
-        const timeMod = ((i + 1) / 1.5)
+      scheduledOscs = getChordNotes(tile.dataset.pitch, 'major').map((note, i) => {
+        const timeMod = ((i + 1) / 2)
         const startFreq = note.frequency - 100
         
         return scheduleOscillator({
@@ -320,15 +322,15 @@ stringLayer.addEventListener('click', (e = new MouseEvent()) => {
           ],
           gainAutomation: [
             { type: "setValue", value: 0.0, time: timeMod + 0 },
-            { type: "linearRamp", value: 0.2, time: timeMod + 0.5 }, // fade in
-            { type: "linearRamp", value: 0.0, time: timeMod + 1.5 } // fade out
+            { type: "linearRamp", value: 0.3, time: timeMod + 1 }, // fade in
+            { type: "linearRamp", value: 0.0, time: timeMod + 2 } // fade out
           ],
           startDelay: timeMod + 0.1,
           stopAfter: timeMod + 2
         }).osc;
       });
     } else if (!arpeggiate && playChords) {
-      getChordNotes(tile.dataset.pitch, 'major').forEach((note, i) => {
+      scheduledOscs = getChordNotes(tile.dataset.pitch, 'major').map((note, i) => {
         const timeMod = 0
         const startFreq = note.frequency - 100
         
@@ -341,11 +343,11 @@ stringLayer.addEventListener('click', (e = new MouseEvent()) => {
           ],
           gainAutomation: [
             { type: "setValue", value: 0.0, time: timeMod + 0 },
-            { type: "linearRamp", value: 0.2, time: timeMod + 0.5 }, // fade in
-            { type: "linearRamp", value: 0.0, time: timeMod + 1.5 } // fade out
+            { type: "linearRamp", value: 0.2, time: timeMod + 0.6 }, // fade in
+            { type: "linearRamp", value: 0.0, time: timeMod + 1 } // fade out
           ],
           startDelay: timeMod + 0.1,
-          stopAfter: timeMod + 2
+          stopAfter: timeMod + 1.5
         }).osc;
       });
     }
@@ -353,9 +355,9 @@ stringLayer.addEventListener('click', (e = new MouseEvent()) => {
     tile.dataset.active = true
     tile.dataset.isTarget = true
   } else {
-    if (scheduledOsc) {
-      scheduledOsc.stop(audioEngine.currentTime + 0.01)
-    }
+    // if (scheduledOsc) {
+    //   scheduledOsc.stop(audioEngine.currentTime + 0.01)
+    // }
     tile.dataset.active = false
     tile.dataset.isTarget = false
   }

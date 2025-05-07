@@ -51,20 +51,22 @@
       
       <div id="app-header-bottom">
         <div id="app-header-bottom-left">
-          <div id="key-select-container">
+          <div id="key-select-container" class="select-container">
             <label for="key-select">Key</label>
             <select name="key-select" id="key-select"></select>
           </div>
         </div>
         <div id="app-header-bottom-center">
-          <select name="tone-chord-select" id="tone-chord-select">
-            <option value="note">Note</option>
-            <option value="chord">Chord</option>
-            <option value="arpeggiate">Arpeggiate</option>
-            opt+
-          </select>
         </div>
         <div id="app-header-bottom-right">
+          <div id="play-select-container" class="select-container">
+            <label for="tone-chord-select">Play</label>
+            <select name="tone-chord-select" id="tone-chord-select">
+              <option value="chord">Chords</option>
+              <option value="note">Notes</option>
+              <option value="arpeggiate">Arpeggios</option>
+            </select>
+          </div>
         </div>
       </div>
     </header>
