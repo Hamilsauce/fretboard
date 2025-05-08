@@ -1,0 +1,94 @@
+.tile rect {
+  fill: transparent;
+}
+
+.note-marker,
+.note-marker * {
+  transition: 0.2s ease-in-out;
+}
+
+.note-marker circle {
+  fill: #C2C2C2;
+  stroke: #EAEAEA;
+  stroke-width: 0.05px;
+  filter: drop-shadow(0 0 0.095px #00000090);
+}
+
+.tile[data-active=true],
+.tile[data-active=true] .note-marker circle {
+  opacity: 1;
+  /* transition: 0.2s ease-out; */
+  /* transform: scale(0.8); */
+}
+
+/* .tile[data-active=true] .note-marker circle {
+  opacity: 1;
+  transition: 0.2s ease-out;
+  transform: scale(0.8);
+  r: 0.35;
+  stroke: #E8E8E8;
+  stroke-width: 0.05px;
+  
+  
+} */
+
+/* .tile[data-active=false], */
+.tile[data-active=false] .note-marker {
+  opacity: 0;
+  /* transition: 0.2s ease-in; */
+}
+
+.tile[data-is-target=true] .note-marker circle {
+  opacity: 1;
+  /* transition: 0.2s ease-in-out; */
+  fill: #C01313;
+  /* stroke: #E5E5E5; */
+  /* stroke-width: 0.05px; */
+  
+  
+  /* filter: invert(1) hue-rotate(70deg); */
+}
+
+.tile[data-active=true][data-scale-degree=root] circle,
+.tile[data-active=true][data-scale-degree=third] circle,
+.tile[data-active=true][data-scale-degree=fifth] circle {
+  r: 0.45;
+  /* stroke: #E5E5E5; */
+  /* stroke-width: 0.05px; */
+  filter: invert(0);
+}
+
+.tile[data-scale-degree=root] .note-marker circle {
+  /* opacity: 1; */
+  fill: #C01313;
+  /* filter: invert(0); */
+  /* r: 0.4; */
+  
+}
+
+.tile[data-scale-degree=third] .note-marker circle {
+  /* opacity: 1; */
+  fill: #316B9B;
+  /* filter: invert(0); */
+  /* r: 0.4; */
+  
+  
+  /* filter: invert(1) hue-rotate(210deg) brightness(0.7); */
+}
+
+.tile[data-scale-degree=fifth] .note-marker circle {
+  opacity: 1;
+  fill: #499B31;
+  /* filter: invert(0); */
+  /* r: 0.4; */
+  
+  /* filter: invert(1) hue-rotate(280deg) brightness(0.7); */
+}
+
+.note-marker text {
+  fill: #FFFFFF;
+  font-size: 0.35px;
+  font-weight: 600;
+  user-select: none;
+  filter: invert(1);
+}

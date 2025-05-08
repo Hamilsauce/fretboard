@@ -51,7 +51,7 @@ chromatic.forEach((note, i) => {
   keySelect.querySelector('#key-select').options.add(option)
 });
 
-const dispatchClick = target => {
+export const dispatchClick = target => {
   const ev = new PointerEvent('click', {
     view: window,
     bubbles: true,
@@ -155,7 +155,7 @@ let stopScaleLooper;
 appMenu.on('menu:scale-mode', e => {
   console.warn('e', e)
   const show = keySelect.dataset.show === 'true' ? true : false
-  keySelect.dataset.show = true;
+  keySelect.dataset.show = !show;
 });
 
 
@@ -201,7 +201,6 @@ appMenu.on('menu:auto-mode', async (e) => {
 menuOpenButton.addEventListener('click', e => {
   appMenu.open();
 });
-
 
 
 appHeaderCenter.addEventListener('click', e => {

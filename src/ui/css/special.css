@@ -1,0 +1,16 @@
+.gradient {
+  transition: 2s;
+  
+  background-image: linear-gradient(66deg, #324753, #2E4F81),
+    linear-gradient(to left, #646C74, #502249),
+    linear-gradient(to right, #4C5F72, #3F4655);
+  background-blend-mode: initial,
+    color-dodge,
+    difference;
+  background-repeat: no-repeat,
+    no-repeat,
+    no-repeat;
+  background-position: bottom right,
+    left,
+    right;
+}

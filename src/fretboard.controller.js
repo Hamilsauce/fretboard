@@ -2,6 +2,7 @@ import { StandardTuningStrings } from '../src/init-fretboard-data.js';
 import { FretboardModel } from '../src/FretboardModels.js';
 import { getSVGTemplate } from '../src/lib/template-helpers.js'
 import { getCoordinates, svgPoint } from '../src/lib/svg-helpers.js'
+import { dispatchClick } from '../script.js';
 import { MusicalScales, NoteData } from '../data/index.js';
 import { sleep } from '../circular-loop-generator.js';
 import { scheduleOscillator, AudioNote, audioEngine } from '../src/audio/index.js';
@@ -12,11 +13,8 @@ const newNote = (new AudioNote(audioEngine))
   .at(audioEngine.currentTime + 0.2)
   .frequencyHz(660)
   .duration(2)
-// .velocity(0.4)
-// .play();
+  .velocity(0.4)
 
-console.warn('newNote', newNote)
-console.warn('audioEngine', audioEngine)
 
 const fretboardModel = new FretboardModel(StandardTuningStrings);
 
@@ -254,10 +252,32 @@ export const toneChordState = {
 }
 
 let scheduledOscs
+let recordedNotes = []
+
+
+const recPlayButton = document.querySelector('#rec-stop-play-button');
+
+recPlayButton.addEventListener('click', e => {
+  const nowTime = performance.now() // audioEngine.currentTime
+  console.warn('baseTime', nowTime)
+  console.warn('recordedNotes', recordedNotes.map(({time})=>time))
+  
+  recordedNotes.forEach((e, i) => {
+    setTimeout(() => {
+      dispatchClick(e.target)
+      console.log('e.time + nowTime', e.time + nowTime)
+    }, e.time)
+    
+  });
+  
+  // const show = keySelect.dataset.show === 'true' ? true : false
+});
+
+
 
 stringLayer.addEventListener('click', (e = new MouseEvent()) => {
-  const tile = e.target.closest('.tile');
   
+  const tile = e.target.closest('.tile');
   if (!tile) return;
   const string = e.target.closest('.string-container');
   const targetPitch = tile.dataset.pitch
@@ -267,6 +287,15 @@ stringLayer.addEventListener('click', (e = new MouseEvent()) => {
   let osc = stringOscillators[stringNumber];
   const isActive = tile.dataset.active === 'true' ? true : false;
   let stringParentNumber
+  
+  
+  recordedNotes.push({
+    // time: audioEngine.currentTime,
+    time: performance.now(),
+    x: 5 - stringNumber,
+    y: +tile.dataset.fret,
+    target: tile,
+  })
   
   stringContainers.forEach((el, i) => {
     osc = stringOscillators[i];
@@ -294,13 +323,13 @@ stringLayer.addEventListener('click', (e = new MouseEvent()) => {
   const baseNote = string.dataset.baseNote
   
   const stringModel = fretboardModel.getStringByBase(baseNote)
-
-if (scheduledOscs) {
-  scheduledOscs.forEach((scheduledOsc, i) => {
-    scheduledOsc.stop(audioEngine.currentTime + (i * 0.2))
-  });
-  scheduledOscs = null
-}  
+  
+  if (scheduledOscs) {
+    scheduledOscs.forEach((scheduledOsc, i) => {
+      scheduledOsc.stop(audioEngine.currentTime + (i * 0.2))
+    });
+    scheduledOscs = null
+  }
   
   if (tile !== prevActive) {
     const { arpeggiate, playChords } = toneChordState
