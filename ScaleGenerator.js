@@ -1,4 +1,4 @@
-import { MusicalScales, NoteData } from './data/index.js';
+import { MusicalScales, NoteData } from './src/data/index.js';
 
 const toPitchClassNames = (notesArray = []) => notesArray
   .filter((x, i) => i <= 11)

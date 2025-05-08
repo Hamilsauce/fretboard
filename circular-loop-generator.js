@@ -1,36 +1,37 @@
 export const sleep = async (time = 500, cb = () => {}) => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      resolve(cb()); 
+      resolve(cb());
     }, time);
   });
   
 };
 
-// const badChars = '",{,} ';
+const initNumberInRangeTester = (lower = 0, upper = 1) => (num) => {
+  return typeof override === 'number' &&
+    num >= lower &&
+    num < upper;
+}
 
-function* circleLooper(sourceArray = [], delay = 0) {
-  // const baseIndex = 0;
-  let index = 0;
+const initIndexIncrementLooper = (initialIndex = 0, lower = 0, upper = 1) => {
+  const isNumberInRange = initNumberInRangeTester(0, upper)
+  let index = initialIndex;
+  
+  return (override) => {
+    index = isNumberInRange(override) ? override : (index + 1) % upper;
+    return index;
+  }
+}
+
+
+function* circleLooper(sourceArray = [], startIndex = 0) {
+  let index = startIndex;
   let indexOverride
-  let currentItem = sourceArray[index]
+  const loopIncrementIndex = initIndexIncrementLooper(index, 0, sourceArray.length)
   
   while (true) {
-    indexOverride = yield currentItem
-    
-    if (indexOverride >= 0) {
-      index = indexOverride
-      indexOverride = null
-    } else {
-      index = index < sourceArray.length ? index + 1 : 0
-    }
-    
-    currentItem = sourceArray[index]
-    
-    if (!currentItem) {
-      index = 0
-      currentItem = sourceArray[index]
-    }
+    indexOverride = yield sourceArray[index]
+    index = loopIncrementIndex(indexOverride)
   }
 }
 
