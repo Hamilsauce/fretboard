@@ -1,6 +1,6 @@
 // import { getCoordinates, svgPoint } from '../src/svg-helpers.js';
 // import { FretboardModel } from '../src/FretboardModels.js';
-import { setCanvasHeight } from '../script.js';
+// import { setCanvasHeight } from '../script.js';
 import { svgUnitsToPixels } from '../src/lib/svg-units-to-pixels.js'
 import { init, getScalePitchClasses } from '../src/fretboard.controller.js';
 // import { scheduleOscillator } from '../src/audio/oscillator-scheduler.js';

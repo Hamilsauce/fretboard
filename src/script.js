@@ -1,5 +1,5 @@
 import { Graph } from './lib/store.js';
-import { SVGCanvas } from './lib/SVGCanvas.js';
+import { SVGCanvas } from './src/lib/SVGCanvas.js';
 import { MAPS, MAP_9X15_1, BLANK_MAP_9X15_1, FRETBOARD_1 } from './maps.js';
 
 import ham from 'https://hamilsauce.github.io/hamhelper/hamhelper1.0.0.js';

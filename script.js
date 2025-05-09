@@ -11,7 +11,7 @@ import {
 } from './src/fretboard.controller.js';
 import { draggable } from 'https://hamilsauce.github.io/hamhelper/draggable.js';
 import { AppMenu } from './src/ui/components/app-menu.view.js';
-import { StandardTuningStrings } from './src/init-fretboard-data.js';
+// import { StandardTuningStrings } from './src/init-fretboard-data.js';
 import { MusicalScales, NoteData } from './src/data/index.js';
 import { scheduleOscillator, AudioNote, audioEngine } from './src/audio/index.js';
 
@@ -57,7 +57,7 @@ export const dispatchClick = target => {
     bubbles: true,
     cancelable: true
   });
-  console.warn('target', target.classList.contains('tile'))
+  // console.warn('target', target.classList.contains('tile'))
   target.dispatchEvent(ev);
 };
 

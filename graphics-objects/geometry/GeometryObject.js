@@ -81,7 +81,7 @@ export class GeometryObject extends SceneObject {
   updatePath() {}
 
   setPath(vertices, pointsToPathFn) {
-    // console.log('vertices', vertices)
+    console.log('vertices', vertices)
     const pathData = pointsToPathFn ?
       pointsToPathFn(this) :
       vertices.reduce((acc, { x, y }) => `${acc} ${x},${y}`, 'M ') + 'Z';
@@ -107,7 +107,7 @@ export class GeometryObject extends SceneObject {
     obj.dataset.index = index;
     obj.cx.baseVal.value = x;
     obj.cy.baseVal.value = y;
-    obj.setAttribute('transform', `translate(${x},${y})`)
+    // obj.setAttribute('transform', `translate(${x},${y})`)
 
     this.slots.object.append(obj);
 

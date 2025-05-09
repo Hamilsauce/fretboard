@@ -1,19 +1,30 @@
 import { StandardTuningStrings } from '../src/init-fretboard-data.js';
 import { FretboardModel } from '../src/FretboardModels.js';
-import { getSVGTemplate } from '../src/lib/template-helpers.js'
-import { getCoordinates, svgPoint } from '../src/lib/svg-helpers.js'
+// import { getSVGTemplate } from '../src/lib/template-helpers.js'
+// import { getCoordinates, svgPoint } from '../src/lib/svg-helpers.js'
 import { dispatchClick } from '../script.js';
 import { MusicalScales, NoteData } from '../data/index.js';
 import { sleep } from '../circular-loop-generator.js';
 import { scheduleOscillator, AudioNote, audioEngine } from '../src/audio/index.js';
 
-
+export const getSVGTemplate = (context, type, options) => {
+  const template = context
+    .querySelector('#templates')
+    .querySelector(`[data-template="${type}"]`)
+    .cloneNode(true)
+  
+  template.dataset.type = type;
+  template.removeAttribute('data-template');
+  delete template.dataset.template;
+  
+  return template;
+}
 
 const newNote = (new AudioNote(audioEngine))
   .at(audioEngine.currentTime + 0.2)
-  .frequencyHz(660)
-  .duration(2)
-  .velocity(0.4)
+  .frequencyHz(220)
+  .duration(1)
+  .velocity(0.4).play()
 
 
 const fretboardModel = new FretboardModel(StandardTuningStrings);
@@ -43,15 +54,6 @@ export const initThemeTransformer = async (el, interval = 2000) => {
     
     if (intensityOn) el.style.filter = `hue-rotate(${rand}deg) contrast(1.8) brightness(1.2)`
     else el.style.filter = `hue-rotate(${rand}deg) contrast(1.4) brightness(1.8)`
-    
-    // if (el.classList.contains('reverse-gradient')) {
-    //   el.classList.remove('reverse-gradient')
-    //   el.classList.add('gradient')
-    // }
-    // else {
-    //   el.classList.remove('gradient')
-    //   el.classList.add('reverse-gradient')
-    // }
     
     intensityOn = !intensityOn
   }, intervalTime)
