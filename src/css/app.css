@@ -12,7 +12,7 @@
   height: 100%;
   overflow: hidden;
   /* transition: 6s; */
-
+  
 }
 
 #app-header {
@@ -236,4 +236,12 @@
 .app-button[data-active=true] {
   filter: brightness(160%);
   z-index: 1000;
+}
+
+.nav {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 4px;
 }

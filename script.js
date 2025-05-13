@@ -11,11 +11,9 @@ import {
 } from './src/fretboard.controller.js';
 import { draggable } from 'https://hamilsauce.github.io/hamhelper/draggable.js';
 import { AppMenu } from './src/ui/components/app-menu.view.js';
-// import { StandardTuningStrings } from './src/init-fretboard-data.js';
 import { MusicalScales, NoteData } from './src/data/index.js';
 import { scheduleOscillator, AudioNote, audioEngine } from './src/audio/index.js';
 
-const standardTuning = ['E2', 'A2', 'D3', 'G3', 'B3', 'E4']
 const app = document.querySelector('#app');
 const canvasEl = document.querySelector('#canvas');
 const sceneEl = document.querySelector('#scene');
@@ -35,20 +33,19 @@ let keySelect = app.querySelector('#key-select-container');
 let keySelectEl = keySelect.querySelector('select');
 let toneChordSelect = app.querySelector('#tone-chord-select');
 
-const svgClientBCR = canvasEl.getBoundingClientRect()
-const svgClientBB = canvasEl.getBBox()
-const svgClientCR = canvasEl.getClientRects()
+const svgClientBCR = canvasEl.getBoundingClientRect();
+const svgClientBB = canvasEl.getBBox();
+const svgClientCR = canvasEl.getClientRects();
 
-// console.warn('svgClientBCR,svgClientBB,svgClientCR', svgClientBCR,svgClientBB,svgClientCR)
 let chromaticIndex = 0;
 const chromatic = NoteData.slice(0, 12);
 
 chromatic.forEach((note, i) => {
   const option = document.createElement('option');
-  option.value = note.pitchClass
-  option.textContent = note.pitchClass
+  option.value = note.pitchClass;
+  option.textContent = note.pitchClass;
   
-  keySelect.querySelector('#key-select').options.add(option)
+  keySelect.querySelector('#key-select').options.add(option);
 });
 
 export const dispatchClick = target => {
@@ -57,24 +54,20 @@ export const dispatchClick = target => {
     bubbles: true,
     cancelable: true
   });
-  // console.warn('target', target.classList.contains('tile'))
+  
   target.dispatchEvent(ev);
 };
 
-export const randoDigi = (range = 5) => Math.floor(Math.random() * range);
-
 const loopFunction = (fn = () => {}, interval = 500) => {
   const looperId = setInterval(() => {
-    fn()
+    fn();
   }, interval);
   
-  return () => clearInterval(looperId)
+  return () => clearInterval(looperId);
 };
 
 toneChordSelect.addEventListener('change', async (e) => {
   const type = toneChordSelect.value
-  // const scalePitchClasses = getScalePitchClasses(key, 'major')
-  console.log(type)
   
   if (type === 'note') {
     toneChordState.arpeggiate = false;
@@ -203,12 +196,6 @@ menuOpenButton.addEventListener('click', e => {
   appMenu.open();
 });
 
-
-appHeaderCenter.addEventListener('click', e => {
-  changeKeyOption()
-  const show = keySelect.dataset.show === 'true' ? true : false
-});
-
 let keyChangeCount = 0
 
 const changeKeyOption = () => {
@@ -229,9 +216,9 @@ const autoClicker = (tileGenerators, interval = 200, clickTimes = 0, ) => {
   const autoClickerId = setInterval(async () => {
     if (!autoClickerId) return;
     
-    const randomStringNumber = stringNumber //randoDigi(5);
+    const randomStringNumber = stringNumber;
     const result = tileGenerators[randomStringNumber]
-      .next() //clickCount);
+      .next();
     
     if (delay) {
       await sleep(delay);
@@ -240,7 +227,7 @@ const autoClicker = (tileGenerators, interval = 200, clickTimes = 0, ) => {
     
     el = result.value ?? null;
     
-    const tempCount = clickCount
+    const tempCount = clickCount;
     
     if (el && !clickTimes || tempCount < clickTimes) {
       dispatchClick(el);
@@ -271,12 +258,11 @@ const updateAppContent = (content) => {
 
 export const setCanvasHeight = (canvas = canvasEl) => {
   const parentHeight = +getComputedStyle(canvas.parentElement).height.replace(/[^0-9.]/g, '');
-  const canvasHeight = parentHeight >= 900 ? 900 : parentHeight
-  canvas.style.height = `${(canvasHeight)}px`
+  const canvasHeight = parentHeight >= 900 ? 900 : parentHeight;
+  canvas.style.height = `${(canvasHeight)}px`;
 };
 
 let stopClickId = null;
-
 
 setTimeout(() => {
   stringEls = sceneEl.querySelectorAll('.string-container');
@@ -296,7 +282,8 @@ setTimeout(() => {
   
   setTimeout(() => {
     const closer = appMenu.dom.querySelector('#app-menu-close');
-    dispatchClick(closer)
+    
+    dispatchClick(closer);
   }, 1000)
 }, 250);
 
