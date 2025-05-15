@@ -22,8 +22,8 @@ console.warn('fuck', fuck)
 
 // Intercept link clicks
 appbody.addEventListener('Fuck', e => {
-console.warn('[ IN FUCK HANDLER]', e)
-
+  console.warn('[ IN FUCK HANDLER]', e)
+  
 });
 appbody.dispatchEvent(fuck)
 
@@ -32,12 +32,16 @@ document.addEventListener('click', e => {
   if (link) {
     e.preventDefault();
     router.navigate(link.getAttribute('href'));
+    console.warn('appbody', appbody)
   }
 });
 
+
+setTimeout(() => {
 // router.render();
-
-
+  
+  console.log(' ', );
+}, 1000)
 
 const canvasEl = document.querySelector('#canvas');
 const scene = document.querySelector('#scene')

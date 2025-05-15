@@ -1,3 +1,42 @@
+const AudioContextClass = (window.AudioContext || window.webkitAudioContext);
+
+export class AudioEngine extends AudioContextClass {
+  #masterGain;
+  
+  constructor() {
+    super();
+    
+    // this = new AudioContextClass()
+    this.#masterGain = this.createGain();
+    this.masterGain.connect(this.destination);
+  }
+  
+  get masterGain() { return this.#masterGain }
+
+  createOscillator({ frequency = 440, type = 'sine', gain = 0.2, duration = 1 } = {}) {
+    const osc = this.createOscillator();
+    const gainNode = this.createGain();
+
+    osc.type = type;
+    osc.frequency.setValueAtTime(frequency, this.currentTime);
+
+    gainNode.gain.setValueAtTime(gain, this.currentTime);
+
+    osc.connect(gainNode);
+    gainNode.connect(this.masterGain);
+
+    osc.start();
+    osc.stop(this.currentTime + duration);
+
+    return { osc, gainNode };
+  }
+
+  stopAll() {
+    this.masterGain.gain.setValueAtTime(0, this.currentTime);
+  }
+}
+
+
 export class AudioController {
   constructor() {
     this.played = false;

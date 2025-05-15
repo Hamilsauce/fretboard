@@ -1,8 +1,13 @@
 // routes.js
 // import { Home, DashboardLayout, DashboardHome, Settings } from './components.js';
-
+const appbodyHTML = document.querySelector('#app-body').cloneNode(10);
 export const routes = {
-  '/index.html': { component: () => `<div id="home">HOME</div>` },
+  '/': {
+    component: () => {
+      console.warn('IN ROUTE, appbodyHTML', appbodyHTML)
+      return appbodyHTML.innerHTML
+    }
+  },
   '/dashboard': {
     component: () => `<div id="home">DASH HOME</div>`,
     children: {
@@ -11,3 +16,8 @@ export const routes = {
     },
   },
 };
+
+setTimeout(() => {
+  
+  console.log('In Routes Timeour 1000', appbodyHTML);
+}, 1000)
