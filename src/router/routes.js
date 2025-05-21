@@ -4,7 +4,6 @@ const appbodyHTML = document.querySelector('#app-body').cloneNode(10);
 export const routes = {
   '/': {
     component: () => {
-      console.warn('IN ROUTE, appbodyHTML', appbodyHTML)
       return appbodyHTML.innerHTML
     }
   },
@@ -19,5 +18,5 @@ export const routes = {
 
 setTimeout(() => {
   
-  console.log('In Routes Timeour 1000', appbodyHTML);
+  // console.log('In Routes Timeour 1000', appbodyHTML);
 }, 1000)

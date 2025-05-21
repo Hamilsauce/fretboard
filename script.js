@@ -14,40 +14,8 @@ import { AppMenu } from './src/ui/components/app-menu.view.js';
 import { MusicalScales, NoteData } from './src/data/index.js';
 import { scheduleOscillator, AudioNote, audioEngine } from './src/audio/index.js';
 
-const app = document.querySelector('#app');
-const canvasEl = document.querySelector('#canvas');
-const sceneEl = document.querySelector('#scene');
 
-let stringEls;
-let lowEString;
-let highEString;
-let autoClickerId;
-let noteTileGenerator;
-let stringTileGenerators;
-let appHeaderLeft = app.querySelector('#app-header-left');
-let appHeaderCenter = app.querySelector('#app-header-center');
-let startButton = app.querySelector('#start-button');
-let soundButton = app.querySelector('#audio-button');
-let menuOpenButton = app.querySelector('#menu-open');
-let keySelect = app.querySelector('#key-select-container');
-let keySelectEl = keySelect.querySelector('select');
-let toneChordSelect = app.querySelector('#tone-chord-select');
-
-const svgClientBCR = canvasEl.getBoundingClientRect();
-const svgClientBB = canvasEl.getBBox();
-const svgClientCR = canvasEl.getClientRects();
-
-let chromaticIndex = 0;
-const chromatic = NoteData.slice(0, 12);
-
-chromatic.forEach((note, i) => {
-  const option = document.createElement('option');
-  option.value = note.pitchClass;
-  option.textContent = note.pitchClass;
-  
-  keySelect.querySelector('#key-select').options.add(option);
-});
-
+// Utils
 export const dispatchClick = target => {
   const ev = new PointerEvent('click', {
     view: window,
@@ -58,6 +26,7 @@ export const dispatchClick = target => {
   target.dispatchEvent(ev);
 };
 
+// Utils
 const loopFunction = (fn = () => {}, interval = 500) => {
   const looperId = setInterval(() => {
     fn();
@@ -66,8 +35,36 @@ const loopFunction = (fn = () => {}, interval = 500) => {
   return () => clearInterval(looperId);
 };
 
+const app = document.querySelector('#app');
+const canvasEl = app.querySelector('#canvas');
+const sceneEl = canvasEl.querySelector('#scene');
+
+let stringEls;
+let lowEString;
+let highEString;
+let autoClickerId;
+let noteTileGenerator;
+let stringTileGenerators;
+let menuOpenButton = app.querySelector('#menu-open');
+let keySelect = app.querySelector('#key-select-container');
+let keySelectEl = keySelect.querySelector('select');
+let toneChordSelect = app.querySelector('#tone-chord-select');
+
+let chromaticIndex = 0;
+const chromatic = NoteData.slice(0, 12);
+
+// UI
+chromatic.forEach((note, i) => {
+  const option = document.createElement('option');
+  option.value = note.pitchClass;
+  option.textContent = note.pitchClass;
+  
+  keySelect.querySelector('#key-select').options.add(option);
+});
+
+// UI
 toneChordSelect.addEventListener('change', async (e) => {
-  const type = toneChordSelect.value
+  const type = toneChordSelect.value;
   
   if (type === 'note') {
     toneChordState.arpeggiate = false;
@@ -108,12 +105,12 @@ toneChordSelect.addEventListener('change', async (e) => {
   // targetNotes((note) => note.dataset.pitchClass === key)
 });
 
-
+// ui
 keySelectEl.addEventListener('change', async (e) => {
-  const key = keySelect.querySelector('select').value
-  const scalePitchClasses = getScalePitchClasses(key, 'major')
+  const key = keySelect.querySelector('select').value;
+  const scalePitchClasses = getScalePitchClasses(key, 'major');
   
-  if (getActiveNotes()) await deactivateAllNotes()
+  if (getActiveNotes()) await deactivateAllNotes();
   
   await setEachNoteTo(
     (tile) => [
@@ -129,66 +126,65 @@ keySelectEl.addEventListener('change', async (e) => {
         scalePitchClasses[4],
       ];
       
-      if (tilePC === root) tile.dataset.scaleDegree = 'root'
-      else if (tilePC === third) tile.dataset.scaleDegree = 'third'
-      else if (tilePC === fifth) tile.dataset.scaleDegree = 'fifth'
+      if (tilePC === root) tile.dataset.scaleDegree = 'root';
+      else if (tilePC === third) tile.dataset.scaleDegree = 'third';
+      else if (tilePC === fifth) tile.dataset.scaleDegree = 'fifth';
     },
-  )
+  );
   
-  await sleep(12 * 50)
-  activateNotes((note) => scalePitchClasses.includes(note.dataset.pitchClass))
-  targetNotes((note) => note.dataset.pitchClass === key)
+  await sleep(12 * 50);
+  activateNotes((note) => scalePitchClasses.includes(note.dataset.pitchClass));
+  targetNotes((note) => note.dataset.pitchClass === key);
 });
 
-
+// UI
 const appMenu = new AppMenu();
 app.appendChild(appMenu.dom);
 
 let stopScaleLooper;
 
 appMenu.on('menu:scale-mode', e => {
-  console.warn('e', e)
-  const show = keySelect.dataset.show === 'true' ? true : false
+  // console.warn('e', e)
+  const show = keySelect.dataset.show === 'true' ? true : false;
   keySelect.dataset.show = !show;
 });
-
 
 let stopThemeTransformer;
 
 appMenu.on('menu:lightshow-mode', async (e) => {
   if (stopThemeTransformer) {
-    stopThemeTransformer()
+    stopThemeTransformer();
     stopThemeTransformer = null;
-  } else stopThemeTransformer = await initThemeTransformer(app)
+  } else stopThemeTransformer = await initThemeTransformer(app);
 });
 
 appMenu.on('menu:audio-toggle', async (e) => {
-  const audioButton = appMenu.getItemByName('audio-toggle')
-  const buttonText = { on: 'Audio: On', off: 'Audio: Off', }
+  const audioButton = appMenu.getItemByName('audio-toggle');
+  const buttonText = { on: 'Audio: On', off: 'Audio: Off', };
   
   if (audioButton.title.includes('On')) {
-    audioEngine.suspend()
-    audioButton.title = buttonText.off
+    audioEngine.suspend();
+    audioButton.title = buttonText.off;
   } else {
-    audioButton.title = buttonText.on
-    audioEngine.resume()
+    audioButton.title = buttonText.on;
+    audioEngine.resume();
   }
 });
 
 appMenu.on('menu:auto-mode', async (e) => {
-  const autoButton = appMenu.getItemByName('auto-mode')
-  const runningState = autoButton.title.includes('On')
+  const autoButton = appMenu.getItemByName('auto-mode');
+  const runningState = autoButton.title.includes('On');
   
-  autoButton.title = runningState ? 'Auto: Off' : 'Auto: On'
+  autoButton.title = runningState ? 'Auto: Off' : 'Auto: On';
   
   if (!runningState && !autoClickerId) {
     autoClickerId = autoClicker(stringTileGenerators);
-    audioEngine.resume()
+    audioEngine.resume();
   }
   else {
     clearInterval(autoClickerId);
     autoClickerId = null;
-    audioEngine.suspend()
+    audioEngine.suspend();
   }
 });
 
@@ -196,22 +192,12 @@ menuOpenButton.addEventListener('click', e => {
   appMenu.open();
 });
 
-let keyChangeCount = 0
-
-const changeKeyOption = () => {
-  chromaticIndex = chromaticIndex >= chromatic.length ? 0 : chromaticIndex + 1;
-  keySelect.value = chromatic[chromaticIndex].pitch
-  document.querySelector('#app-header-left').textContent = keyChangeCount
-  keyChangeCount++
-  keySelectEl.dispatchEvent(new Event('change'))
-}
-
 const autoClicker = (tileGenerators, interval = 200, clickTimes = 0, ) => {
   let clickCount = 0;
   let delay = 0;
   let el;
-  let stringNumber = 5
-  let clickLoopLimit = 12
+  let stringNumber = 5;
+  let clickLoopLimit = 12;
   
   const autoClickerId = setInterval(async () => {
     if (!autoClickerId) return;
@@ -243,7 +229,7 @@ const autoClicker = (tileGenerators, interval = 200, clickTimes = 0, ) => {
     
     if (tempCount >= clickLoopLimit) {
       clickCount = 0;
-      stringNumber = stringNumber === 0 ? 5 : stringNumber - 1
+      stringNumber = stringNumber === 0 ? 5 : stringNumber - 1;
     }
     delay = 0;
   }, interval);
@@ -251,12 +237,7 @@ const autoClicker = (tileGenerators, interval = 200, clickTimes = 0, ) => {
   return autoClickerId;
 };
 
-const updateAppContent = (content) => {
-  const container = document.querySelector('#app .container');
-  container.textContent = content;
-};
-
-export const setCanvasHeight = (canvas = canvasEl) => {
+export const setCanvasHeight = (canvas = document.querySelector('svg')) => {
   const parentHeight = +getComputedStyle(canvas.parentElement).height.replace(/[^0-9.]/g, '');
   const canvasHeight = parentHeight >= 900 ? 900 : parentHeight;
   canvas.style.height = `${(canvasHeight)}px`;
@@ -278,7 +259,7 @@ setTimeout(() => {
     makeCircular([...sceneEl.querySelector('[data-base-note="E4"]').children]),
   ];
   
-  dispatchClick(menuOpenButton)
+  dispatchClick(menuOpenButton);
   
   setTimeout(() => {
     const closer = appMenu.dom.querySelector('#app-menu-close');

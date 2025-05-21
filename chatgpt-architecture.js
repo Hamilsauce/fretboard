@@ -1,3 +1,31 @@
+export class AudioEngine {
+  constructor({ sampleRate } = {}) {
+    this.context = new AudioContext({ sampleRate });
+    this.features = new Map(); // Track features per entity
+  }
+  
+  createAudioFeature(entity, options = {}) {
+    const feature = new AudioFeature(this.context, entity, options);
+    this.features.set(entity.id, feature);
+    return feature;
+  }
+  
+  disposeFeature(entity) {
+    const feature = this.features.get(entity.id);
+    if (feature) {
+      feature.dispose();
+      this.features.delete(entity.id);
+    }
+  }
+  
+  shutdown() {
+    this.features.forEach(feature => feature.dispose());
+    this.features.clear();
+    this.context.close();
+  }
+}
+
+
 // BaseObject: the shared EventTarget subclass
 export class BaseObject extends EventTarget {
   constructor() {

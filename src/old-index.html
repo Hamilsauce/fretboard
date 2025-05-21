@@ -96,7 +96,16 @@
         </g>
       </svg>
     </section>
-    
+  <svg id="scene" width="800" height="400">
+  <defs id="templates">
+    <g class="object-container" data-template="object-container">
+      <g class="object-slot"></g>
+      <g class="overlay-slot"></g>
+    </g>
+    <circle data-template="object-selector" r="10" fill="steelblue"></circle>
+  </defs>
+</svg>
+  
     <footer id="app-footer">
       <div class="container">
         <label for="map-input">Pick Map</label>
@@ -111,8 +120,8 @@
   <script type="text/javascript" charset="utf-8">
     const SVG_NS = 'http://www.w3.org/2000/svg';
   </script>
-  <!-- <script src="./script.js" type="module"></script> -->
-  <script src="./main.js" type="module"></script>
+  <script src="./script.js" type="module"></script>
+  <!-- <script src="./main.js" type="module"></script> -->
 </body>
 
 </html>

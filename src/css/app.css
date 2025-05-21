@@ -87,7 +87,7 @@
 #app-header-bottom {
   display: grid;
   grid-template-rows: 1fr;
-  grid-template-columns: repeat(3, 100px);
+grid-template-columns: repeat(3, 1fr);
   /* justify-content: flex-start; */
   justify-content: center;
   /* align-items: center; */

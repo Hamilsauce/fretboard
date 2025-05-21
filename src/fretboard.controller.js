@@ -193,13 +193,12 @@ export const deactivateAllNotes = async (resetData = true) => {
       return true
     }, Promise.resolve());
 };
-
+  
 const stringOscillators = new Array(6).fill(null)
 
 export const init = () => {
   stringContainers.forEach((stringEl, x) => {
     const baseNote = stringEl.dataset.baseNote
-    
     const stringModel = fretboardModel.getStringByBase(baseNote)
     
     stringModel.notes.forEach((note, y) => {
@@ -262,7 +261,7 @@ const recPlayButton = document.querySelector('#rec-stop-play-button');
 recPlayButton.addEventListener('click', e => {
   const nowTime = performance.now() // audioEngine.currentTime
   console.warn('baseTime', nowTime)
-  console.warn('recordedNotes', recordedNotes.map(({time})=>time))
+  console.warn('recordedNotes', recordedNotes.map(({ time }) => time))
   
   recordedNotes.forEach((e, i) => {
     setTimeout(() => {
@@ -340,56 +339,58 @@ stringLayer.addEventListener('click', (e = new MouseEvent()) => {
       const note = stringModel.getNoteByPitch(tile.dataset.pitch)
       stringOscillators[stringNumber] = playPulse(note.frequency)
     } else if (!playChords && arpeggiate) {
-      scheduledOscs = getChordNotes(tile.dataset.pitch, 'major').map((note, i) => {
-        const timeMod = ((i + 1) / 2)
-        const startFreq = note.frequency - 100
-        
-        return scheduleOscillator({
-          audioCtx: audioEngine,
-          type: "triangle",
-          frequencyAutomation: [
-            { type: "setValue", value: startFreq, time: 0 },
-            { type: "linearRamp", value: note.frequency, time: 0.3 }
-          ],
-          gainAutomation: [
-            { type: "setValue", value: 0.0, time: timeMod + 0 },
-            { type: "linearRamp", value: 0.3, time: timeMod + 1 }, // fade in
-            { type: "linearRamp", value: 0.0, time: timeMod + 2 } // fade out
-          ],
-          startDelay: timeMod + 0.1,
-          stopAfter: timeMod + 2
-        }).osc;
-      });
+      scheduledOscs = getChordNotes(tile.dataset.pitch, 'major')
+        .map((note, i) => {
+          const timeMod = ((i + 1) / 2)
+          const startFreq = note.frequency - 100
+          
+          return scheduleOscillator({
+            audioCtx: audioEngine,
+            type: "triangle",
+            frequencyAutomation: [
+              { type: "setValue", value: startFreq, time: 0 },
+              { type: "linearRamp", value: note.frequency, time: 0.3 }
+            ],
+            gainAutomation: [
+              { type: "setValue", value: 0.0, time: timeMod + 0 },
+              { type: "linearRamp", value: 0.3, time: timeMod + 1 }, // fade in
+              { type: "linearRamp", value: 0.0, time: timeMod + 2 } // fade out
+            ],
+            startDelay: timeMod + 0.1,
+            stopAfter: timeMod + 2
+          }).osc;
+        });
     } else if (!arpeggiate && playChords) {
-      scheduledOscs = getChordNotes(tile.dataset.pitch, 'major').map((note, i) => {
-        const timeMod = 0
-        const startFreq = note.frequency - 100
-        
-        return scheduleOscillator({
-          audioCtx: audioEngine,
-          type: "triangle",
-          frequencyAutomation: [
-            { type: "setValue", value: startFreq, time: 0 },
-            { type: "linearRamp", value: note.frequency, time: 0.3 }
-          ],
-          gainAutomation: [
-            { type: "setValue", value: 0.0, time: timeMod + 0 },
-            { type: "linearRamp", value: 0.2, time: timeMod + 0.6 }, // fade in
-            { type: "linearRamp", value: 0.0, time: timeMod + 1 } // fade out
-          ],
-          startDelay: timeMod + 0.1,
-          stopAfter: timeMod + 1.5
-        }).osc;
-      });
+      scheduledOscs = getChordNotes(tile.dataset.pitch, 'major')
+        .map((note, i) => {
+          const timeMod = 0
+          const startFreq = note.frequency - 100
+          
+          return scheduleOscillator({
+            audioCtx: audioEngine,
+            type: "triangle",
+            frequencyAutomation: [
+              { type: "setValue", value: startFreq, time: 0 },
+              { type: "linearRamp", value: note.frequency, time: 0.3 }
+            ],
+            gainAutomation: [
+              { type: "setValue", value: 0.0, time: timeMod + 0 },
+              { type: "linearRamp", value: 0.2, time: timeMod + 0.6 }, // fade in
+              { type: "linearRamp", value: 0.0, time: timeMod + 1 } // fade out
+            ],
+            startDelay: timeMod + 0.1,
+            stopAfter: timeMod + 1.5
+          }).osc;
+        });
     }
     
-    tile.dataset.active = true
-    tile.dataset.isTarget = true
+    tile.dataset.active = true;
+    tile.dataset.isTarget = true;
   } else {
     // if (scheduledOsc) {
     //   scheduledOsc.stop(audioEngine.currentTime + 0.01)
     // }
-    tile.dataset.active = false
-    tile.dataset.isTarget = false
+    tile.dataset.active = false;
+    tile.dataset.isTarget = false;
   }
 });

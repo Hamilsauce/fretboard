@@ -43,8 +43,14 @@ export class MenuItem {
     this.action = action;
     this.#self.dataset.menuItemName = name;
     
+    // if (path) {
+    //   const link = document.createElement('a');
+    //   a.href = '../../docs/index.html'
+
+    // }
   }
   
+  get path() { return this.#path };
   
   get dom() { return this.#self };
   
@@ -88,6 +94,12 @@ const DEFAULT_MENU_OPTIONS = {
     title: 'Sound: On',
     path: null,
     action: new Action('audio-toggle'),
+  },
+  {
+    name: 'docs-link',
+    title: 'docs',
+    path: '../../docs/index.html',
+    action: new Action('docs-link'),
   }, ]
 }
 
@@ -136,7 +148,9 @@ export class AppMenu extends View {
     const targ = e.target.closest('.app-menu-item');
     const item = this.#items.get(targ);
     
-    if (item) {
+    if (item && item.path) {
+      location.href = item.path
+    } else if (item && item.action) {
       this.emit('menu:' + item.action.type, item.action)
       this.close();
     }
