@@ -353,7 +353,7 @@ stringLayer.addEventListener('click', (e = new MouseEvent()) => {
             ],
             gainAutomation: [
               { type: "setValue", value: 0.0, time: timeMod + 0 },
-              { type: "linearRamp", value: 0.3, time: timeMod + 1 }, // fade in
+              { type: "linearRamp", value: 0.2, time: timeMod + 1 }, // fade in
               { type: "linearRamp", value: 0.0, time: timeMod + 2 } // fade out
             ],
             startDelay: timeMod + 0.1,

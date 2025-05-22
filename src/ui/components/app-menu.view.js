@@ -98,7 +98,7 @@ const DEFAULT_MENU_OPTIONS = {
   {
     name: 'docs-link',
     title: 'docs',
-    path: '../../docs/index.html',
+    path: '../../docs',
     action: new Action('docs-link'),
   }, ]
 }
