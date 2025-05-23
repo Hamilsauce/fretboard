@@ -1,5 +1,6 @@
-import { roundTwo } from '../lib/utils.js';
+// import { roundTwo } from '../lib/utils.js';
 
+export const roundTwo = (num) => Math.round((num + Number.EPSILON) * 100) / 100
 
 const TransformListOptions = {
   transforms: Array,
@@ -34,12 +35,16 @@ export class TransformList {
   #self = null;
   #context = null;
   #transforms = null;
-  #transformMap = new Map();
+  #transformMap = new Map([
+    ['translate', null],
+    ['rotate', null],
+    ['scale', null],
+  ]);
 
-  constructor(contextObject, { transforms } = DEFAULT_TRANSFORMS) {
-    this.#context = contextObject;
+  constructor(el, context, { transforms } = DEFAULT_TRANSFORMS) {
+    this.#context = el.closest('svg');
 
-    this.#self = contextObject.dom.transform.baseVal;
+    this.#self = (el.dom ?? el).transform.baseVal;
 
     this.init(transforms);
   };
@@ -56,8 +61,6 @@ export class TransformList {
       }
     });
   }
-
-
 
   getMatrixAt(index = 0) {
     const { a, b, c, d, e, f } = index < this.#self.numberOfItems ? this.#self.getItem(index).matrix : null;

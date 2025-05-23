@@ -1,6 +1,6 @@
 import ham from 'https://hamilsauce.github.io/hamhelper/hamhelper1.0.0.js';
 import { View } from './view.js';
-
+import { getRouter } from '../../../src/router/router.js';
 const { template } = ham;
 
 
@@ -46,7 +46,7 @@ export class MenuItem {
     // if (path) {
     //   const link = document.createElement('a');
     //   a.href = '../../docs/index.html'
-
+    
     // }
   }
   
@@ -98,7 +98,7 @@ const DEFAULT_MENU_OPTIONS = {
   {
     name: 'docs-link',
     title: 'docs',
-    path: '../../docs',
+    path: 'docs/',
     action: new Action('docs-link'),
   }, ]
 }
@@ -109,6 +109,9 @@ export class AppMenu extends View {
   
   constructor(options = DEFAULT_MENU_OPTIONS) {
     super('app-menu');
+    this.router = getRouter();
+    
+    
     if (options && options.items) {
       this.init(options.items);
     }
@@ -149,12 +152,14 @@ export class AppMenu extends View {
     const item = this.#items.get(targ);
     
     if (item && item.path) {
-      location.href = item.path
-    } else if (item && item.action) {
-      this.emit('menu:' + item.action.type, item.action)
-      this.close();
+      this.router.navigate(item.path)
     }
     
+    if (item && item.action) {
+      this.emit('menu:' + item.action.type, item.action)
+    }
+    
+    this.close();
   }
   
   #handleCloseClick(items) {

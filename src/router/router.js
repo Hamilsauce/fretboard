@@ -1,5 +1,6 @@
-// router.js
-export class Router {
+import { routes as routeConfig } from '../../src/router/routes.js';
+
+class Router {
   constructor(routes, rootElement) {
     this.root = rootElement;
     this.routes = routes;
@@ -8,6 +9,8 @@ export class Router {
   
   navigate(path) {
     history.pushState({}, '', path);
+    console.warn('history', history)
+
     this.render();
   }
   
@@ -55,12 +58,31 @@ export class Router {
     let currentContainer = this.root;
     
     for (const { component, params } of routeTree) {
-    // TODO NEED TO USE COMPONENTS
+      // TODO NEED TO USE COMPONENTS
       const node = document.createElement('div');
-      node.innerHTML = component(params);
-
-      currentContainer.appendChild(node);
-      currentContainer = node.querySelector('router-view') || currentContainer;
+      const instance = component(params);
+      
+      if (typeof instance === 'string') {
+        node.innerHTML = instance
+        currentContainer.appendChild(node);
+        currentContainer = node.querySelector('router-view') || currentContainer;
+      } else {
+        currentContainer.appendChild(instance);
+        currentContainer = instance.querySelector('router-view') || currentContainer;
+      }
+      
     }
+    console.warn('router', this)
   }
 }
+
+let router = null;
+
+export const getRouter = (routerViewSelector = '#app-body', routes = routeConfig) => {
+  if (!router) {
+    const el = document.querySelector(routerViewSelector);
+    router = new Router(routes, el);
+  }
+  
+  return router;
+};

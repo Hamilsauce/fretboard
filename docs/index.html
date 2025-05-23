@@ -23,19 +23,27 @@
       <!-- <div id="app-header-right">R</div> -->
     </header>
     <section id="app-body">
+      
       <div id="markdown-output"></div>
+      <!-- <script src="../docs/docs.js" type="module"></script> -->
       
       <!-- <div class="container">
         Body
       </div> -->
     </section>
     <footer id="app-footer">
-      <div class="container">
+      <!-- <div class="container">
         footer
-      </div>
+      </div> -->
     </footer>
   </div>
-  <script src="../docs/docs.js" type="module"></script>
+  <!-- <script src="../docs/docs.js" type="module"></script> -->
+  <script type="module">
+    import { renderMarkdown } from '../docs/docs.js';
+    
+    const appBody = document.querySelector('#app-body')
+    renderMarkdown(appBody)
+  </script>
 </body>
 
 </html>
