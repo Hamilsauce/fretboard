@@ -96,6 +96,12 @@ const DEFAULT_MENU_OPTIONS = {
     action: new Action('audio-toggle'),
   },
   {
+    name: 'tab-editor',
+    title: 'tab-editor',
+    path: '/tab-editor',
+    action: new Action('tab-editor'),
+  },
+  {
     name: 'docs-link',
     title: 'docs',
     path: 'docs/',
@@ -152,7 +158,8 @@ export class AppMenu extends View {
     const item = this.#items.get(targ);
     
     if (item && item.path) {
-      this.router.navigate(item.path)
+      location.href = item.path
+      // this.router.navigate(item.path)
     }
     
     if (item && item.action) {
