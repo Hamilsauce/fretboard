@@ -1,5 +1,5 @@
-import { initKeyboard } from '../tab-editor/keyboard-input.js';
-import { incrementBeat, decrementBeat } from '../tab-editor/increment-decrement-beat.js';
+import { initKeyboard } from './keyboard-input.js';
+import { incrementBeat, decrementBeat } from './increment-decrement-beat.js';
 
 const app = document.querySelector('#app');
 const svg = document.querySelector('svg');
