@@ -123,9 +123,9 @@ export class SvgApi extends EventTarget {
     }
   }
   
-  createGraphicsObject() {
-    
-  }
+  createTransformList() {}
+  
+  createGraphicsObject() {}
   
   getGraphicsFeature() {}
   

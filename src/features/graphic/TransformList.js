@@ -41,7 +41,7 @@ export class TransformList {
     ['scale', null],
   ]);
 
-  constructor(el, context, { transforms } = DEFAULT_TRANSFORMS) {
+  constructor(context, { transforms } = DEFAULT_TRANSFORMS) {
     this.#context = el.closest('svg');
 
     this.#self = (el.dom ?? el).transform.baseVal;

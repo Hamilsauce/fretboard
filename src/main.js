@@ -32,11 +32,18 @@ init();
 
 
 const trans = canvasEl.createSVGTransform()
-const tlist = new TransformList(scene)
-console.warn('trans', tlist)
+// const tlist = new TransformList(scene)
+// console.warn('trans', tlist)
+
+screen.orientation.addEventListener("change", (event) => {
+  console.warn('orientation event', event)
+  setCanvasHeight(canvasEl);
+  scene.style.width = sceneWidthPixels + 'px'
+});
 
 
 window.addEventListener('resize', (e) => {
   setCanvasHeight(canvasEl);
   canvasEl.style.width = sceneWidthPixels + 'px'
+  surface.style.width = sceneWidthPixels + 'px'
 });

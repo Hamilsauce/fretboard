@@ -87,11 +87,7 @@ export class CanvasElement extends EventEmitter {
     
     return this.#self
   }
-  
-  getSVG() {
-    return this.#self
-  }
-  
+
   querySelector(selector) {
     const res = this.#self.querySelectorAll(selector);
     return res.length === 1 ? res[0] : res.item(0) //.getItem(0);
@@ -134,6 +130,7 @@ export class CanvasElement extends EventEmitter {
   
   transform(index, type, value) {
     if (!this.viewportCanvas) return;
+    
     if (!index || !type || !value) return;
     
     const t = this.viewportCanvas.createSVGTransform();
@@ -146,7 +143,6 @@ export class CanvasElement extends EventEmitter {
   
   get self() { return this.#self };
   
-  // console.log('this.surface.getSVG().viewportElement', this.surface.getSVG().viewportElement)
   get viewportCanvas() { return this.#self.viewportElement };
   
   get type() { return this.#type };

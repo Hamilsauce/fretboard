@@ -44,8 +44,6 @@ function svgPoint(element, x, y) {
   return pt.matrixTransform(element.getScreenCTM().inverse());
 }
 
-
-
 // add a circle to the target
 function createCircle(event) {
   

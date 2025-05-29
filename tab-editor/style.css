@@ -1,0 +1,168 @@
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  z-index: 0;
+}
+
+html {
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+
+}
+
+pre {
+  white-space: pre-wrap;
+  
+}
+
+#app {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  grid-template-columns: 1fr;
+  gap: 0px;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  transition: 0.1s ease-out;
+  background: #EBEBEBC2;
+  
+}
+
+#app.dim {
+  background: #ABE7DA;
+  /* filter: i#17A8A4C9nvert(1); */
+  background: #FFFFFF;
+  
+}
+
+#app-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0px;
+  padding: 8px;
+  color: #828282;
+}
+
+#app-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 8px;
+  overflow-y: scroll;
+  padding: 4px;
+  /* width: 100%; */
+  /* height: 100%; */
+}
+
+#fret-input {
+  opacity: 0;
+  width: 0%;
+  height: 0%;
+}
+
+svg {
+  background: #F5F5F5;
+  border: 1px solid #C3C3C3;
+}
+
+.tab-line-group {
+  stroke: #FF008A;
+}
+
+.bounds-rect {
+  stroke: transparent;
+  fill: transparent;
+}
+
+
+.tab-line {
+  stroke: #7F9595;
+}
+
+.tab-cell {}
+
+.tab-cell.active .bounds-rect {
+  stroke: #565656;
+  /* fill: #CEFF2994; */
+}
+
+.fret-number {
+  fill: #000000;
+  font-weight: 600;
+}
+
+.fret-number.active {
+  fill: #EB1A1A;
+}
+
+
+
+#context-menu {
+  position: absolute;
+  display: none;
+  height: 0px;
+  width: 0px;
+  padding: 0px 0px;
+  opacity: 0;
+}
+
+#context-menu, #context-menu *  {
+  /* height: 0px; */
+  /* width: 0px; */
+  /* padding: 0px 0px; */
+  /* opacity: 0; */
+}
+
+#context-menu[data-show=true] {
+  display: grid;
+  grid-template-rows: 4px 1fr;
+  grid-template-columns: 1fr;
+  gap: 4px;
+  width: 120px;
+  height: auto;
+  background: #F6F6F6;
+  box-shadow: 0 2px 10px 1px #00000070;
+  border: 2px solid #FFFFFF;
+  border-radius: 5px;
+  overflow: hidden;
+  opacity: 1;
+}
+
+#context-menu>ul {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 2px;
+  width: 100%;
+  list-style: none;
+}
+
+#context-menu>ul>li {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 0px;
+  width: 100%;
+  padding: 4px 8px;
+  background: #FFFFFF;
+  color: #515151;
+  font-weight: 600;
+  transition: 0.05s;
+}
+
+#context-menu>ul>li:active {
+  filter: brightness(0.95);
+}
