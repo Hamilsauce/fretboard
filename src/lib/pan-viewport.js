@@ -1,4 +1,11 @@
-import { domPoint } from './utils.js';
+// import { domPoint } from './utils.js';
+
+const domPoint = (element, x, y) => {
+	return new DOMPoint(x, y).matrixTransform(
+		element.getScreenCTM().inverse()
+	);
+}
+
 
 const { forkJoin, Observable, iif, BehaviorSubject, AsyncSubject, Subject, interval, of, fromEvent, merge, empty, delay, from } = rxjs;
 const { startWith, flatMap, reduce, groupBy, toArray, mergeMap, switchMap, scan, map, tap, filter } = rxjs.operators;

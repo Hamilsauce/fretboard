@@ -1,7 +1,8 @@
 import { initKeyboard } from './keyboard-input.js';
 import { incrementBeat, decrementBeat } from './increment-decrement-beat.js';
 import { EventEmitter } from 'https://hamilsauce.github.io/hamhelper/event-emitter.js';
-
+import { addPanAction } from '../src/lib/pan-viewport.js';
+import { addPinchZoom } from '../src/lib/pinch-zoom.js';
 const app = document.querySelector('#app');
 const svg = document.querySelector('svg');
 const svgCanvas = document.querySelector('#svg-canvas');
@@ -13,7 +14,22 @@ const cellFret = cellInfo.querySelector('#cell-fret')
 const fretInput = document.querySelector('#fret-input')
 const containers = document.querySelectorAll('.container')
 
+const canvasViewBox = svg.viewBox.baseVal;
+
+const panaction$ = addPanAction(svgCanvas, (vb) => {
+  canvasViewBox.x = vb.x
+  canvasViewBox.y = vb.y
+});
+
+let zoomed = false
+
+const stopPinchZoom = addPinchZoom(svgCanvas)
+
+panaction$.subscribe()
+
 const keyboardNav = initKeyboard(fretInput)
+
+
 
 class AppState extends EventTarget {
   #activeCell;
@@ -26,11 +42,20 @@ class AppState extends EventTarget {
   
   get inputValue() { return this.#inputValue }
   
-  set inputValue(v) {
+  set inputValue(value) {
     const prev = this.#inputValue;
-    this.#inputValue = v;
-    console.warn('prev !== v', prev !== v)
-    if (prev !== v) {
+    if (value !== 0 && value.length < 2) {
+      if ((+prev + +value) <= 24) {
+        this.#inputValue = `${value}${prev}`;
+        
+      }
+    } else {
+      this.#inputValue = value
+      
+    }
+    
+    if (prev !== value) {
+      
       this.dispatchEvent(new CustomEvent('inputvalue:change', {
         detail: { value: this.#inputValue }
       }));
@@ -97,7 +122,7 @@ keyboardNav.addEventListener('keyboardnav', ({ detail }) => {
 keyboardNav.addEventListener('keyboard:delete', ({ detail }) => {
   // appState.activeCell.querySelector('text').textContent = '';
   // cellFret.textContent = `Fret: ${appState.inputValue}`
-console.warn('delete, fretInput', fretInput.value)
+  console.warn('delete, fretInput', fretInput.value)
   fretInput.value = ''
   appState.inputValue = ''
 });
@@ -123,6 +148,7 @@ appState.addEventListener('inputvalue:change', ({ detail }) => {
   const { value } = detail;
   
   if ((typeof value == 'string' && !value.length) || !isNaN(+value)) {
+    
     appState.activeCell.querySelector('text').textContent = value;
     cellFret.textContent = `Fret: ${appState.inputValue}`
   }
@@ -241,7 +267,7 @@ const fretData = [
 
 function renderSVGTab(frets, cellCount = 16) {
   // const svg = document.getElementById('tab-svg');
-  const svgs = [...document.querySelectorAll('#tab-svg')]
+  const svgs = [...document.querySelectorAll('#svg-canvas')]
   
   svgs.forEach((svg, i) => {
     const tabLines = svg.querySelector('.tab-lines');
