@@ -98,7 +98,7 @@ const DEFAULT_MENU_OPTIONS = {
   {
     name: 'tab-editor',
     title: 'tab-editor',
-    path: '/fretboard/tab-editor',
+    path: 'https://hamilsauce.github.io/fretboard/tab-editor/',
     action: new Action('tab-editor'),
   },
   {
