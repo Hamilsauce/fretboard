@@ -16,6 +16,12 @@
            detail: { direction: key.replace('arrow', '') }
          }));
        }
+       
+       if (key.includes('backspace')) {
+         this.dispatchEvent(new CustomEvent(`keyboard:delete`, {
+           // detail: { direction: key.replace('arrow', '') }
+         }));
+       }
      });
      
    };

@@ -33,7 +33,7 @@
       <input type="text" name="fret-input" id="fret-input" />
       
       <svg id="tab-svg" viewBox="0 0 480 140" width="400" height="140">
-        <defs>
+        <!-- <defs>
           <g data-template="tab-line-group" id="" class="tab-line-group" transform="translate(0,0) rotate(0) scale(1)">
             <line x1="0" y1="0" x2="960" y2="0" class="tab-line" transform="translate(0,0) rotate(0) scale(1)" />
             <g id="" class="tab-line-cells" transform="translate(0,0) rotate(0) scale(1)"></g>
@@ -44,7 +44,25 @@
             <text x="0" y="0" text-anchor="middle" dominant-baseline="middle" transform="translate(0, 0)"></text>
           </g>
           
+        </defs> -->
+        <defs>
+          
+          <g id="templates">
+            <g data-template="tab-line-group" id="" class="tab-line-group" transform="translate(0,20) rotate(0) scale(1)">
+              <rect class="bounds-rect" x="0" y="0" width="480" height="20" transform="translate(0,-10) rotate(0) scale(1)" />
+              <line x1="0" y1="0" x2="480" y2="0" class="tab-line" transform="translate(0,0) rotate(0) scale(1)" />
+              
+              <g class="tab-line-cells" transform="translate(0,0) rotate(0) scale(1)"></g>
+            </g>
+            
+            <g data-template="tab-cell" id="" class="tab-cell" transform="translate(0,0) rotate(0) scale(1)">
+              <rect class="bounds-rect" x="0" y="0" width="20" height="20" transform="translate(-10,-10) rotate(0) scale(1)" />
+              <text x="0" y="0" text-anchor="middle" dominant-baseline="middle" transform="translate(0, 1.5)"></text>
+            </g>
+          </g>
+          
         </defs>
+        
         <g data-template="tab-lines" id="" class="tab-lines" transform="translate(0,0) rotate(0) scale(1)"></g>
       </svg>
       

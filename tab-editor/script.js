@@ -1,5 +1,6 @@
 import { initKeyboard } from './keyboard-input.js';
 import { incrementBeat, decrementBeat } from './increment-decrement-beat.js';
+import { EventEmitter } from 'https://hamilsauce.github.io/hamhelper/event-emitter.js';
 
 const app = document.querySelector('#app');
 const svg = document.querySelector('svg');
@@ -28,7 +29,7 @@ class AppState extends EventTarget {
   set inputValue(v) {
     const prev = this.#inputValue;
     this.#inputValue = v;
-    
+    console.warn('prev !== v', prev !== v)
     if (prev !== v) {
       this.dispatchEvent(new CustomEvent('inputvalue:change', {
         detail: { value: this.#inputValue }
@@ -42,6 +43,7 @@ class AppState extends EventTarget {
     const prev = this.#activeCell;
     this.#activeCell = v;
     this.#inputValue = this.#activeCell.querySelector('text').textContent
+    
     this.dispatchEvent(new CustomEvent('activecell:change', {
       detail: { previous: prev, current: this.#activeCell }
     }));
@@ -90,7 +92,14 @@ const appState = new AppState();
 keyboardNav.addEventListener('keyboardnav', ({ detail }) => {
   const { direction } = detail;
   appState.activateAdjacent(direction)
-  // cellBeat.textContent = current.dataset.fullBeat
+});
+
+keyboardNav.addEventListener('keyboard:delete', ({ detail }) => {
+  // appState.activeCell.querySelector('text').textContent = '';
+  // cellFret.textContent = `Fret: ${appState.inputValue}`
+console.warn('delete, fretInput', fretInput.value)
+  fretInput.value = ''
+  appState.inputValue = ''
 });
 
 appState.addEventListener('activecell:change', ({ detail }) => {
@@ -104,16 +113,19 @@ appState.addEventListener('activecell:change', ({ detail }) => {
     current.classList.add('active')
   }
   
+  // fretInput.value = appState.inputValue
+  
   cellBeat.textContent = `Beat: ${current.dataset.fullBeat}`
   cellFret.textContent = `Fret: ${appState.inputValue}`
 });
 
 appState.addEventListener('inputvalue:change', ({ detail }) => {
   const { value } = detail;
-  if (value) {
-    
+  
+  if ((typeof value == 'string' && !value.length) || !isNaN(+value)) {
+    appState.activeCell.querySelector('text').textContent = value;
+    cellFret.textContent = `Fret: ${appState.inputValue}`
   }
-  appState.activeCell.querySelector('text').textContent = value
 });
 
 
@@ -134,6 +146,8 @@ const copyTextToClipboard = async (text) => {
   await navigator.clipboard.writeText(text)
 };
 
+// copyTextToClipboard(EventEmitter)
+
 const selectTextFromTarget = (e) => {
   window.getSelection().selectAllChildren(e.target)
   document.execCommand("Copy");
@@ -153,7 +167,7 @@ const createLineCell = (x, content) => {
   
   cell.setAttribute('transform', `translate(${x},0)`)
   // text.textContent = content ?? ''
-  console.log(x)
+  // console.log(x)
   cell.addEventListener('click', e => {
     fretInput.focus();
     
@@ -262,7 +276,7 @@ function renderSVGTab(frets, cellCount = 16) {
     
     frets.forEach(note => {
       const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
-      console.log(note)
+      // console.log(note)
       const cell = getCellByBeat(note.beat, note.string, svg)
       const cellText = cell.querySelector('text')
       cellText.textContent = note.fret;

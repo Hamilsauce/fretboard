@@ -1,5 +1,4 @@
-import { roundTwo } from '../lib/utils.js';
-
+export const roundTwo = (num) => Math.round((num + Number.EPSILON) * 100) / 100
 
 const TransformListOptions = {
   transforms: Array,
@@ -32,14 +31,15 @@ const DEFAULT_TRANSFORMS = {
 
 export class TransformList {
   #self = null;
-  #context = null;
+  #svgContext = null;
   #transforms = null;
   #transformMap = new Map();
 
-  constructor(contextObject, { transforms } = DEFAULT_TRANSFORMS) {
-    this.#context = contextObject;
+  constructor(hostEl, contextObject, { transforms } = DEFAULT_TRANSFORMS) {
+    this.#svgContext = contextObject;
 
-    this.#self = contextObject.dom.transform.baseVal;
+    // this.#self = contextObject.dom.transform.baseVal;
+    this.#self = (el.dom ?? el).transform.baseVal;
 
     this.init(transforms);
   };
@@ -54,11 +54,11 @@ export class TransformList {
       else {
         this.insert(t);
       }
+     
+      this.#transformMap.set(type, t);
     });
   }
-
-
-
+  
   getMatrixAt(index = 0) {
     const { a, b, c, d, e, f } = index < this.#self.numberOfItems ? this.#self.getItem(index).matrix : null;
 
@@ -68,8 +68,7 @@ export class TransformList {
   createTransform(type, ...values) {
     type = type.toLowerCase();
     
-    const t = this.#context.createSVGTransform();
-
+    const tr = this.#svgContext.createSVGTransform();
     switch (type) {
       case 'translate': {
         t.setTranslate(...values);
@@ -134,7 +133,6 @@ export class TransformList {
   }
 
   get transformItems() { return [...this.#self] };
-
 
   get translation() {
     return {

@@ -1,5 +1,3 @@
-// import { roundTwo } from '../lib/utils.js';
-
 export const roundTwo = (num) => Math.round((num + Number.EPSILON) * 100) / 100
 
 const TransformListOptions = {
@@ -135,7 +133,7 @@ export class TransformList {
       scale: this.getItem(2),
     }
   }
-
+  
   get transformItems() { return [...this.#self] };
 
 
