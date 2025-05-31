@@ -98,7 +98,7 @@ const DEFAULT_MENU_OPTIONS = {
   {
     name: 'tab-editor',
     title: 'tab-editor',
-    path: 'tab-editor',
+    path: '/fretboard/tab-editor',
     action: new Action('tab-editor'),
   },
   {
