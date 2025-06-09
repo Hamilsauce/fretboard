@@ -59,7 +59,6 @@
     
     fret-input-container {
       border: 1px solid black;
-      
     }
     
     input.fret-edit {
@@ -83,8 +82,7 @@
     }
     
     input:focus {
-      /* z-index: 1000; */
-      border: 1px solid black;
+      border: 1px solid #333C53;
     }
     
     /* input[data-is-active=true] {
@@ -163,10 +161,12 @@
         const y = stringY[note.string] - 10;
         
         const group = document.createElementNS("http://www.w3.org/2000/svg", "g");
+        group.setAttribute("transform", `translate(${x - 10}, ${y}) rotate(0) scale(1)`);
+        group.setAttribute("y", y);
         
         const foreign = document.createElementNS("http://www.w3.org/2000/svg", "foreignObject");
-        foreign.setAttribute("x", x - 10);
-        foreign.setAttribute("y", y);
+        // foreign.setAttribute("x", x - 10);
+        // foreign.setAttribute("y", y);
         foreign.setAttribute("width", 20);
         foreign.setAttribute("height", 20);
         foreign.setAttribute("class", "fret-input-container");
@@ -181,7 +181,7 @@
         input.addEventListener('click', (e) => {
           e.preventDefault()
           input.select()
-
+          
         });
         
         input.addEventListener('focus', (e) => {
@@ -206,7 +206,7 @@
             
             return
           }
-        
+          
           if (prevValue.length >= 2) {
             input.value = incomingValue
             
@@ -218,7 +218,7 @@
             
             return
           }
-
+          
           fretData[index].fret = e.target.value;
         });
         
