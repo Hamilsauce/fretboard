@@ -3,9 +3,16 @@ import { incrementBeat, decrementBeat } from './increment-decrement-beat.js';
 import { EventEmitter } from 'https://hamilsauce.github.io/hamhelper/event-emitter.js';
 import { addPanAction } from '../src/lib/pan-viewport.js';
 import { addPinchZoom } from '../src/lib/pinch-zoom.js';
+import ham from 'https://hamilsauce.github.io/hamhelper/hamhelper1.0.0.js';
+
+import { SvgApi } from './SVGCanvas.js';
+
+const { template, utils, addSvgPinchZoom } = ham;
+
 const app = document.querySelector('#app');
 const svg = document.querySelector('svg');
 const svgCanvas = document.querySelector('#svg-canvas');
+const tabLines = document.querySelector('.tab-lines');
 const contextMenu = document.querySelector('#context-menu');
 const appBody = document.querySelector('#app-body')
 const cellInfo = document.querySelector('#cell-info')
@@ -13,6 +20,13 @@ const cellBeat = cellInfo.querySelector('#cell-beat')
 const cellFret = cellInfo.querySelector('#cell-fret')
 const fretInput = document.querySelector('#fret-input')
 const containers = document.querySelectorAll('.container')
+
+const svgApi = new SvgApi(svgCanvas)
+svgApi.setViewBox(-250, -250, 500, 500)
+const tlGroup = svgApi.createGraphicsObject('tab-line-group')
+
+svgCanvas.append(tlGroup.dom)
+
 
 const canvasViewBox = svg.viewBox.baseVal;
 
@@ -44,10 +58,19 @@ class AppState extends EventTarget {
   
   set inputValue(value) {
     const prev = this.#inputValue;
-    if (value !== 0 && value.length < 2) {
+    const prevLength = prev.length
+    
+    if (prevLength >= 2) {
+      this.#inputValue = `${value}`;
+      return this.#inputValue;
+    }
+    
+    if (value && value !== 0 && value.length < 2) {
       if ((+prev + +value) <= 24) {
-        this.#inputValue = `${value}${prev}`;
-        
+        this.#inputValue = `${prev}${value}`;
+      }
+      else if (value && prev && prev.length === 2) {
+        this.#inputValue = `${value}`;
       }
     } else {
       this.#inputValue = value
@@ -120,9 +143,6 @@ keyboardNav.addEventListener('keyboardnav', ({ detail }) => {
 });
 
 keyboardNav.addEventListener('keyboard:delete', ({ detail }) => {
-  // appState.activeCell.querySelector('text').textContent = '';
-  // cellFret.textContent = `Fret: ${appState.inputValue}`
-  console.warn('delete, fretInput', fretInput.value)
   fretInput.value = ''
   appState.inputValue = ''
 });
@@ -138,7 +158,8 @@ appState.addEventListener('activecell:change', ({ detail }) => {
     current.classList.add('active')
   }
   
-  // fretInput.value = appState.inputValue
+  fretInput.value = appState.inputValue
+  fretInput.select()
   
   cellBeat.textContent = `Beat: ${current.dataset.fullBeat}`
   cellFret.textContent = `Fret: ${appState.inputValue}`
@@ -148,6 +169,7 @@ appState.addEventListener('inputvalue:change', ({ detail }) => {
   const { value } = detail;
   
   if ((typeof value == 'string' && !value.length) || !isNaN(+value)) {
+    fretInput.value = appState.inputValue
     
     appState.activeCell.querySelector('text').textContent = value;
     cellFret.textContent = `Fret: ${appState.inputValue}`
@@ -171,9 +193,6 @@ export const getSVGTemplate = (svgContext, type, options) => {
 const copyTextToClipboard = async (text) => {
   await navigator.clipboard.writeText(text)
 };
-
-// copyTextToClipboard(EventEmitter)
-
 const selectTextFromTarget = (e) => {
   window.getSelection().selectAllChildren(e.target)
   document.execCommand("Copy");
@@ -192,16 +211,10 @@ const createLineCell = (x, content) => {
   const text = cell.querySelector('text')
   
   cell.setAttribute('transform', `translate(${x},0)`)
-  // text.textContent = content ?? ''
-  // console.log(x)
+  
   cell.addEventListener('click', e => {
     fretInput.focus();
-    
-    // const input = prompt(`Enter fret (blank to clear):`, text.textContent);
     appState.activeCell = cell;
-    
-    // const isBlank = typeof input === 'string' && input.length === 0
-    // text.textContent = +input || isBlank ? input : text.textContent;
   });
   
   return cell;
@@ -333,7 +346,6 @@ document.addEventListener('contextmenu', e => {
       document.removeEventListener('click', blurContextMenu)
     }
     
-    console.log('ran blurContextMenu')
   };
   
   document.addEventListener('click', blurContextMenu);

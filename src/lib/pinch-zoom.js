@@ -11,6 +11,7 @@ export const addPinchZoom = (svg) => {
   let initialDist = null;
   let pinchCenter = null;
   let pinchStart = null;
+  let previousPinch = null;
   
   const getTouchDistance = (t1, t2) => {
     const dx = t2.clientX - t1.clientX;
@@ -37,6 +38,7 @@ export const addPinchZoom = (svg) => {
   
   const handlePointerDown = (e) => {
     const { touches } = e;
+    console.warn('down: ', touches.length)
     
     if (touches.length === 2) {
       e.preventDefault();
@@ -51,12 +53,18 @@ export const addPinchZoom = (svg) => {
         centerSvg,
         viewBox: { ...viewBox } 
       };
+    } else {
+      pinchStart = previousPinch
     }
+    
   };
   
   const handlePointerMove = (e) => {
     const { touches } = e;
     
+    // if (touches.length < 2) pinchStart = null
+    console.warn('move: ', touches.length)
+
     if (touches.length === 2 && pinchStart) {
       e.preventDefault();
       
@@ -81,10 +89,15 @@ export const addPinchZoom = (svg) => {
   
   const handlePointerUp = (e) => {
     const { touches } = e;
-    
-    if (touches.length < 2) {
-      pinchStart = null;
+    console.warn('up: ', touches.length)
+
+    if (touches.length === 1) {
+      previousPinch = pinchStart;
     }
+    else pinchStart = null
+    // if (touches.length === 1) {
+    //   previousPinch = pinchStart;
+    // }
   };
   
   svg.addEventListener('touchstart', handlePointerDown);

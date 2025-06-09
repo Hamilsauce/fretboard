@@ -1,40 +1,7 @@
-import ham from 'https://hamilsauce.github.io/hamhelper/hamhelper1.0.0.js';
 import { TransformList } from '../src/features/graphic/TransformList.js';
-
-const { pipeline, array, utils } = ham;
-
-import {
-  CanvasViewBox,
-  CanvasTransformList,
-  svgTemplater,
-  
-} from './index.js';
-
-
-
-const DEFAULT_CANVAS_CONFIG = {
-  id: 'canvas',
-  x: 0,
-  y: 0,
-  width: window.innerWidth,
-  height: window.innerHeight,
-  background: '#C7C7C7',
-  viewBox: {
-    x: -(window.innerWidth / 2),
-    y: -(window.innerHeight / 2),
-    width: window.innerWidth,
-    height: window.innerHeight,
-  }
-}
-
-
-const PatternTypes = {
-  grid: 'grid',
-  none: 'none',
-}
-
-
-export class SvgApi extends EventTarget {
+import { Eventer } from '../tab-editor/Eventer.js';
+import { GraphicObject } from '../tab-editor/graphics.object.js';
+export class SvgApi extends Eventer {
   #self;
   #transformList;
   #viewBox;
@@ -43,18 +10,12 @@ export class SvgApi extends EventTarget {
   constructor(svg) {
     super()
     this.#self = svg
-    this.#transformList = new CanvasTransformList(this.#self)
-    this.#viewBox = new CanvasViewBox(this.#self)
+    this.#transformList = new TransformList(this.#self, this.#self)
+    this.#viewBox = this.dom.viewBox.baseVal
   }
   
   initializeCanvas(config = DEFAULT_CANVAS_CONFIG) {
     Object.assign(this, config)
-  }
-  
-  
-  on(evt, handler) {
-    this.#self.addEventListener(evt, handler)
-    return () => this.#self.removeEventListener(evt, handler)
   }
   
   getPoint(element, x, y) {
@@ -102,7 +63,6 @@ export class SvgApi extends EventTarget {
   
   drawCircle(x = 0, y = 0, r = 100, fill = '#FF00FF', stroke = '#000000') {
     const c = document.createElementNS(this.namespaceURI, 'circle')
-    
     c.setAttribute('cx', x)
     c.setAttribute('cy', y)
     c.setAttribute('r', r)
@@ -126,20 +86,45 @@ export class SvgApi extends EventTarget {
     }
   }
   
-  createTransformList(el) {
-    
+  querySelector(selector) {
+    return this.dom.querySelector(selector)
   }
   
-  createGraphicsObject() {}
+  createSVGTransform() {
+    return this.dom.createSVGTransform()
+  }
+  
+  createTransformList(el) {
+    return new TransformList(this, el)
+  }
+  
+  createGraphicsObject(type, options) {
+    const template = this.getTemplate(type, options)
+    return new GraphicObject(this, template, { type })
+  }
   
   getGraphicsFeature() {}
+  
+  getTemplate(type, options = {}) {
+    const template = this.querySelector('#templates')
+      .querySelector(`[data-template="${type}"]`)
+      .cloneNode(true)
+    
+    Object.assign(template, options || {})
+    
+    template.dataset.type = type;
+    template.removeAttribute('data-template');
+    delete template.dataset.template;
+    
+    return template;
+  }
   
   
   // get transformList() { return this.#self.transform.baseVal };
   
-  set transforms(newValue) { this._transforms = newValue };
+  // set transforms(newValue) { this._transforms = newValue };
   
-  set background(newValue) { this.#self.style.background = newValue };
+  // set background(newValue) { this.#self.style.background = newValue };
   
   // get viewBox() { return this.#self.viewBox.baseVal }
   set viewBox({ x, y, width, height }) {
@@ -149,6 +134,8 @@ export class SvgApi extends EventTarget {
   get namespaceURI() { return 'http://www.w3.org/2000/svg' }
   
   get dataset() { return this.#self.dataset }
+  
+  get dom() { return this.#self }
   
   set dataset(val) { Object.entries(val).forEach(([prop, value]) => this.#self.dataset[prop] = value) }
   
@@ -174,26 +161,3 @@ export class SvgApi extends EventTarget {
   
   set height(newValue) { this.#self.height.baseVal.value = newValue };
 }
-
-// function transformMe(evt) {
-//   // svg root element to access the createSVGTransform() function
-//   var svgroot = evt.target.parentNode;
-
-//   // SVGTransformList of the element that has been clicked on
-//   var tfmList = evt.target.transform.baseVal;
-
-//   // Create a seperate transform object for each transform
-//   var translate = svgroot.createSVGTransform();
-//   translate.setTranslate(50, 5);
-
-//   var rotate = svgroot.createSVGTransform();
-//   rotate.setRotate(10, 0, 0);
-
-//   var scale = svgroot.createSVGTransform();
-//   scale.setScale(0.8, 0.8);
-
-//   // apply the transformations by appending the SVGTranform objects to the SVGTransformList associated with the element
-//   tfmList.appendItem(translate);
-//   tfmList.appendItem(rotate);
-//   tfmList.appendItem(scale);
-// }

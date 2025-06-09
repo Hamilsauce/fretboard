@@ -1,14 +1,14 @@
 // import { domPoint } from './utils.js';
 
 const domPoint = (element, x, y) => {
-	return new DOMPoint(x, y).matrixTransform(
-		element.getScreenCTM().inverse()
-	);
+  return new DOMPoint(x, y).matrixTransform(
+    element.getScreenCTM().inverse()
+  );
 }
 
 
 const { forkJoin, Observable, iif, BehaviorSubject, AsyncSubject, Subject, interval, of, fromEvent, merge, empty, delay, from } = rxjs;
-const { startWith, flatMap, reduce, groupBy, toArray, mergeMap, switchMap, scan, map, tap, filter } = rxjs.operators;
+const { exhaustMap, startWith, flatMap, reduce, groupBy, toArray, mergeMap, switchMap, scan, map, tap, filter } = rxjs.operators;
 const { fromFetch } = rxjs.fetch;
 
 const createPanEvent = ({ svg, target, clientX, clientY } = new PointerEvent()) => {
@@ -23,26 +23,39 @@ const calculateOrigimDelta = ({ viewBox, x, y, clientY } = new PointerEvent()) =
 export const addPanAction = (svg, callback) => {
   let currentOrigin = domPoint(svg, 0, 0)
   let panOrigin = null;
-
+  
   const scene = svg.querySelector('#scene');
   const viewBox = svg.viewBox.baseVal;
-
+  
+  const touchstart$ = fromEvent(svg, 'touchstart')
+    .pipe(filter(({ touches }) => touches.length <= 2), )
+  const touchmove$ = fromEvent(svg, 'touchmove').pipe(filter(({ touches }) => touches.length >= 2), )
+  const touchend$ = fromEvent(svg, 'touchend').pipe(filter(({ touches }) => touches.length >= 2), )
+  
   const pointerdown$ = fromEvent(svg, 'pointerdown')
     .pipe(
       tap((e) => {
         e.preventDefault();
         e.stopPropagation();
       }),
+      // exhaustMap(value => {
+      //   return touchstart$; // this must complete for next `value` to be considered
+      // }),
+      
       map(createPanEvent),
       tap(point => panOrigin = point),
     );
-
+  
   const pointermove$ = fromEvent(svg, 'pointermove')
     .pipe(
       tap((e) => {
         e.preventDefault();
         e.stopPropagation();
       }),
+      // exhaustMap(value => {
+      //   return touchmove$; // this must complete for next `value` to be considered
+      // }),
+      
       map(createPanEvent),
       map(({ x, y }) => {
         return {
@@ -55,9 +68,12 @@ export const addPanAction = (svg, callback) => {
         callback(origin)
       }),
     );
-
+  
   const pointerup$ = fromEvent(svg, 'pointerup')
     .pipe(
+      exhaustMap(value => {
+        return touchend$; // this must complete for next `value` to be considered
+      }),
       map(createPanEvent),
       map(({ x, y }) => {
         return {
@@ -67,8 +83,11 @@ export const addPanAction = (svg, callback) => {
         }
       }),
     );
-
+  
   return pointerdown$.pipe(
+    exhaustMap(value => {
+      return touchstart$; // this must complete for next `value` to be considered
+    }),
     switchMap(panOrigin => pointermove$.pipe(
       // tap(({ x, y }) => {
       //   const o = {

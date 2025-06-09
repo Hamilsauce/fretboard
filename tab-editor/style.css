@@ -67,11 +67,11 @@ pre {
   /* height: 100%; */
 }
 
-#fret-input {
+/* #fret-input {
   opacity: 0;
   width: 0%;
   height: 0%;
-}
+} */
 
 svg {
   background: #F5F5F5;
@@ -79,7 +79,7 @@ svg {
 }
 
 .tab-line-group {
-  stroke: #FF008A;
+  /* stroke: #FF008A; */
 }
 
 .bounds-rect {
