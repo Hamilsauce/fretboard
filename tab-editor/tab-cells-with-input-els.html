@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Editable Tab Editor</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      padding: 0;
+      margin: 0;
+      z-index: 0;
+    }
+    
+    html {
+      font-family: 'Roboto', sans-serif;
+      font-size: 16px;
+    }
+    
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+    }
+    
+    #app {
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      grid-template-columns: 1fr;
+      gap: 0px;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+    
+    #app-header {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      gap: 0px;
+      padding: 8px;
+    }
+    
+    #app-body {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      gap: 0px;
+      overflow-y: scroll;
+      /* padding: 8px; */
+    }
+    
+    svg {
+      background: #f9f9f9;
+      border: 1px solid #ccc;
+    }
+    
+    fret-input-container {
+      border: 1px solid black;
+      
+    }
+    
+    input.fret-edit {
+      width: 20px;
+      font-size: 14px;
+      text-align: center;
+      border: none;
+      background: transparent;
+      outline: none;
+      padding: 1px;
+      caret-color: transparent;
+      
+      /* caret: ; */
+      /* caret-shape: underscore; */
+    }
+    
+    input.fret-edit::selection {
+      background: transparent;
+      background: #000000;
+      color: #ffffff;
+    }
+    
+    input:focus {
+      /* z-index: 1000; */
+      border: 1px solid black;
+    }
+    
+    /* input[data-is-active=true] {
+      z-index: 1000;
+      border: 1px solid black;
+    } */
+  </style>
+</head>
+
+<body>
+  <main id="app">
+    <section id="app-header">
+      <h2>Editable Guitar Tab (Inline Input)</h2>
+    </section>
+    <section id="app-body">
+      <svg id="tab-svg" width="400" height="150"></svg>
+      <!-- <input type="text" maxlength="2" class="fret-edit" data-is-active="true"> -->
+    </section>
+    <section id="app-footer">footer</section>
+  </main>
+  <template data-template="tab-cell">
+    <g class="tab-cell" transform="translate(0,0) rotate(0) scale(1)">
+      <foreignObject x="154" y="32" width="27" height="27">
+        <input type="text" maxlength="2" class="fret-edit" data-is-active="true">
+      </foreignObject>
+    </g>
+  </template>
+  
+  <script>
+    const NUM_STRINGS = 6;
+    const NUM_BEATS = 16;
+    const CELL_WIDTH = 24;
+    
+    const stringY = [20, 42, 64, 86, 108, 130]; // E A D G B E (low to high)
+    let fretData = [];
+    
+    // Initialize
+    for (let beat = 0; beat < NUM_BEATS; beat++) {
+      for (let string = 0; string < NUM_STRINGS; string++) {
+        fretData.push({ string, beat, fret: '' });
+      }
+    }
+    
+    const selectTextFromTarget = (e) => {
+      window.getSelection().selectAllChildren(e.target)
+      document.execCommand("Copy");
+      alert('Copied!')
+    };
+    
+    const copyTextToClipboard = async (text) => {
+      await navigator.clipboard.writeText(text)
+    };
+    
+    const isOnlyDigits = (str) => {
+      return /^\d+$/.test(str);
+    }
+    
+    function renderSVGTab() {
+      const svg = document.getElementById('tab-svg');
+      svg.innerHTML = '';
+      
+      // Draw strings
+      stringY.forEach(y => {
+        const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+        line.setAttribute("x1", 0);
+        line.setAttribute("x2", 400);
+        line.setAttribute("y1", y);
+        line.setAttribute("y2", y);
+        line.setAttribute("stroke", "#ccc");
+        svg.appendChild(line);
+      });
+      
+      // Render editable fret numbers
+      fretData.forEach((note, index) => {
+        const x = 20 + note.beat * CELL_WIDTH;
+        const y = stringY[note.string] - 10;
+        
+        const group = document.createElementNS("http://www.w3.org/2000/svg", "g");
+        
+        const foreign = document.createElementNS("http://www.w3.org/2000/svg", "foreignObject");
+        foreign.setAttribute("x", x - 10);
+        foreign.setAttribute("y", y);
+        foreign.setAttribute("width", 20);
+        foreign.setAttribute("height", 20);
+        foreign.setAttribute("class", "fret-input-container");
+        
+        const input = document.createElement("input");
+        input.setAttribute("type", "text");
+        input.setAttribute("maxlength", "3");
+        input.setAttribute("max", "24");
+        input.setAttribute("class", "fret-edit");
+        input.value = note.fret;
+        
+        input.addEventListener('click', (e) => {
+          e.preventDefault()
+          input.select()
+
+        });
+        
+        input.addEventListener('focus', (e) => {
+          e.preventDefault()
+          input.select()
+        });
+        
+        input.addEventListener('input', (e) => {
+          const isValid = isOnlyDigits(e.data)
+          const inputType = e.inputType
+          const incomingValue = e.data
+          const prevValue = input.value.replace(incomingValue, '')
+          
+          if (inputType.includes('delete')) {
+            fretData[index].fret = e.target.value;
+            
+            return
+          }
+          
+          if (!isValid) {
+            input.value = prevValue
+            
+            return
+          }
+        
+          if (prevValue.length >= 2) {
+            input.value = incomingValue
+            
+            return
+          }
+          
+          if (prevValue.length == 1 && prevValue == '0') {
+            input.value = incomingValue
+            
+            return
+          }
+
+          fretData[index].fret = e.target.value;
+        });
+        
+        foreign.appendChild(input);
+        group.appendChild(foreign)
+        svg.appendChild(group);
+      });
+    }
+    
+    renderSVGTab();
+  </script>
+  
+</body>
+
+</html>

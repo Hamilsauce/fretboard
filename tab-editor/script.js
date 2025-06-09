@@ -193,6 +193,7 @@ export const getSVGTemplate = (svgContext, type, options) => {
 const copyTextToClipboard = async (text) => {
   await navigator.clipboard.writeText(text)
 };
+
 const selectTextFromTarget = (e) => {
   window.getSelection().selectAllChildren(e.target)
   document.execCommand("Copy");
