@@ -19,7 +19,15 @@ const cellInfo = document.querySelector('#cell-info')
 const cellBeat = cellInfo.querySelector('#cell-beat')
 const cellFret = cellInfo.querySelector('#cell-fret')
 const fretInput = document.querySelector('#fret-input')
+const newEditorButton = document.querySelector('#new-editor-button')
 const containers = document.querySelectorAll('.container')
+
+newEditorButton .addEventListener('click', e => {
+// location.href = 
+const url = `${location.origin}/tab-editor/tab-editor-v2.html`
+  // console.log(location)
+  location.href = url
+});
 
 const svgApi = new SvgApi(svgCanvas)
 svgApi.setViewBox(-250, -250, 500, 500)

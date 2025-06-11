@@ -57,18 +57,18 @@
       border: 1px solid #ccc;
     }
     
-    fret-input-container {
-      border: 1px solid black;
+    .fret-input-container {
+      border: none;
     }
     
     input.fret-edit {
       width: 20px;
-      font-size: 14px;
+      font-size: 15px;
       text-align: center;
       border: none;
       background: transparent;
       outline: none;
-      padding: 1px;
+      padding: 0 1px;
       caret-color: transparent;
       
       /* caret: ; */
@@ -85,6 +85,10 @@
       border: 1px solid #333C53;
     }
     
+    .string-line {
+      stroke: #ADB1B9;
+    }
+    
     /* input[data-is-active=true] {
       z-index: 1000;
       border: 1px solid black;
@@ -98,7 +102,7 @@
       <h2>Editable Guitar Tab (Inline Input)</h2>
     </section>
     <section id="app-body">
-      <svg id="tab-svg" width="400" height="150"></svg>
+      <svg id="tab-svg" width="400" height="200"></svg>
       <!-- <input type="text" maxlength="2" class="fret-edit" data-is-active="true"> -->
     </section>
     <section id="app-footer">footer</section>
@@ -111,18 +115,49 @@
     </g>
   </template>
   
-  <script>
+  <script type="module">
+    const directionModifierMap = new Map([
+      ['left', -1],
+      ['up', -1],
+      ['right', 1],
+      ['down', 1]
+    ])
+    
     const NUM_STRINGS = 6;
     const NUM_BEATS = 16;
     const CELL_WIDTH = 24;
-    
+    const strings = [
+    {
+      number: 1,
+      baseNote: 'E4'
+    },
+    {
+      number: 2,
+      baseNote: 'B3'
+    },
+    {
+      number: 3,
+      baseNote: 'G3'
+    },
+    {
+      number: 4,
+      baseNote: 'D3'
+    },
+    {
+      number: 5,
+      baseNote: 'A2'
+    },
+    {
+      number: 6,
+      baseNote: 'E2'
+    }, ]
     const stringY = [20, 42, 64, 86, 108, 130]; // E A D G B E (low to high)
     let fretData = [];
     
     // Initialize
     for (let beat = 0; beat < NUM_BEATS; beat++) {
       for (let string = 0; string < NUM_STRINGS; string++) {
-        fretData.push({ string, beat, fret: '' });
+        fretData.push({ string, beat, fret: '', stringData: strings[string] });
       }
     }
     
@@ -145,24 +180,41 @@
       svg.innerHTML = '';
       
       // Draw strings
-      stringY.forEach(y => {
+      stringY.forEach((y, stringIndex) => {
+        const string = strings[stringIndex]
+        
         const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+        line.classList.add('string-line')
+        line.dataset.stringNumber = string.number
+        line.dataset.baseNote = string.baseNote
+        
         line.setAttribute("x1", 0);
         line.setAttribute("x2", 400);
         line.setAttribute("y1", y);
         line.setAttribute("y2", y);
-        line.setAttribute("stroke", "#ccc");
         svg.appendChild(line);
       });
       
       // Render editable fret numbers
       fretData.forEach((note, index) => {
+        if (index === 20) {
+          note.fret = 10
+        }
+        
+        const { stringData } = note
+        
         const x = 20 + note.beat * CELL_WIDTH;
         const y = stringY[note.string] - 10;
         
         const group = document.createElementNS("http://www.w3.org/2000/svg", "g");
         group.setAttribute("transform", `translate(${x - 10}, ${y}) rotate(0) scale(1)`);
         group.setAttribute("y", y);
+        
+        group.classList.add('input-group')
+        group.dataset.x = x - 10
+        group.dataset.y = y
+        group.dataset.stringNumber = stringData.number
+        group.dataset.beat = note.beat
         
         const foreign = document.createElementNS("http://www.w3.org/2000/svg", "foreignObject");
         // foreign.setAttribute("x", x - 10);
@@ -180,14 +232,39 @@
         
         input.addEventListener('click', (e) => {
           e.preventDefault()
-          input.select()
+          // input.select()
           
         });
         
         input.addEventListener('focus', (e) => {
-          e.preventDefault()
-          input.select()
+          // e.preventDefault()
+          // input.select()
+          input.parentElement.focus()
         });
+        
+        input.addEventListener('keydown', (e) => {
+          const key = e.key.toLowerCase();
+          let nextInputGroup;
+          
+          if (key.includes('arrow')) {
+            const dir = key.replace('arrow', '')
+            const dirModifier = directionModifierMap.get(dir)
+            
+            const group = input.closest('.input-group')
+            const stringNumber = +group.dataset.stringNumber
+            const beat = +group.dataset.beat
+            
+            if (dir === 'left' || dir === 'right') {
+              nextInputGroup = svg.querySelector(`.input-group[data-string-number="${stringNumber}"][data-beat="${beat + dirModifier}"]`)
+            } else if (dir === 'up' || dir === 'down') {
+              nextInputGroup = svg.querySelector(`.input-group[data-string-number="${stringNumber + dirModifier}"][data-beat="${beat}"]`)
+            }
+            
+            if (nextInputGroup) {
+              nextInputGroup.querySelector('input').focus()
+            }
+          }
+        })
         
         input.addEventListener('input', (e) => {
           const isValid = isOnlyDigits(e.data)
@@ -227,6 +304,8 @@
         svg.appendChild(group);
       });
     }
+    
+    
     
     renderSVGTab();
   </script>
