@@ -108,6 +108,38 @@ svg {
   fill: #EB1A1A;
 }
 
+.fret-input-container {
+  border: none;
+}
+
+input.fret-edit {
+  width: 20px;
+  font-size: 15px;
+  text-align: center;
+  border: none;
+  background: transparent;
+  outline: none;
+  padding: 0 1px;
+  caret-color: transparent;
+  
+  /* caret: ; */
+  /* caret-shape: underscore; */
+}
+
+input.fret-edit::selection {
+  background: transparent;
+  background: #000000;
+  color: #ffffff;
+}
+
+input:focus {
+  border: 1px solid #333C53;
+}
+
+.string-line {
+  stroke: #ADB1B9;
+}
+
 
 
 #context-menu {
