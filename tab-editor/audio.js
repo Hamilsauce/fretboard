@@ -9,14 +9,14 @@ export const sleep = async (time = 500, cb) => {
 
 
 
- const audioCtx = new AudioContext()
+const audioCtx = new AudioContext()
 
-export const playPulse = async(timeMod = 0, pulseHz = 440) => {
+export const playPulse = async (timeMod = 0, pulseHz = 440) => {
   let time = audioCtx.currentTime
   
   const osc = new OscillatorNode(audioCtx, {
-    type: "sine",
-    frequency: 440,
+    type: "triangle",
+    frequency: pulseHz,
   });
   
   // osc.frequency.setValueAtTime(pulseHz, time)
@@ -34,8 +34,8 @@ export const playPulse = async(timeMod = 0, pulseHz = 440) => {
   osc.connect(amp).connect(audioCtx.destination);
   
   // lfo.start();
-  osc.start(time + timeMod)
-  osc.stop(time + timeMod+0.1)
+  osc.start(time)
+  osc.stop(time + timeMod + 0.1)
   
   // return await sleep(timeMod)
   // return (pulseTime = 1) => {
