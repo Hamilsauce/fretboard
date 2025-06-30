@@ -17,7 +17,7 @@ export class BaseObject extends EventTarget {
     
     this.#id = BaseObject.#generateId(objectType);
     
-    this.name = name ?? this.constructor.name
+    this.#name = name ?? this.constructor.name
       .toLowerCase()
       .replace(this.objectType, '').toLowerCase();
   }
@@ -28,7 +28,7 @@ export class BaseObject extends EventTarget {
   
   get name() { return this.#name }
   
-  set name(name) { this.#name = this.#name ? this.#name : name; }
+  // set name(name) { this.#name = this.#name ? this.#name : name; }
   
   // static Event = class extends Event {
   //   constructor(){
@@ -55,9 +55,7 @@ export class BaseObject extends EventTarget {
 
 export class Feature extends BaseObject {
   constructor(name, options) {
-    super('feature', name);
-    
-    this.name = name ?? this.constructor.name.replace('Feature', '').toLowerCase();
+    super('feature', { name });
   }
   
   attach(entity) {
@@ -66,6 +64,7 @@ export class Feature extends BaseObject {
   }
   
   init() {}
+  
   remove() {}
 }
 
@@ -74,7 +73,6 @@ class Entity extends BaseObject {
   
   constructor(name, options = {}) {
     super('entity', { name });
-    
   }
   
   get features() { return this.#features }

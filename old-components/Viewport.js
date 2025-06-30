@@ -81,10 +81,8 @@ export class Viewport extends Component {
     let ratio = this.#viewBox.width / this.#viewBox.height
     let newVb = { x: 0, y: 0, width: 0, height: 0 }
 
-
     if (width && height && !amount) {
       newVb = { ...newVb, width, height }
-
     }
 
     else {
@@ -96,26 +94,23 @@ export class Viewport extends Component {
 
       this.#viewBox
     }
+   
     if (zoomIn) {
-
       Object.assign(this.#viewBox, {
         width: vb.width - vb.width / 6,
         height: vb.height - vb.height / 4,
         y: (vb.y - vb.height / -8),
         x: (vb.x - vb.width / -12),
-      })
+      });
     }
 
-    // else if (isZoomOut && Math.abs(zoom.level) < zoom.limit) {
     else if (zoomOut) {
-      // zoom.direction--
-
       Object.assign(vb, {
         width: vb.width + vb.width / 6,
         height: vb.height + vb.height / 4,
         y: (vb.y - vb.height / 8),
         x: (vb.x - vb.width / 12),
-      })
+      });
     }
 
     Object.assign(this.viewBox, viewBox);
@@ -141,10 +136,6 @@ export class Viewport extends Component {
         height: 16,
       },
       point: this.origin,
-      // point: {
-      //   x: 0,
-      //   y: 0,
-      // },
     };
 
     const object = new objectsClass(this, options);

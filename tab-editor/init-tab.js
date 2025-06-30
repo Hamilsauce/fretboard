@@ -59,6 +59,7 @@ const beatDurationMap = new Map([
   ['half', 8],
   ['whole', 16],
 ])
+
 const isQuarterBeat = (beat) => !(beat % 4);
 const isEighthBeat = (beat) => !(beat % 2);
 const isBeatOfLength = (beat, durationName = 'quarter') => {
@@ -107,6 +108,43 @@ const createBeatMarker = (x, r = 10) => {
   // marker.dataset.barNumber = 1;
   return marker
 };
+
+
+const createDataOutput = (data) => {
+  const groupedByString = data.reduce((acc, curr, i) => {
+    if (!acc[curr.string]) {
+      acc[curr.string] = []
+    }
+    
+    acc[curr.string].push(curr)
+    
+    return acc
+  }, []);
+  
+  const formattedStrings = groupedByString.map((stringArr, i) => {
+    return stringArr.map((cell, i) => {
+      return `${cell.fret || '-'}`
+    }).join('|')
+  });
+  
+  const formattedGrid = formattedStrings.join('\n')
+  
+  return formattedGrid
+};
+
+const renderDataOutput = (data) => {
+  const outEl = document.querySelector('#data-output');
+  
+  const formattedData = createDataOutput(data)
+  outEl.innerHTML = formattedData
+}
+
+document.querySelector('#app-header-center').addEventListener('click', e => {
+  const fretJSON = JSON.stringify(fretData, null, 2)
+  const formattedData = createDataOutput(fretData)
+  console.warn('createDataOutput', formattedData)
+  // console.log(fretJSON)
+});
 
 export const renderSVGTab = (selector = '#svg-canvas') => {
   const svg = document.querySelector(selector);
@@ -202,7 +240,7 @@ export const renderSVGTab = (selector = '#svg-canvas') => {
         
         const freq = fretNote.frequency
         console.warn('freq', freq)
-        playPulse(1, freq)
+        // playPulse(1, freq)
       }
       
     });
@@ -244,31 +282,32 @@ export const renderSVGTab = (selector = '#svg-canvas') => {
         fretData[index].fret = e.target.value;
         group.dataset.hasEdited = true;
         
-        return
+        // return
       }
       
-      if (!isValid) {
+      else if (!isValid) {
         input.value = prevValue
         
-        return
+        // return
       }
       
-      if (prevValue.length >= 2 || !hasEdited) {
+      else if (prevValue.length >= 2 || !hasEdited) {
         input.value = incomingValue
         group.dataset.hasEdited = true;
         
-        return
+        // return
       }
       
-      if (prevValue.length == 1 && prevValue == '0') {
+      else if (prevValue.length == 1 && prevValue == '0') {
         input.value = incomingValue
         group.dataset.hasEdited = true;
         
-        return
+        // return
       }
       
-      fretData[index].fret = e.target.value;
+      fretData[index].fret = input.value;
       
+      renderDataOutput(fretData)
       
     });
     
@@ -278,5 +317,3 @@ export const renderSVGTab = (selector = '#svg-canvas') => {
   });
   svg.appendChild(tabGroup)
 }
-
-// renderSVGTab();

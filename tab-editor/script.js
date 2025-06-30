@@ -22,21 +22,20 @@ const fretInput = document.querySelector('#fret-input')
 const newEditorButton = document.querySelector('#new-editor-button')
 const containers = document.querySelectorAll('.container')
 
-newEditorButton .addEventListener('click', e => {
-// location.href = 
-const url = `${location.origin}/tab-editor/tab-editor-v2.html`
-  // console.log(location)
+newEditorButton.addEventListener('click', e => {
+  const url = `${location.origin}/tab-editor/tab-editor-v2.html`
   location.href = url
 });
 
 const svgApi = new SvgApi(svgCanvas)
+const canvasViewBox = svg.viewBox.baseVal;
 svgApi.setViewBox(-250, -250, 500, 500)
+
 const tlGroup = svgApi.createGraphicsObject('tab-line-group')
 
 svgCanvas.append(tlGroup.dom)
 
 
-const canvasViewBox = svg.viewBox.baseVal;
 
 const panaction$ = addPanAction(svgCanvas, (vb) => {
   canvasViewBox.x = vb.x
@@ -356,7 +355,6 @@ document.addEventListener('contextmenu', e => {
     }
     
   };
-  
   document.addEventListener('click', blurContextMenu);
   
 });

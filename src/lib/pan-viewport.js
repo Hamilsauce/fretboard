@@ -27,10 +27,18 @@ export const addPanAction = (svg, callback) => {
   const scene = svg.querySelector('#scene');
   const viewBox = svg.viewBox.baseVal;
   
-  const touchstart$ = fromEvent(svg, 'touchstart')
-    .pipe(filter(({ touches }) => touches.length <= 2), )
+  const touchstart$ = fromEvent(svg, 'touchstart').pipe(filter(({ touches }) => touches.length <= 2), )
   const touchmove$ = fromEvent(svg, 'touchmove').pipe(filter(({ touches }) => touches.length >= 2), )
   const touchend$ = fromEvent(svg, 'touchend').pipe(filter(({ touches }) => touches.length >= 2), )
+  
+  const multitouch$ = fromEvent(svg, 'touchstart').pipe(filter(({ touches }) => touches.length >= 2))
+  
+  multitouch$
+    .pipe(
+      map(x => x),
+      // tap(e => console.log('multitouch$'))
+    )
+    // .subscribe()
   
   const pointerdown$ = fromEvent(svg, 'pointerdown')
     .pipe(
@@ -53,7 +61,7 @@ export const addPanAction = (svg, callback) => {
         e.stopPropagation();
       }),
       // exhaustMap(value => {
-      //   return touchmove$; // this must complete for next `value` to be considered
+      //   return multitouch$; // this must complete for next `value` to be considered
       // }),
       
       map(createPanEvent),
@@ -67,6 +75,7 @@ export const addPanAction = (svg, callback) => {
       tap((origin) => {
         callback(origin)
       }),
+      
     );
   
   const pointerup$ = fromEvent(svg, 'pointerup')
@@ -85,10 +94,11 @@ export const addPanAction = (svg, callback) => {
     );
   
   return pointerdown$.pipe(
-    exhaustMap(value => {
-      return touchstart$; // this must complete for next `value` to be considered
-    }),
+    // exhaustMap(value => {
+    //   return multitouch$; // this must complete for next `value` to be considered
+    // }),
     switchMap(panOrigin => pointermove$.pipe(
+      // tap(x => console.log('swotch map move')),
       // tap(({ x, y }) => {
       //   const o = {
       //     x: viewBox.x + (viewBox.width / 2),

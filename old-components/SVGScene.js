@@ -1,13 +1,10 @@
 import { Viewport } from './Viewport.js';
 import { ObjectRegistry } from '../graphics-objects/ObjectRegistry.js';
 import { addPanAction } from '../lib/pan-viewport.js';
-// import { GraphicObject } from '../graphics-objects/GraphicObject.js';
-
 
 const { forkJoin, Observable, iif, BehaviorSubject, AsyncSubject, Subject, interval, of, fromEvent, merge, empty, delay, from } = rxjs;
 const { distinctUntilChanged, startWith, flatMap, reduce, groupBy, toArray, mergeMap, switchMap, scan, map, tap, filter } = rxjs.operators;
 const { fromFetch } = rxjs.fetch;
-
 
 const testObject1 = {
   type: 'circle',
@@ -30,16 +27,14 @@ export class Scene extends Viewport {
     selectedObjectIds: [],
   });
 
-
   constructor(context, options) {
     super(context, 'scene', options);
-
-// GraphicObject.prototype.context = this
 
     this.pan$ = addPanAction(this, e => {
       this.pan(e);
     });
 
+    // EXPERIMENTAL CODE:
     // scenePan$.pipe(
     //   startWith({ origin: { x: 0, y: 0 }, viewBox: { x: -36, y: -64, width: 72, height: 128 } }),
     //   filter(({ origin, viewBox }) => origin.x && viewBox.x && viewBox.y && origin.y),
@@ -74,14 +69,7 @@ export class Scene extends Viewport {
           map(o => ({ ...o, vertices: obj.vertices, })),
         )
       )
-      // scan((prev, curr) => {
-      //   if (prev) {
-      //   }
-      //   return { ...prev, ...curr }
-      // }, this.#sceneState$.getValue()),
-      // tap(this.#sceneState$),
     );
-
 
     fromEvent(this.layers.surface, 'click').pipe(
       map(() => {
