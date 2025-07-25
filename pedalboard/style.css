@@ -4,7 +4,7 @@
   margin: 0;
   z-index: 0;
   user-select: none;
-
+  
 }
 
 html {
@@ -50,9 +50,10 @@ body {
   /* border: 2px solid #000000; */
   user-select: none;
   /* touch-action: none; */
-
-
+  
+  
 }
+
 #surface {
   fill: #CED3D8;
 }
@@ -60,20 +61,36 @@ body {
 .pedal .pedal-face {
   stroke-width: 0.1;
   stroke: #31323950;
+}
+
+.pedal .pedal-float-label {
+  font-size: 6px;
+  stroke: #31323950;
+  opacity: 0;
+}
+
+.pedal .pedal-top-text {
+  font-size: 8px;
+  stroke: #31323950;
+  stroke-width: 0.5;
   /* rx: 15; */
 }
 
 .pedal[data-selected=true] .pedal-face {
   stroke: #313239;
 }
+.pedal[data-selected=true] .pedal-float-label  {
+  opacity: 1;
+}
 
 .pedal[data-pedal-type=distortion] .pedal-face {
   fill: #C68C2A;
 }
 
-.delay-pedal .pedal-face{
+.delay-pedal .pedal-face {
   fill: #31AD71;
 }
-.distortion-pedal .pedal-face{
+
+.distortion-pedal .pedal-face {
   fill: #C68C2A;
 }

@@ -7,8 +7,10 @@ const canvasEl = document.querySelector('#canvas');
 const sceneEl = document.querySelector('#scene');
 const distortion = document.querySelector('.distortion-pedal');
 
-console.log('draggable', draggable)
+document.querySelector('#canvas').style.touchAction = 'none';
+
 createPedal('distortion')
+
 const dispatchClick = target => {
   const ev = new PointerEvent('click', {
     view: window,

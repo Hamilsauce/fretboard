@@ -86,7 +86,7 @@ export class Component extends EventEmitter {
     let template;
     if (context instanceof SVGElement || context.dom instanceof SVGElement) {
       template = context.templates.querySelector(`[data-template="${type}"]`).cloneNode(true);
-      console.warn('template', template)
+     
       delete template.dataset.template;
       
       if (options) Object.assign(template, options);
