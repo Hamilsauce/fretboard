@@ -3,6 +3,11 @@ import { svgPoint } from '../src/lib/svg-helpers.js';
 import { draggable } from 'https://hamilsauce.github.io/hamhelper/draggable.js';
 
 
+
+const app = document.querySelector('#app');
+const appBody = app.querySelector('#app-body')
+const appButtons = document.querySelectorAll('.app-button')
+
 const svgCanvas = document.querySelector('#canvas');
 const scene = svgCanvas.querySelector('#scene');
 const surface = svgCanvas.querySelector('#surface');
@@ -25,6 +30,7 @@ export const createPedal = (type, options = {}) => {
   textEl.textContent = '[]'
   pedal.dataset.pedalType = type;
   const scene = svgCanvas.querySelector('#scene');
+pedal.setAttribute('transform', 'translate(6,9) rotate(0) scale(1)') 
   scene.appendChild(pedal)
   
   draggable(scene, pedal)
@@ -39,11 +45,13 @@ export const createPedal = (type, options = {}) => {
     // e.stopImmediatePropagation()
     const isSelected = pedal.dataset.selected === 'true' ? true : false
     pedal.dataset.selected = !isSelected
+    scene.append(pedal)
   })
   
   pedal.addEventListener('pointerdown', e => {
     const isSelected = pedal.dataset.selected === 'true' ? true : false
     pedal.dataset.selected = true
+    scene.append(pedal)
   })
   
   pedal.addEventListener('pointerup', e => {
@@ -65,6 +73,17 @@ export const createPedal = (type, options = {}) => {
   //   });
   // });
 };
+
+appButtons.forEach((b, i) => {
+  b.addEventListener('click', e => {
+    const { target } = e
+    const type = target.dataset.pedalType
+    createPedal(type)
+  })
+  
+  
+});
+
 
 svgCanvas.addEventListener('drag', e => {
   let { x, y, target } = e.detail

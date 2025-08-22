@@ -16,7 +16,10 @@
 <body>
   <div id="app">
     <header id="app-header">
-      <div id="app-header-left">L</div>
+      <div id="app-header-left">
+        <input type="checkbox" name="sound-toggle" id="sound-toggle" checked="true" />
+        <label for="sound-toggle">Sound</label>
+        </div>
       <div id="app-header-center">
         <h1>TAB KING</h1>
       </div>
@@ -43,11 +46,15 @@
               <rect class="bounds-rect" x="0" y="0" width="20" height="20" transform="translate(-10,-10) rotate(0) scale(1)" />
               <text class="tab-cell-value" x="0" y="0" text-anchor="middle" dominant-baseline="middle" transform="translate(0, 1.5)"></text>
             </g>
-          
+            
           </g>
         </defs>
         
-        <g data-template="tab-lines" id="" class="tab-lines" transform="translate(-240,-120) rotate(0) scale(1)"></g>
+        <g id="viewport" transform="translate(0,0) rotate(0) scale(1)">
+          <g id="scene" transform="translate(0,0) rotate(0) scale(1)">
+            <g data-template="tab-lines" id="" class="tab-lines" transform="translate(-240,-120) rotate(0) scale(1)"></g>
+          </g>
+        </g>
       </svg>
       
       <pre id="data-output"></pre>

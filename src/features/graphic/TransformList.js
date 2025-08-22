@@ -6,6 +6,12 @@ import ham from 'https://hamilsauce.github.io/hamhelper/hamhelper1.0.0.js';
 const { template, utils, download } = ham;
 export const roundTwo = (num) => Math.round((num + Number.EPSILON) * 100) / 100
 
+const TransformIndexMap = {
+  translate: 0,
+  rotate: 1,
+  scale: 2,
+};
+
 const TransformListOptions = {
   transforms: Array,
 }
@@ -44,14 +50,8 @@ export class TransformList {
   #self = null;
   #canvas = null;
   #transforms = null;
-  #transformMap = new Map([
-    [SVGTransform.SVG_TRANSFORM_TRANSLATE, null],
-    [SVGTransform.SVG_TRANSFORM_ROTATE, null],
-    [SVGTransform.SVG_TRANSFORM_SCALE, null],
-  ]);
   
-  constructor(svgCanvas, element, { transforms} = DEFAULT_TRANSFORMS) {
-// console.warn('svgCanvas, element, { transforms } ', svgCanvas, element, transforms)
+  constructor(svgCanvas, element, { transforms } = DEFAULT_TRANSFORMS) {
     this.#canvas = svgCanvas;
     this.#self = (element.dom ?? element).transform.baseVal;
     
@@ -68,8 +68,6 @@ export class TransformList {
       else {
         this.insert(t);
       }
-      
-      this.#transformMap.set(t.type, t)
     });
   }
   
@@ -82,7 +80,7 @@ export class TransformList {
   createTransform(typeName, ...values) {
     typeName = typeName.toLowerCase();
     
-    const t = this.#canvas.createSVGTransform();
+    const t = (this.#canvas.dom ?? this.#canvas).createSVGTransform();
     
     switch (typeName) {
       case 'translate': {
@@ -108,25 +106,23 @@ export class TransformList {
   }
   
   translateTo(x = 0, y = 0) {
-    this.#transformMap
-      .get(SVGTransform.SVG_TRANSFORM_TRANSLATE)
-      .setTranslate(x, y);
+    const translate = this.getItem(TransformIndexMap.translate);
+    
+    translate.setTranslate(x, y);
     
     return this;
   }
   
   rotateTo(deg = 0, x = 0, y = 0) {
-    this.#transformMap
-      .get(SVGTransform.SVG_TRANSFORM_ROTATE)
-      .setRotate(deg, x, y);
+    const rotate = this.getItem(TransformIndexMap.rotate);
+    rotate.setRotate(deg, x, y);
     
     return this;
   }
   
   scaleTo(x = 1, y = 1) {
-    this.#transformMap
-      .get(SVGTransform.SVG_TRANSFORM_SCALE)
-      .setScale(x, y);
+    const scale = this.getItem(TransformIndexMap.scale);
+    scale.setScale(deg, x, y);
     
     return this;
   }
@@ -147,33 +143,38 @@ export class TransformList {
   
   get transforms() {
     return {
-      translate: this.getItem(0),
-      rotate: this.getItem(1),
-      scale: this.getItem(2),
+      translate: this.getItem(TransformIndexMap.translate),
+      rotate: this.getItem(TransformIndexMap.rotate),
+      scale: this.getItem(TransformIndexMap.scale),
     }
   }
   
   get transformItems() { return [...this.#self] };
   
-  
   get translation() {
+    const { e, f } = this.getMatrixAt(TransformIndexMap.translate)
+    
     return {
-      x: roundTwo(this.getMatrixAt(0).e),
-      y: roundTwo(this.getMatrixAt(0).f),
+      x: roundTwo(e),
+      y: roundTwo(f),
     }
   }
   
   get rotation() {
+    const { b, c } = this.getMatrixAt(TransformIndexMap.rotate)
+    
     return {
-      x: roundTwo(this.getMatrixAt(1).b),
-      y: roundTwo(this.getMatrixAt(1).c),
+      x: roundTwo(b),
+      y: roundTwo(c),
     }
   }
   
   get scale() {
+    const { a, d } = this.getMatrixAt(TransformIndexMap.scale)
+    
     return {
-      x: roundTwo(this.getMatrixAt(2).a),
-      y: roundTwo(this.getMatrixAt(2).d),
+      x: roundTwo(a),
+      y: roundTwo(d),
     }
   }
 }

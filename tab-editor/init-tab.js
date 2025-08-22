@@ -1,6 +1,7 @@
 import { playPulse } from '../tab-editor/audio.js';
 import { MusicalScales, NoteData } from '../data/index.js';
-
+import ham from 'https://hamilsauce.github.io/hamhelper/hamhelper1.0.0.js';
+const { template, utils, getPanZoom } = ham;
 const getNoteByPitchName = (name) => {
   const firstRootIndex = NoteData.findIndex(note => note.pitch === name)
   const note = NoteData.find(n => n.pitch === name)
@@ -146,9 +147,24 @@ document.querySelector('#app-header-center').addEventListener('click', e => {
   // console.log(fretJSON)
 });
 
+
+/*  IS SOUND ON */
+let isSoundOn = false;
+
 export const renderSVGTab = (selector = '#svg-canvas') => {
+  const soundCheckbox = document.querySelector('#sound-toggle');
   const svg = document.querySelector(selector);
-  svg.innerHTML = '';
+  const viewport = svg.querySelector('#viewport');
+  const scene = viewport.querySelector('#scene');
+  // svg.innerHTML = '';
+  
+  getPanZoom(svg);
+  
+  
+  soundCheckbox.addEventListener('change', e => {
+    isSoundOn = soundCheckbox.checked
+  });
+  
   
   const tabGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
   tabGroup.setAttribute("transform", `translate(0, 0) rotate(0) scale(1)`);
@@ -240,9 +256,11 @@ export const renderSVGTab = (selector = '#svg-canvas') => {
         
         const freq = fretNote.frequency
         console.warn('freq', freq)
-        // playPulse(1, freq)
+        console.warn('isSoundOn', isSoundOn)
+        if (isSoundOn) {
+          playPulse(0.5, freq)
+        }
       }
-      
     });
     
     input.addEventListener('keydown', (e) => {
@@ -315,5 +333,5 @@ export const renderSVGTab = (selector = '#svg-canvas') => {
     group.appendChild(foreign)
     tabGroup.appendChild(group);
   });
-  svg.appendChild(tabGroup)
+  scene.appendChild(tabGroup)
 }

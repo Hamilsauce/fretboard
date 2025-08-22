@@ -30,8 +30,8 @@ body {
 
 #app-header {
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  flex-direction: column;
+  justify-content: flex-start;
   align-items: center;
   gap: 0px;
 }
@@ -44,6 +44,18 @@ body {
   gap: 8px;
   padding: 16px;
   overflow-y: scroll;
+}
+
+.app-controls {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  gap: 8px;
+}
+
+.app-button{
+  padding: 4px 8px;
 }
 
 #canvas {
@@ -79,12 +91,16 @@ body {
 .pedal[data-selected=true] .pedal-face {
   stroke: #313239;
 }
-.pedal[data-selected=true] .pedal-float-label  {
+
+.pedal[data-selected=true] .pedal-float-label {
   opacity: 1;
 }
 
 .pedal[data-pedal-type=distortion] .pedal-face {
   fill: #C68C2A;
+}
+.pedal[data-pedal-type=delay] .pedal-face {
+  fill: #A42AC6;
 }
 
 .delay-pedal .pedal-face {
